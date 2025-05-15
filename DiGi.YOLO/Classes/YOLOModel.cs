@@ -254,10 +254,14 @@ namespace DiGi.YOLO.Classes
                 directoryName = Query.DirectoryName(category);
             }
 
-            string result = Path.Combine(directory, Constans.DirectoryName.Images);
-            if (!string.IsNullOrWhiteSpace(result))
+            string result = null;
+            if (!string.IsNullOrWhiteSpace(directoryName))
             {
-                result = Path.Combine(result, directoryName);
+                result = Path.Combine(directory, directoryName);
+            }
+            else
+            {
+                result = Path.Combine(directory, Constans.DirectoryName.Images, Query.DirectoryName(category));
             }
 
             return result;

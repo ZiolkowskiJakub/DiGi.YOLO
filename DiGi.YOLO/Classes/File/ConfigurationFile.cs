@@ -98,7 +98,7 @@ namespace DiGi.YOLO.Classes
                 {
                     continue;
                 }
-                values.Add(string.Format("\t{0}", tag.ToString()));
+                values.Add(string.Format("   {0}", tag.ToString()));
             }
 
             return string.Join(Environment.NewLine, values);

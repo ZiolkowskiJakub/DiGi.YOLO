@@ -17,7 +17,7 @@ namespace DiGi.YOLO
             }
 
             double centerX = topLeftX  + (width / 2);
-            double centerY = topLeftY - (height / 2);
+            double centerY = topLeftY + (height / 2);
 
             return new BoundingBox(centerX / imageWidth, centerY / imageHeight, width / imageWidth, height / imageHeight);
         }

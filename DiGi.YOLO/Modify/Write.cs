@@ -15,12 +15,6 @@ namespace DiGi.YOLO
                 return false;
             }
 
-            IEnumerable<Category> categories = yOLOModel.GetCategories();
-            if (categories == null)
-            {
-                return false;
-            }
-
             string directory = yOLOModel.Directory;
 
             ConfigurationFile configurationFile = yOLOModel.GetConfigurationFile();
@@ -31,13 +25,13 @@ namespace DiGi.YOLO
 
             File.WriteAllText(Path.Combine(directory, "conf.yaml"), configurationFile.ToString());
 
-            foreach (Category category in categories)
+            foreach (Category category in System.Enum.GetValues(typeof(Category)))
             {
                 string directory_Images = yOLOModel.GetDirectory_Images(category);
                 string directory_Labels = yOLOModel.GetDirectory_Labels(category);
 
                 IEnumerable<Image> images = yOLOModel.GetImages(category);
-                if (images == null || images.Count() == 0)
+                if (category == Category.Test && (images == null || images.Count() == 0))
                 {
                     continue;
                 }
@@ -50,6 +44,11 @@ namespace DiGi.YOLO
                 if (!Directory.Exists(directory_Labels))
                 {
                     Directory.CreateDirectory(directory_Labels);
+                }
+
+                if (images == null || images.Count() == 0)
+                {
+                    continue;
                 }
 
                 foreach (Image image in images)
@@ -72,11 +71,17 @@ namespace DiGi.YOLO
 
                     string path_Labels = Path.ChangeExtension(Path.Combine(directory_Labels, fileName_Image), ".txt");
 
-                    File.Copy(path, path_Image);
+                    if(path != path_Image)
+                    {
+                        File.Copy(path, path_Image, true);
+                    }
 
                     File.WriteAllText(path_Labels, labelFile.ToString());
                 }
             }
+
+            File.WriteAllBytes(Path.Combine(directory, "train.py"), Properties.Resources.train);
+            File.WriteAllBytes(Path.Combine(directory, "test.py"), Properties.Resources.test);
 
             return true;
         }

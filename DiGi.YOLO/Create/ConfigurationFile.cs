@@ -47,11 +47,11 @@ namespace DiGi.YOLO
                 }
                 else if (value.StartsWith(Query.DirectoryName(Enums.Category.Train)))
                 {
-                    trainDirectoryName = Query.Decode(value.Substring(5).Trim());
+                    trainDirectoryName = Query.Decode(value.Substring(6).Trim());
                 }
                 else if (value.StartsWith(Query.DirectoryName(Enums.Category.Test)))
                 {
-                    testDirectoryName = Query.Decode(value.Substring(4).Trim());
+                    testDirectoryName = Query.Decode(value.Substring(5).Trim());
                 }
                 else if (value.StartsWith("names:"))
                 {
@@ -70,12 +70,12 @@ namespace DiGi.YOLO
 
 
                 int index = value.IndexOf(":");
-                if(!int.TryParse(value.Substring(0, index + 1), out int tagIndex))
+                if(!int.TryParse(value.Substring(0, index), out int tagIndex))
                 {
                     break;
                 }
 
-                tags.Add(new Tag(tagIndex, value.Substring(index + 1)));
+                tags.Add(new Tag(tagIndex, value.Substring(index + 1).TrimStart()));
             }
 
 
