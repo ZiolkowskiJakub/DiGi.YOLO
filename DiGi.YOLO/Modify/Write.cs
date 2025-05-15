@@ -81,7 +81,7 @@ namespace DiGi.YOLO
             }
 
             File.WriteAllBytes(Path.Combine(directory, "train.py"), Properties.Resources.train);
-            File.WriteAllBytes(Path.Combine(directory, "test.py"), Properties.Resources.test);
+            File.WriteAllBytes(Path.Combine(directory, "predict.py"), Properties.Resources.predict);
 
             return true;
         }

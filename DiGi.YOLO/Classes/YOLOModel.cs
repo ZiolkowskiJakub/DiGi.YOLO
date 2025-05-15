@@ -242,6 +242,16 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
+        public string GetDirectory_Images()
+        {
+            if (string.IsNullOrWhiteSpace(directory))
+            {
+                return null;
+            }
+
+            return Path.Combine(directory, Constans.DirectoryName.Images);
+        }
+
         public string GetDirectory_Images(string directory, Category category)
         {
             if (string.IsNullOrWhiteSpace(directory))
@@ -270,6 +280,29 @@ namespace DiGi.YOLO.Classes
         public string GetDirectory_Images(Category category)
         {
             return GetDirectory_Images(directory, category);
+        }
+
+        public string GetDirectory_Labels()
+        {
+            if (string.IsNullOrWhiteSpace(directory))
+            {
+                return null;
+            }
+
+            string directory_Images = GetDirectory_Images();
+
+            string[] values = directory_Images.Replace('/', '\\').Split('\\');
+
+            int lastIndex = Array.LastIndexOf(values, Constans.DirectoryName.Images);
+
+            if (lastIndex == -1)
+            {
+                return directory;
+            }
+
+            values[lastIndex] = Constans.DirectoryName.Labels;
+
+            return string.Join("\\", values);
         }
 
         public string GetDirectory_Labels(string directory, Category category)

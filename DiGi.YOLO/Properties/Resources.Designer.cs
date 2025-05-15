@@ -63,9 +63,9 @@ namespace DiGi.YOLO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] test {
+        internal static byte[] predict {
             get {
-                object obj = ResourceManager.GetObject("test", resourceCulture);
+                object obj = ResourceManager.GetObject("predict", resourceCulture);
                 return ((byte[])(obj));
             }
         }
