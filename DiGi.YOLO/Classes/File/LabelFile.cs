@@ -12,14 +12,14 @@ namespace DiGi.YOLO.Classes
 
         }
 
-        public bool Add(int tagIndex, BoundingBox boundingBox)
+        public bool Add(int labelIndex, BoundingBox boundingBox)
         {
-            if(boundingBox == null || tagIndex < 0)
+            if(boundingBox == null || labelIndex < 0)
             {
                 return false;
             }
 
-            tuples.Add(new Tuple<int, BoundingBox>(tagIndex, boundingBox));
+            tuples.Add(new Tuple<int, BoundingBox>(labelIndex, boundingBox));
             return true;
         }
 
@@ -39,7 +39,7 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public List<BoundingBox> GetBoundingBoxes(int tagIndex)
+        public List<BoundingBox> GetBoundingBoxes(int labelIndex)
         {
             List<BoundingBox> result = new List<BoundingBox>();
             foreach(Tuple<int, BoundingBox> tuple in tuples)
@@ -49,7 +49,7 @@ namespace DiGi.YOLO.Classes
                     continue;
                 }
 
-                if(tuple.Item1 != tagIndex)
+                if(tuple.Item1 != labelIndex)
                 {
                     continue;
                 }
@@ -68,7 +68,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public int GetTagIndex(int index)
+        public int GetLabelIndex(int index)
         {
             return tuples[index].Item1;
         }

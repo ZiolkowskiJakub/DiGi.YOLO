@@ -1,11 +1,11 @@
 ﻿namespace DiGi.YOLO.Classes
 {
-    public class Tag
+    public class Label
     {
         public int index;
         public string name;
 
-        public Tag(int index, string name)
+        public Label(int index, string name)
         {
             this.index = index;
             this.name = name;

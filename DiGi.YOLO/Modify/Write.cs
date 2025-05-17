@@ -3,6 +3,7 @@ using DiGi.YOLO.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace DiGi.YOLO
 {
@@ -83,6 +84,34 @@ namespace DiGi.YOLO
             File.WriteAllBytes(Path.Combine(directory, "train.py"), Properties.Resources.train);
             File.WriteAllBytes(Path.Combine(directory, "predict.py"), Properties.Resources.predict);
 
+            return true;
+        }
+
+        public static bool Write(this BoundingBoxResultFile boundingBoxResultFile, string path)
+        {
+            if(boundingBoxResultFile == null || string.IsNullOrWhiteSpace(path))
+            {
+                return false;
+            }
+
+            if(!Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                return false;
+            }
+
+            List<string> values = new List<string>();
+            foreach(BoundingBoxResult boundingBoxResult in boundingBoxResultFile)
+            {
+                string value = boundingBoxResult?.ToString();
+                if(string.IsNullOrWhiteSpace(value))
+                {
+                    continue;
+                }
+
+                values.Add(value);
+            }
+
+            File.WriteAllLines(path, values);
             return true;
         }
     }

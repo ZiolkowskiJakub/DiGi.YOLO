@@ -8,13 +8,13 @@ namespace DiGi.YOLO.Classes
     {
         private string directory;
         private Dictionary<Category, string> directoryNames = new Dictionary<Category, string>();
-        private HashSet<Tag> tags = new HashSet<Tag>();
+        private HashSet<Label> labels = new HashSet<Label>();
 
         public ConfigurationFile() 
         { 
         }
 
-        public ConfigurationFile(string directory, string trainDirectoryName, string validateDirectoryName, string testDirectoryName, IEnumerable<Tag> tags) 
+        public ConfigurationFile(string directory, string trainDirectoryName, string validateDirectoryName, string testDirectoryName, IEnumerable<Label> labels) 
         {
             this.directory = directory;
             
@@ -22,16 +22,16 @@ namespace DiGi.YOLO.Classes
             directoryNames[Category.Validate] = validateDirectoryName;
             directoryNames[Category.Test] = testDirectoryName;
 
-            if(tags != null)
+            if(labels != null)
             {
-                foreach (Tag tag in tags)
+                foreach (Label label in labels)
                 {
-                    if(tag == null)
+                    if(label == null)
                     {
                         continue;
                     }
 
-                    this.tags.Add(tag);
+                    this.labels.Add(label);
                 }
             }
         }
@@ -69,11 +69,11 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public IEnumerable<Tag> Tags
+        public IEnumerable<Label> Labels
         {
             get
             {
-                return tags;
+                return labels;
             }
         }
         
@@ -92,13 +92,13 @@ namespace DiGi.YOLO.Classes
             }
 
             values.Add("names:");
-            foreach(Tag tag in tags)
+            foreach(Label label in labels)
             {
-                if(tag == null)
+                if(label == null)
                 {
                     continue;
                 }
-                values.Add(string.Format("   {0}", tag.ToString()));
+                values.Add(string.Format("   {0}", label.ToString()));
             }
 
             return string.Join(Environment.NewLine, values);

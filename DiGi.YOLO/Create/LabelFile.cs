@@ -29,7 +29,7 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-                if(!int.TryParse(values[0], out int tagIndex))
+                if(!int.TryParse(values[0], out int labelIndex))
                 {
                     continue;
                 }
@@ -54,7 +54,7 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-                result.Add(tagIndex, new Classes.BoundingBox(x, y, width, height));
+                result.Add(labelIndex, new BoundingBox(x, y, width, height));
             }
 
             return result;

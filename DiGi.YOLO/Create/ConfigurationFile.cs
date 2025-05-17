@@ -24,9 +24,9 @@ namespace DiGi.YOLO
             string trainDirectoryName = null;
             string validateDirectoryName = null;
             string testDirectoryName = null;
-            List<Tag> tags = new List<Tag>();
+            List<Label> labels = new List<Label>();
 
-            int tagsIndex = -1;
+            int labelsIndex = -1;
 
             for (int i = 0; i < values.Count; i++)
             {
@@ -55,11 +55,11 @@ namespace DiGi.YOLO
                 }
                 else if (value.StartsWith("names:"))
                 {
-                    tagsIndex = i + 1;
+                    labelsIndex = i + 1;
                 }
             }
 
-            for (int i = tagsIndex; i < values.Count; i++)
+            for (int i = labelsIndex; i < values.Count; i++)
             {
                 string value = values[i].TrimStart();
 
@@ -70,16 +70,16 @@ namespace DiGi.YOLO
 
 
                 int index = value.IndexOf(":");
-                if(!int.TryParse(value.Substring(0, index), out int tagIndex))
+                if(!int.TryParse(value.Substring(0, index), out int labelIndex))
                 {
                     break;
                 }
 
-                tags.Add(new Tag(tagIndex, value.Substring(index + 1).TrimStart()));
+                labels.Add(new Label(labelIndex, value.Substring(index + 1).TrimStart()));
             }
 
 
-            return new ConfigurationFile(directory, trainDirectoryName, validateDirectoryName, testDirectoryName, tags);
+            return new ConfigurationFile(directory, trainDirectoryName, validateDirectoryName, testDirectoryName, labels);
         }
     }
 }

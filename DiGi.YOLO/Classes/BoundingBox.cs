@@ -1,6 +1,8 @@
-﻿namespace DiGi.YOLO.Classes
+﻿using DiGi.YOLO.Interfaces;
+
+namespace DiGi.YOLO.Classes
 {
-    public class BoundingBox
+    public class BoundingBox : IBoundingBox
     {
         private double height;
         private double width;

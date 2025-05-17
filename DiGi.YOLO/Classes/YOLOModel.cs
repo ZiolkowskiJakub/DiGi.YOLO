@@ -12,7 +12,7 @@ namespace DiGi.YOLO.Classes
         private string directory;
         private Dictionary<Category, string> directoryNames = new Dictionary<Category, string>();
         private Dictionary<string, Image> images = new Dictionary<string, Image>();
-        private SortedDictionary<int, Tag> tags = new SortedDictionary<int, Tag>();
+        private SortedDictionary<int, Label> labels = new SortedDictionary<int, Label>();
         
         public YOLOModel()
         {
@@ -78,32 +78,32 @@ namespace DiGi.YOLO.Classes
             return true;
         }
 
-        public bool Add(string tagName)
+        public bool Add(string labelName)
         {
-            int index = TagIndex(tagName);
+            int index = LabelIndex(labelName);
             if(index != -1)
             {
                 return false;
             }
 
-            int tagIndex = tags.Count == 0 ? 0 : tags.Keys.Last() + 1;
+            int labelIndex = labels.Count == 0 ? 0 : labels.Keys.Last() + 1;
 
-            tags[tagIndex] = new Tag(tagIndex, tagName);
+            labels[labelIndex] = new Label(labelIndex, labelName);
             return true;
         }
 
-        public bool Add(Tag tag)
+        public bool Add(Label label)
         {
-            if(tag == null)
+            if(label == null)
             {
                 return false;
             }
 
-            tags[tag.Index] = tag;
+            labels[label.Index] = label;
             return true;
         }
 
-        public bool Add(string path, string tagName, BoundingBox boundingBox)
+        public bool Add(string path, string labelName, BoundingBox boundingBox)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -116,14 +116,14 @@ namespace DiGi.YOLO.Classes
                 images[path] = image;
             }
 
-            int tagIndex = TagIndex(tagName);
-            if (tagIndex == -1)
+            int labelIndex = LabelIndex(labelName);
+            if (labelIndex == -1)
             {
-                tagIndex = tags.Count == 0 ? 0 : tags.Keys.Last() + 1;
-                tags[tagIndex] = new Tag(tagIndex, tagName);
+                labelIndex = labels.Count == 0 ? 0 : labels.Keys.Last() + 1;
+                labels[labelIndex] = new Label(labelIndex, labelName);
             }
 
-            return image.Add(tagIndex, boundingBox);
+            return image.Add(labelIndex, boundingBox);
         }
 
         public bool Add(string path, LabelFile labelFile)
@@ -137,13 +137,13 @@ namespace DiGi.YOLO.Classes
 
             for (int i = 0; i < labelFile.Count; i++)
             {
-                Tag tag = GetTag(labelFile.GetTagIndex(i));
-                if (tag == null)
+                Label label = GetLabel(labelFile.GetLabelIndex(i));
+                if (label == null)
                 {
                     continue;
                 }
 
-                if(Add(path, tag.Name, labelFile.GetBoundingBox(i)))
+                if(Add(path, label.Name, labelFile.GetBoundingBox(i)))
                 {
                     result = true;
                 }
@@ -161,11 +161,11 @@ namespace DiGi.YOLO.Classes
 
             directory = configurationFile.Directory;
 
-            if (configurationFile.Tags != null)
+            if (configurationFile.Labels != null)
             {
-                foreach (Tag tag in configurationFile.Tags)
+                foreach (Label label in configurationFile.Labels)
                 {
-                    Add(tag);
+                    Add(label);
                 }
             }
 
@@ -237,7 +237,7 @@ namespace DiGi.YOLO.Classes
                 trainDirectoryName,
                 validateDirectoryName,
                 testDirectoryName,
-                tags.Values);
+                labels.Values);
 
             return result;
         }
@@ -378,9 +378,9 @@ namespace DiGi.YOLO.Classes
             return image?.GetLabelFile();
         }
 
-        public Tag GetTag(int tagIndex)
+        public Label GetLabel(int labelIndex)
         {
-            if (!tags.TryGetValue(tagIndex, out Tag result) || result == null)
+            if (!labels.TryGetValue(labelIndex, out Label result) || result == null)
             {
                 return null;
             }
@@ -388,36 +388,36 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public IEnumerable<Tag> GetTags()
+        public IEnumerable<Label> GetLabels()
         {
-            return tags.Values;
+            return labels.Values;
         }
 
-        public IEnumerable<Tag> GetTags(string path)
+        public IEnumerable<Label> GetLabels(string path)
         {
-            IEnumerable<int> tagIndexes = GetImage(path)?.TagIndexes;
-            if (tagIndexes == null)
+            IEnumerable<int> labelIndexes = GetImage(path)?.LabelIndexes;
+            if (labelIndexes == null)
             {
                 return null;
             }
 
-            List<Tag> result = new List<Tag>();
-            foreach (int tagIndex in tagIndexes)
+            List<Label> result = new List<Label>();
+            foreach (int labelIndex in labelIndexes)
             {
-                if (tags.TryGetValue(tagIndex, out Tag tag) && tag != null)
+                if (labels.TryGetValue(labelIndex, out Label label) && label != null)
                 {
-                    result.Add(tag);
+                    result.Add(label);
                 }
             }
 
             return result;
         }
         
-        public int TagIndex(string tagName)
+        public int LabelIndex(string labelName)
         {
-            foreach(KeyValuePair<int, Tag> keyValuePair in tags)
+            foreach(KeyValuePair<int, Label> keyValuePair in labels)
             {
-                if(keyValuePair.Value?.Name == tagName)
+                if(keyValuePair.Value?.Name == labelName)
                 {
                     return keyValuePair.Key;
                 }

@@ -7,6 +7,7 @@ basePath = os.path.join("runs", "detect")
 maxNumber = -1
 modelPath = None
 
+# Find the latest model path
 for root, directories, files in os.walk(basePath):
     for directory in directories:
         if directory.startswith("train"):
@@ -21,39 +22,34 @@ for root, directories, files in os.walk(basePath):
 model = YOLO(modelPath)
 
 # Define the folder with test images
-image_folder = "images/test/"
+imageDirectory = "images/test/"
 
 # Get list of all image files (you can adjust extensions as needed)
-image_files = glob.glob(os.path.join(image_folder, "*.jpg")) + \
-              glob.glob(os.path.join(image_folder, "*.jpeg")) + \
-              glob.glob(os.path.join(image_folder, "*.png"))
+imagePaths = glob.glob(os.path.join(imageDirectory, "*.jpg")) + \
+              glob.glob(os.path.join(imageDirectory, "*.jpeg")) + \
+              glob.glob(os.path.join(imageDirectory, "*.png"))
+
+resultsPath = os.path.join(os.getcwd(), "results.txt")
+
+if os.path.isfile(resultsPath):
+    os.remove(resultsPath)
 
 # Run inference on each image
-for image_path in image_files:
-    print(f"Processing: {image_path}")
-    results = model(source=image_path, show=False, conf=0.4, save=True)
-    print("Bounding boxes of all detected objects in [tagIndex x y width height confidence] format:")
+for imagePath in imagePaths:
+    print(f"Processing: {imagePath}")
+    results = model(source=imagePath, show=False, conf=0.1, save=False)
     
+    fileName = os.path.splitext(os.path.basename(imagePath))[0]
+
     values = []
     
     for result in results:
         for box in result.boxes:
-            x, y, width, height = box.xyxy[0].tolist()
-            confidence = box.conf.tolist()[0]
-            tagIndex = int(box.cls.tolist()[0])
-            values.append(f"{tagIndex} {x} {y} {width} {height} {confidence}\n")
+            x, y, width, height = box.xyxy.Item().tolist()
+            confidence = box.conf.item()
+            labelIndex = int(box.cls.item())
+            values.append(f"{fileName}\t{labelIndex}\t{x}\t{y}\t{width}\t{height}\t{confidence}\n")
     
-    path = Path(image_path)
-    parts = list(path.parts)
-    parts[parts.index("images")] = "labels"
-    new_path = Path(*parts).with_suffix(".txt")
-
-    new_path.parent.mkdir(parents=True, exist_ok=True)
-    
-    if new_path.is_file():
-        new_path.unlink()
-    
-    with open(new_path, "a") as file:
+    with open(resultsPath, "a") as file:
         for value in values:
-            print(value)
-            file.write(value)   
+            file.write(value)

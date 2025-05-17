@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using DiGi.YOLO.Interfaces;
+using System.Collections.Generic;
 
 namespace DiGi.YOLO.Classes
 {
-    public class Image
+    public class Image<TBoundingBox> where TBoundingBox : IBoundingBox
     {
-        private Dictionary<int, HashSet<BoundingBox>> boundingBoxes = new Dictionary<int, HashSet<BoundingBox>>();
-        private string path;
+        protected Dictionary<int, HashSet<TBoundingBox>> boundingBoxes = new Dictionary<int, HashSet<TBoundingBox>>();
+        protected string path;
+
         public Image(string path)
         {
             this.path = path;
@@ -19,7 +21,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public IEnumerable<int> TagIndexes
+        public IEnumerable<int> LabelIndexes
         {
             get
             {
@@ -27,11 +29,11 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public IEnumerable<BoundingBox> this[int tagIndex]
+        public IEnumerable<TBoundingBox> this[int labelIndex]
         {
             get
             {
-                if(!boundingBoxes.TryGetValue(tagIndex, out HashSet<BoundingBox> result))
+                if (!boundingBoxes.TryGetValue(labelIndex, out HashSet<TBoundingBox> result))
                 {
                     return null;
                 }
@@ -40,20 +42,37 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public bool Add(int tagIndex, BoundingBox boundingBox)
+        public bool Add(int labelIndex, TBoundingBox boundingBox)
         {
-            if(boundingBox == null)
+            if (boundingBox == null)
             {
                 return false;
             }
 
-            if(!boundingBoxes.TryGetValue(tagIndex, out HashSet<BoundingBox> boundingBoxes_Temp) || boundingBoxes_Temp == null)
+            if (!boundingBoxes.TryGetValue(labelIndex, out HashSet<TBoundingBox> boundingBoxes_Temp) || boundingBoxes_Temp == null)
             {
-                boundingBoxes_Temp = new HashSet<BoundingBox>();
-                boundingBoxes[tagIndex] = boundingBoxes_Temp;
+                boundingBoxes_Temp = new HashSet<TBoundingBox>();
+                boundingBoxes[labelIndex] = boundingBoxes_Temp;
             }
 
             return boundingBoxes_Temp.Add(boundingBox);
+        }
+    }
+
+    public class Image : Image<BoundingBox>
+    {
+        public Image(string path)
+            : base(path)
+        {
+
+        }
+
+        public string Path
+        {
+            get
+            {
+                return path;
+            }
         }
         
         public LabelFile GetLabelFile()
