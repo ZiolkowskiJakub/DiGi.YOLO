@@ -1,28 +1,21 @@
 from pathlib import Path
 from ultralytics import YOLO
+from utils import GetDirectory, GetModelPath
 import os
 import glob
 
-basePath = os.path.join("runs", "detect")
-maxNumber = -1
-modelPath = None
+modelPath = GetModelPath(useDefault=False)
+if not modelPath:
+    print("Could not find model.")
+    exit()
 
-# Find the latest model path
-for root, directories, files in os.walk(basePath):
-    for directory in directories:
-        if directory.startswith("train"):
-            numberString = directory[5:]
-            if numberString:
-                number = int(numberString)
-                if number > maxNumber:
-                    maxNumber = number
-                    modelPath = os.path.join(root, directory, "weights", "best.pt")
+print(f"Model path: {modelPath}")
 
 # Load your trained YOLO model
 model = YOLO(modelPath)
 
 # Define the folder with test images
-imageDirectory = "images/test/"
+imageDirectory = os.path.join("images", "predict")
 
 # Get list of all image files (you can adjust extensions as needed)
 imagePaths = glob.glob(os.path.join(imageDirectory, "*.jpg")) + \
@@ -37,15 +30,21 @@ if os.path.isfile(resultsPath):
 # Run inference on each image
 for imagePath in imagePaths:
     print(f"Processing: {imagePath}")
-    results = model(source=imagePath, show=False, conf=0.1, save=False)
+    results = model(source=imagePath, show=False, conf=0.01, save=True)
     
     fileName = os.path.splitext(os.path.basename(imagePath))[0]
 
     values = []
     
     for result in results:
+        print(f"Save directory: {result.save_dir}")
+        
+        if not result.boxes or len(result.boxes) < 1:
+            values.append(f"{fileName}\n")
+            continue
+        
         for box in result.boxes:
-            x, y, width, height = box.xyxy.Item().tolist()
+            x, y, width, height = box.xyxy[0].tolist()
             confidence = box.conf.item()
             labelIndex = int(box.cls.item())
             values.append(f"{fileName}\t{labelIndex}\t{x}\t{y}\t{width}\t{height}\t{confidence}\n")

@@ -1,29 +1,19 @@
 from ultralytics import YOLO
+from utils import GetModelPath
 import os
 
 def main():
     
-    basePath = os.path.join("runs", "detect")
-    maxNumber = -1
-    modelPath = None
-
-    for root, directories, files in os.walk(basePath):
-        for directory in directories:
-            if directory.startswith("train"):
-                numberString = directory[5:]
-                if numberString:
-                    number = int(numberString)
-                    if number > maxNumber:
-                        maxNumber = number
-                        modelPath = os.path.join(root, directory, "weights", "best.pt")
+    modelPath = GetModelPath(useDefault=True)
     
-    if not modelPath or modelPath.strip() == "" or not os.path.exists(modelPath):
-        modelPath = "yolov8x.yaml"
+    if not modelPath:
+        print("Could not find model.")
+        exit()
         
     print(f"Used model: {modelPath}")
     
     model = YOLO(modelPath)
-    model.train(data="conf.yaml", imgsz=640, epochs=10)
+    model.train(data="conf.yaml", imgsz=640, epochs=100)
 
 if __name__ == "__main__":
     main()

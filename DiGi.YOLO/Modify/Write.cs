@@ -3,7 +3,6 @@ using DiGi.YOLO.Enums;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 
 namespace DiGi.YOLO
 {
@@ -72,7 +71,7 @@ namespace DiGi.YOLO
 
                     string path_Labels = Path.ChangeExtension(Path.Combine(directory_Labels, fileName_Image), ".txt");
 
-                    if(path != path_Image)
+                    if (path != path_Image)
                     {
                         File.Copy(path, path_Image, true);
                     }
@@ -83,6 +82,7 @@ namespace DiGi.YOLO
 
             File.WriteAllBytes(Path.Combine(directory, "train.py"), Properties.Resources.train);
             File.WriteAllBytes(Path.Combine(directory, "predict.py"), Properties.Resources.predict);
+            File.WriteAllBytes(Path.Combine(directory, "utils.py"), Properties.Resources.utils);
 
             return true;
         }
