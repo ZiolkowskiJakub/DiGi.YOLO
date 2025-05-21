@@ -19,7 +19,7 @@ namespace DiGi.YOLO
             {
                 foreach (string value in values)
                 {
-                    BoundingBoxResult boundingBoxResult = Create.BoundingBoxResult(value);
+                    BoundingBoxResult boundingBoxResult = BoundingBoxResult(value);
                     if (boundingBoxResult == null)
                     {
                         continue;

@@ -22,22 +22,18 @@ imagePaths = glob.glob(os.path.join(imageDirectory, "*.jpg")) + \
               glob.glob(os.path.join(imageDirectory, "*.jpeg")) + \
               glob.glob(os.path.join(imageDirectory, "*.png"))
 
-resultsPath = os.path.join(os.getcwd(), "results.txt")
-
-if os.path.isfile(resultsPath):
-    os.remove(resultsPath)
-
 # Run inference on each image
 for imagePath in imagePaths:
     print(f"Processing: {imagePath}")
-    results = model(source=imagePath, show=False, conf=0.01, save=True)
+    results = model(source=imagePath, show=False, conf=0.1, save=True)
     
     fileName = os.path.splitext(os.path.basename(imagePath))[0]
 
     values = []
     
     for result in results:
-        print(f"Save directory: {result.save_dir}")
+        
+        resultsPath = os.path.join(result.save_dir, "results.bbrf")
         
         if not result.boxes or len(result.boxes) < 1:
             values.append(f"{fileName}\n")
@@ -49,6 +45,6 @@ for imagePath in imagePaths:
             labelIndex = int(box.cls.item())
             values.append(f"{fileName}\t{labelIndex}\t{x}\t{y}\t{width}\t{height}\t{confidence}\n")
     
-    with open(resultsPath, "a") as file:
-        for value in values:
-            file.write(value)
+        with open(resultsPath, "a") as file:
+            for value in values:
+                file.write(value)
