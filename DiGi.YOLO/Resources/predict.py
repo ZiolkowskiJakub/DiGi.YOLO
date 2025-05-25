@@ -25,13 +25,15 @@ imagePaths = glob.glob(os.path.join(imageDirectory, "*.jpg")) + \
 # Run inference on each image
 for imagePath in imagePaths:
     print(f"Processing: {imagePath}")
-    results = model(source=imagePath, show=False, conf=0.1, save=True)
+    results = model(source=imagePath, show=False, conf=0.1, save=False)
     
     fileName = os.path.splitext(os.path.basename(imagePath))[0]
 
     values = []
     
     for result in results:
+        
+        os.makedirs(result.save_dir, exist_ok=True)
         
         resultsPath = os.path.join(result.save_dir, "results.bbrf")
         
