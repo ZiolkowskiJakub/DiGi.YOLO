@@ -8,11 +8,11 @@ namespace DiGi.YOLO.Classes
 {
     public class YOLOModel
     {
-        private Dictionary<string, HashSet<Category>> categories = new Dictionary<string, HashSet<Category>>();
-        private string directory;
-        private Dictionary<Category, string> directoryNames = new Dictionary<Category, string>();
-        private Dictionary<string, Image> images = new Dictionary<string, Image>();
-        private SortedDictionary<int, Label> labels = new SortedDictionary<int, Label>();
+        private readonly Dictionary<string, HashSet<Category>> categories = [];
+        private string? directory;
+        private readonly Dictionary<Category, string?> directoryNames = [];
+        private readonly Dictionary<string, Image> images = [];
+        private readonly SortedDictionary<int, Label> labels = [];
         
         public YOLOModel()
         {
@@ -21,12 +21,12 @@ namespace DiGi.YOLO.Classes
             directoryNames[Category.Test] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Test));
         }
 
-        public YOLOModel(ConfigurationFile configurationFile)
+        public YOLOModel(ConfigurationFile? configurationFile)
         {
             Add(configurationFile);
         }
 
-        public YOLOModel(string directory)
+        public YOLOModel(string? directory)
         {
             this.directory = directory;
 
@@ -35,7 +35,7 @@ namespace DiGi.YOLO.Classes
             directoryNames[Category.Test] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Test));
         }
 
-        public string Directory
+        public string? Directory
         {
             get
             {
@@ -48,37 +48,37 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public bool Add(string path, params Category[] categories)
+        public bool Add(string? path, params Category[]? categories)
         {
-            if(string.IsNullOrEmpty(path))
+            if(string.IsNullOrEmpty(path) || categories is null)
             {
                 return false;
             }
 
-            if(!images.TryGetValue(path, out Image image) || image == null)
+            if(!images.TryGetValue(path!, out Image image) || image == null)
             {
                 image = new Image(path);
-                images[path] = image;
+                images[path!] = image;
             }
 
             if (this.categories != null)
             {
-                if (!this.categories.TryGetValue(path, out HashSet<Category> categories_Temp) || categories_Temp == null)
+                if (!this.categories.TryGetValue(path!, out HashSet<Category> categories_Temp) || categories_Temp == null)
                 {
-                    categories_Temp = new HashSet<Category>();
-                    this.categories[path] = categories_Temp;
+                    categories_Temp = [];
+                    this.categories[path!] = categories_Temp;
                 }
 
                 foreach (Category category in categories)
                 {
-                    this.categories[path].Add(category);
+                    this.categories[path!].Add(category);
                 }
             }
 
             return true;
         }
 
-        public bool Add(string labelName)
+        public bool Add(string? labelName)
         {
             int index = LabelIndex(labelName);
             if(index != -1)
@@ -92,7 +92,7 @@ namespace DiGi.YOLO.Classes
             return true;
         }
 
-        public bool Add(Label label)
+        public bool Add(Label? label)
         {
             if(label == null)
             {
@@ -103,17 +103,17 @@ namespace DiGi.YOLO.Classes
             return true;
         }
 
-        public bool Add(string path, string labelName, BoundingBox boundingBox)
+        public bool Add(string? path, string? labelName, BoundingBox? boundingBox)
         {
             if (string.IsNullOrEmpty(path))
             {
                 return false;
             }
 
-            if (!images.TryGetValue(path, out Image image) || image == null)
+            if (!images.TryGetValue(path!, out Image image) || image == null)
             {
                 image = new Image(path);
-                images[path] = image;
+                images[path!] = image;
             }
 
             int labelIndex = LabelIndex(labelName);
@@ -126,7 +126,7 @@ namespace DiGi.YOLO.Classes
             return image.Add(labelIndex, boundingBox);
         }
 
-        public bool Add(string path, LabelFile labelFile)
+        public bool Add(string? path, LabelFile? labelFile)
         {
             if(string.IsNullOrWhiteSpace(path) || labelFile == null)
             {
@@ -137,7 +137,7 @@ namespace DiGi.YOLO.Classes
 
             for (int i = 0; i < labelFile.Count; i++)
             {
-                Label label = GetLabel(labelFile.GetLabelIndex(i));
+                Label? label = GetLabel(labelFile.GetLabelIndex(i));
                 if (label == null)
                 {
                     continue;
@@ -152,7 +152,7 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public bool Add(ConfigurationFile configurationFile)
+        public bool Add(ConfigurationFile? configurationFile)
         {
             if(configurationFile == null)
             {
@@ -181,14 +181,14 @@ namespace DiGi.YOLO.Classes
             return true;
         }
 
-        public IEnumerable<Category> GetCategories(string path)
+        public IEnumerable<Category>? GetCategories(string? path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
                 return null;
             }
 
-            if (!categories.TryGetValue(path, out HashSet<Category> result))
+            if (!categories.TryGetValue(path!, out HashSet<Category> result))
             {
                 return result;
             }
@@ -196,9 +196,9 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<Category>? GetCategories()
         {
-            HashSet<Category> result = new HashSet<Category>();
+            HashSet<Category> result = [];
             foreach (KeyValuePair<string, HashSet<Category>> keyValuePair in categories)
             {
                 if (keyValuePair.Value == null)
@@ -215,24 +215,24 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public ConfigurationFile GetConfigurationFile()
+        public ConfigurationFile? GetConfigurationFile()
         {
-            if (!directoryNames.TryGetValue(Category.Train, out string trainDirectoryName))
+            if (!directoryNames.TryGetValue(Category.Train, out string? trainDirectoryName))
             {
                 trainDirectoryName = null;
             }
 
-            if (!directoryNames.TryGetValue(Category.Validate, out string validateDirectoryName))
+            if (!directoryNames.TryGetValue(Category.Validate, out string? validateDirectoryName))
             {
                 validateDirectoryName = null;
             }
 
-            if (!directoryNames.TryGetValue(Category.Test, out string testDirectoryName))
+            if (!directoryNames.TryGetValue(Category.Test, out string? testDirectoryName))
             {
                 testDirectoryName = null;
             }
 
-            ConfigurationFile result = new ConfigurationFile(
+            ConfigurationFile result = new (
                 directory,
                 trainDirectoryName,
                 validateDirectoryName,
@@ -242,7 +242,7 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public string GetDirectory_Images()
+        public string? GetDirectory_Images()
         {
             if (string.IsNullOrWhiteSpace(directory))
             {
@@ -252,19 +252,19 @@ namespace DiGi.YOLO.Classes
             return Path.Combine(directory, Constans.DirectoryName.Images);
         }
 
-        public string GetDirectory_Images(string directory, Category category)
+        public string? GetDirectory_Images(string? directory, Category category)
         {
             if (string.IsNullOrWhiteSpace(directory))
             {
                 return null;
             }
 
-            if (!directoryNames.TryGetValue(category, out string directoryName))
+            if (!directoryNames.TryGetValue(category, out string? directoryName))
             {
                 directoryName = Query.DirectoryName(category);
             }
 
-            string result = null;
+            string? result;
             if (!string.IsNullOrWhiteSpace(directoryName))
             {
                 result = Path.Combine(directory, directoryName);
@@ -277,21 +277,25 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public string GetDirectory_Images(Category category)
+        public string? GetDirectory_Images(Category category)
         {
             return GetDirectory_Images(directory, category);
         }
 
-        public string GetDirectory_Labels()
+        public string? GetDirectory_Labels()
         {
             if (string.IsNullOrWhiteSpace(directory))
             {
                 return null;
             }
 
-            string directory_Images = GetDirectory_Images();
+            string? directory_Images = GetDirectory_Images();
 
-            string[] values = directory_Images.Replace('/', '\\').Split('\\');
+            string[]? values = directory_Images?.Replace('/', '\\').Split('\\');
+            if(values == null)
+            {
+                return null;
+            }
 
             int lastIndex = Array.LastIndexOf(values, Constans.DirectoryName.Images);
 
@@ -305,16 +309,20 @@ namespace DiGi.YOLO.Classes
             return string.Join("\\", values);
         }
 
-        public string GetDirectory_Labels(string directory, Category category)
+        public string? GetDirectory_Labels(string? directory, Category category)
         {
             if (string.IsNullOrWhiteSpace(directory))
             {
                 return null;
             }
 
-            string directory_Images = GetDirectory_Images(directory, category);
+            string? directory_Images = GetDirectory_Images(directory, category);
 
-            string[] values = directory_Images.Replace('/', '\\').Split('\\');
+            string[]? values = directory_Images?.Replace('/', '\\').Split('\\');
+            if(values == null)
+            {
+                return null;
+            }
 
             int lastIndex = Array.LastIndexOf(values, Constans.DirectoryName.Images);
 
@@ -328,19 +336,19 @@ namespace DiGi.YOLO.Classes
             return string.Join("\\", values);
         }
 
-        public string GetDirectory_Labels(Category category)
+        public string? GetDirectory_Labels(Category category)
         {
             return GetDirectory_Labels(directory, category);
         }
 
-        public Image GetImage(string path)
+        public Image? GetImage(string? path)
         {
             if (string.IsNullOrWhiteSpace(path))
             {
                 return null;
             }
 
-            if (!images.TryGetValue(path, out Image result))
+            if (!images.TryGetValue(path!, out Image result))
             {
                 return result;
             }
@@ -350,7 +358,7 @@ namespace DiGi.YOLO.Classes
 
         public IEnumerable<Image> GetImages(Category category)
         {
-            List<Image> result = new List<Image>();
+            List<Image> result = [];
             foreach (KeyValuePair<string, Image> keyValuePair in images)
             {
                 if (!categories.TryGetValue(keyValuePair.Key, out HashSet<Category> categories_Temp) || categories_Temp == null)
@@ -367,9 +375,9 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-        public LabelFile GetLabelFile(string path)
+        public LabelFile? GetLabelFile(string? path)
         {
-            Image image = GetImage(path);
+            Image? image = GetImage(path);
             if (image == null)
             {
                 return null;
@@ -378,7 +386,7 @@ namespace DiGi.YOLO.Classes
             return image?.GetLabelFile();
         }
 
-        public Label GetLabel(int labelIndex)
+        public Label? GetLabel(int labelIndex)
         {
             if (!labels.TryGetValue(labelIndex, out Label result) || result == null)
             {
@@ -393,15 +401,15 @@ namespace DiGi.YOLO.Classes
             return labels.Values;
         }
 
-        public IEnumerable<Label> GetLabels(string path)
+        public IEnumerable<Label>? GetLabels(string? path)
         {
-            IEnumerable<int> labelIndexes = GetImage(path)?.LabelIndexes;
+            IEnumerable<int>? labelIndexes = GetImage(path)?.LabelIndexes;
             if (labelIndexes == null)
             {
                 return null;
             }
 
-            List<Label> result = new List<Label>();
+            List<Label> result = [];
             foreach (int labelIndex in labelIndexes)
             {
                 if (labels.TryGetValue(labelIndex, out Label label) && label != null)
@@ -413,7 +421,7 @@ namespace DiGi.YOLO.Classes
             return result;
         }
         
-        public int LabelIndex(string labelName)
+        public int LabelIndex(string? labelName)
         {
             foreach(KeyValuePair<int, Label> keyValuePair in labels)
             {

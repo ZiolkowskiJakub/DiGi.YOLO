@@ -1,29 +1,28 @@
 ﻿using DiGi.YOLO.Classes;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace DiGi.YOLO
 {
     public static partial class Create
     {
-        public static LabelFile LabelFile(string path)
+        public static LabelFile? LabelFile(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
             {
                 return null;
             }
 
-            List<string> lines = File.ReadAllLines(path).ToList();
+            List<string> lines = [.. File.ReadAllLines(path)];
             if (lines == null || lines.Count == 0)
             {
                 return null;
             }
 
-            LabelFile result = new LabelFile();
+            LabelFile result = new();
             foreach(string line in lines)
             {
-                string[] values = line.Split(new string[] { " " }, System.StringSplitOptions.RemoveEmptyEntries);
+                string[] values = line.Split([" "], System.StringSplitOptions.RemoveEmptyEntries);
                 if(values.Length < 5)
                 {
                     continue;

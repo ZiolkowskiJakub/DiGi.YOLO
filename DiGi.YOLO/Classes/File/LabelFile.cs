@@ -5,14 +5,14 @@ namespace DiGi.YOLO.Classes
 {
     public class LabelFile
     {
-        public List<Tuple<int, BoundingBox>> tuples = new List<Tuple<int, BoundingBox>>();
+        public List<Tuple<int, BoundingBox>> tuples = [];
 
         public LabelFile()
         {
 
         }
 
-        public bool Add(int labelIndex, BoundingBox boundingBox)
+        public bool Add(int labelIndex, BoundingBox? boundingBox)
         {
             if(boundingBox == null || labelIndex < 0)
             {
@@ -25,7 +25,7 @@ namespace DiGi.YOLO.Classes
 
         public HashSet<int> GetTagIndexes()
         {
-            HashSet<int> result = new HashSet<int>();
+            HashSet<int> result = [];
             foreach (Tuple<int, BoundingBox> tuple in tuples)
             {
                 if(tuple == null)
@@ -41,7 +41,7 @@ namespace DiGi.YOLO.Classes
 
         public List<BoundingBox> GetBoundingBoxes(int labelIndex)
         {
-            List<BoundingBox> result = new List<BoundingBox>();
+            List<BoundingBox> result = [];
             foreach(Tuple<int, BoundingBox> tuple in tuples)
             {
                 if(tuple == null)
@@ -80,19 +80,19 @@ namespace DiGi.YOLO.Classes
 
         public override string ToString()
         {
-            List<string> values = new List<string>();
+            List<string> values = [];
 
             if(tuples != null)
             {
                 foreach (Tuple<int, BoundingBox> tuple in tuples)
                 {
-                    string value = tuple?.Item2?.ToString();
+                    string? value = tuple?.Item2?.ToString();
                     if (string.IsNullOrWhiteSpace(value))
                     {
                         continue;
                     }
 
-                    values.Add(string.Format("{0} {1}", tuple.Item1, value));
+                    values.Add(string.Format("{0} {1}", tuple!.Item1, value));
                 }
             }
 

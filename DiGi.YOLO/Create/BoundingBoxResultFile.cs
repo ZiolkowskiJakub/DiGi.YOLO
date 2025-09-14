@@ -5,21 +5,21 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
-        public static BoundingBoxResultFile BoundingBoxResultFile(string path)
+        public static BoundingBoxResultFile? BoundingBoxResultFile(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
             {
                 return null;
             }
 
-            BoundingBoxResultFile result = new BoundingBoxResultFile();
+            BoundingBoxResultFile result = [];
 
             string[] values = File.ReadAllLines(path);
             if (values != null && values.Length != 0)
             {
                 foreach (string value in values)
                 {
-                    BoundingBoxResult boundingBoxResult = BoundingBoxResult(value);
+                    BoundingBoxResult? boundingBoxResult = BoundingBoxResult(value);
                     if (boundingBoxResult == null)
                     {
                         continue;

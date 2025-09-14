@@ -1,30 +1,29 @@
 ﻿using DiGi.YOLO.Classes;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace DiGi.YOLO
 {
     public static partial class Create
     {
-        public static ConfigurationFile ConfigurationFile(string path)
+        public static ConfigurationFile? ConfigurationFile(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
             {
                 return null;
             }
 
-            List<string> values = File.ReadAllLines(path).ToList();
+            List<string> values = [.. File.ReadAllLines(path)];
             if (values == null || values.Count == 0)
             {
                 return null;
             }
 
-            string directory = null;
-            string trainDirectoryName = null;
-            string validateDirectoryName = null;
-            string testDirectoryName = null;
-            List<Label> labels = new List<Label>();
+            string? directory = null;
+            string? trainDirectoryName = null;
+            string? validateDirectoryName = null;
+            string? testDirectoryName = null;
+            List<Label> labels = [];
 
             int labelsIndex = -1;
 

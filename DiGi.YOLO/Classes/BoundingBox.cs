@@ -4,10 +4,10 @@ namespace DiGi.YOLO.Classes
 {
     public class BoundingBox : IBoundingBox
     {
-        private double height;
-        private double width;
-        private double x;
-        private double y;
+        private readonly double height;
+        private readonly double width;
+        private readonly double x;
+        private readonly double y;
         
         public BoundingBox(double x, double y, double width, double height)
         {

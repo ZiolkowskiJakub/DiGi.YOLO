@@ -4,14 +4,14 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
-        public static BoundingBoxResult BoundingBoxResult(string text)
+        public static BoundingBoxResult? BoundingBoxResult(string? text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
                 return null;
             }
 
-            string[] values = text.Split('\t');
+            string[] values = text!.Split('\t');
             if (values == null || values.Length < 7)
             {
                 return null;

@@ -6,15 +6,15 @@ namespace DiGi.YOLO.Classes
 {
     public class ConfigurationFile
     {
-        private string directory;
-        private Dictionary<Category, string> directoryNames = new Dictionary<Category, string>();
-        private HashSet<Label> labels = new HashSet<Label>();
+        private readonly string? directory;
+        private readonly Dictionary<Category, string?> directoryNames = [];
+        private readonly HashSet<Label> labels = [];
 
         public ConfigurationFile() 
         { 
         }
 
-        public ConfigurationFile(string directory, string trainDirectoryName, string validateDirectoryName, string testDirectoryName, IEnumerable<Label> labels) 
+        public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels) 
         {
             this.directory = directory;
             
@@ -36,7 +36,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public string Directory
+        public string? Directory
         {
             get
             {
@@ -49,9 +49,9 @@ namespace DiGi.YOLO.Classes
             return directoryNames.Keys;
         }
 
-        public string GetDirectory(Category category)
+        public string? GetDirectory(Category category)
         {
-            if(!directoryNames.TryGetValue(category, out string directoryNames_Temp) || string.IsNullOrWhiteSpace(directoryNames_Temp))
+            if(!directoryNames.TryGetValue(category, out string? directoryNames_Temp) || string.IsNullOrWhiteSpace(directoryNames_Temp))
             {
                 return null;
             }
@@ -59,9 +59,9 @@ namespace DiGi.YOLO.Classes
             return System.IO.Path.Combine(directory, directoryNames_Temp);
         }
 
-        public string GetDirectoryNames(Category category)
+        public string? GetDirectoryNames(Category category)
         {
-            if (!directoryNames.TryGetValue(category, out string result) || string.IsNullOrWhiteSpace(result))
+            if (!directoryNames.TryGetValue(category, out string? result) || string.IsNullOrWhiteSpace(result))
             {
                 return null;
             }
@@ -77,13 +77,12 @@ namespace DiGi.YOLO.Classes
             }
         }
         
-        public override string ToString()
+        public override string? ToString()
         {
-            List<string> values = new List<string>();
-            values.Add(string.Format("path: {0}", Query.Encode(directory)));
+            List<string> values = [string.Format("path: {0}", Query.Encode(directory))];
             foreach(Category category in Enum.GetValues(typeof(Category)))
             {
-                if(!directoryNames.TryGetValue(category, out string directoryName))
+                if(!directoryNames.TryGetValue(category, out string? directoryName))
                 {
                     directoryName = string.Empty;
                 }

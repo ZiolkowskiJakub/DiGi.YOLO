@@ -3,9 +3,9 @@
     public class Label
     {
         public int index;
-        public string name;
+        public string? name;
 
-        public Label(int index, string name)
+        public Label(int index, string? name)
         {
             this.index = index;
             this.name = name;
@@ -19,7 +19,7 @@
             }
         }
 
-        public string Name
+        public string? Name
         {
             get
             {
@@ -39,7 +39,7 @@
         
         public override string ToString() 
         {
-            return string.Format("{0}: {1}", index, name == null ? string.Empty : name);
+            return string.Format("{0}: {1}", index, name ?? string.Empty);
         }
     }
 }

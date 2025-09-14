@@ -4,7 +4,7 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
-        public static BoundingBox BoundingBox(double imageWidth, double imageHeight, double topLeftX, double topLeftY, double width, double height)
+        public static BoundingBox? BoundingBox(double imageWidth, double imageHeight, double topLeftX, double topLeftY, double width, double height)
         {
             if(double.IsNaN(imageWidth) ||
                 double.IsNaN(imageHeight) ||

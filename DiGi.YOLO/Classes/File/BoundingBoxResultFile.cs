@@ -5,28 +5,28 @@ namespace DiGi.YOLO.Classes
 {
     public class BoundingBoxResultFile : List<BoundingBoxResult>
     {
-        public List<BoundingBoxResult> boundingBoxResults = new List<BoundingBoxResult>();
+        public List<BoundingBoxResult> boundingBoxResults = [];
 
         public BoundingBoxResultFile()
         {
 
         }
 
-        public override string ToString()
+        public override string? ToString()
         {
-            List<string> values = new List<string>();
+            List<string> values = [];
 
             if(boundingBoxResults != null)
             {
                 foreach (BoundingBoxResult boundingBoxResult in boundingBoxResults)
                 {
-                    string value = boundingBoxResult?.ToString();
+                    string? value = boundingBoxResult?.ToString();
                     if (string.IsNullOrWhiteSpace(value))
                     {
                         continue;
                     }
 
-                    values.Add(value);
+                    values.Add(value!);
                 }
             }
 

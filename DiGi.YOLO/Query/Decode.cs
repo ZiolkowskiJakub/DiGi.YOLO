@@ -2,7 +2,7 @@
 {
     public static partial class Query
     {
-        public static string Decode(string path)
+        public static string? Decode(string? path)
         {
             if(string.IsNullOrWhiteSpace(path))
             {

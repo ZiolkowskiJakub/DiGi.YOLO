@@ -8,27 +8,23 @@ namespace DiGi.YOLO
 {
     public static partial class Modify
     {
-        public static bool Write(this YOLOModel yOLOModel)
+        public static bool Write(this YOLOModel? yOLOModel)
         {
             if (yOLOModel == null || string.IsNullOrWhiteSpace(yOLOModel.Directory))
             {
                 return false;
             }
 
-            string directory = yOLOModel.Directory;
+            string? directory = yOLOModel.Directory;
 
-            ConfigurationFile configurationFile = yOLOModel.GetConfigurationFile();
-            if (configurationFile == null)
-            {
-                configurationFile = new ConfigurationFile();
-            }
+            ConfigurationFile? configurationFile = yOLOModel.GetConfigurationFile() ?? new ConfigurationFile();
 
             File.WriteAllText(Path.Combine(directory, "conf.yaml"), configurationFile.ToString());
 
             foreach (Category category in System.Enum.GetValues(typeof(Category)))
             {
-                string directory_Images = yOLOModel.GetDirectory_Images(category);
-                string directory_Labels = yOLOModel.GetDirectory_Labels(category);
+                string? directory_Images = yOLOModel.GetDirectory_Images(category);
+                string? directory_Labels = yOLOModel.GetDirectory_Labels(category);
 
                 IEnumerable<Image> images = yOLOModel.GetImages(category);
                 if (category == Category.Test && (images == null || images.Count() == 0))
@@ -53,17 +49,13 @@ namespace DiGi.YOLO
 
                 foreach (Image image in images)
                 {
-                    string path = image?.Path;
+                    string? path = image?.Path;
                     if (string.IsNullOrWhiteSpace(path))
                     {
                         continue;
                     }
 
-                    LabelFile labelFile = yOLOModel.GetLabelFile(path);
-                    if (labelFile == null)
-                    {
-                        labelFile = new LabelFile();
-                    }
+                    LabelFile? labelFile = yOLOModel.GetLabelFile(path) ?? new LabelFile();
 
                     string fileName_Image = Path.GetFileName(path);
 
@@ -87,7 +79,7 @@ namespace DiGi.YOLO
             return true;
         }
 
-        public static bool Write(this BoundingBoxResultFile boundingBoxResultFile, string path)
+        public static bool Write(this BoundingBoxResultFile? boundingBoxResultFile, string? path)
         {
             if(boundingBoxResultFile == null || string.IsNullOrWhiteSpace(path))
             {
@@ -99,16 +91,16 @@ namespace DiGi.YOLO
                 return false;
             }
 
-            List<string> values = new List<string>();
+            List<string> values = [];
             foreach(BoundingBoxResult boundingBoxResult in boundingBoxResultFile)
             {
-                string value = boundingBoxResult?.ToString();
+                string? value = boundingBoxResult?.ToString();
                 if(string.IsNullOrWhiteSpace(value))
                 {
                     continue;
                 }
 
-                values.Add(value);
+                values.Add(value!);
             }
 
             File.WriteAllLines(path, values);

@@ -5,15 +5,15 @@ namespace DiGi.YOLO.Classes
 {
     public class Image<TBoundingBox> where TBoundingBox : IBoundingBox
     {
-        protected Dictionary<int, HashSet<TBoundingBox>> boundingBoxes = new Dictionary<int, HashSet<TBoundingBox>>();
-        protected string path;
+        protected Dictionary<int, HashSet<TBoundingBox>> boundingBoxes = [];
+        protected string? path;
 
-        public Image(string path)
+        public Image(string? path)
         {
             this.path = path;
         }
 
-        public string Path
+        public string? Path
         {
             get
             {
@@ -29,7 +29,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public IEnumerable<TBoundingBox> this[int labelIndex]
+        public IEnumerable<TBoundingBox>? this[int labelIndex]
         {
             get
             {
@@ -42,7 +42,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        public bool Add(int labelIndex, TBoundingBox boundingBox)
+        public bool Add(int labelIndex, TBoundingBox? boundingBox)
         {
             if (boundingBox == null)
             {
@@ -51,7 +51,7 @@ namespace DiGi.YOLO.Classes
 
             if (!boundingBoxes.TryGetValue(labelIndex, out HashSet<TBoundingBox> boundingBoxes_Temp) || boundingBoxes_Temp == null)
             {
-                boundingBoxes_Temp = new HashSet<TBoundingBox>();
+                boundingBoxes_Temp = [];
                 boundingBoxes[labelIndex] = boundingBoxes_Temp;
             }
 
@@ -61,23 +61,15 @@ namespace DiGi.YOLO.Classes
 
     public class Image : Image<BoundingBox>
     {
-        public Image(string path)
+        public Image(string? path)
             : base(path)
         {
 
         }
-
-        public string Path
-        {
-            get
-            {
-                return path;
-            }
-        }
         
         public LabelFile GetLabelFile()
         {
-            LabelFile result = new LabelFile();
+            LabelFile result = new ();
 
             foreach(KeyValuePair<int, HashSet<BoundingBox>> keyValuePair in boundingBoxes)
             {

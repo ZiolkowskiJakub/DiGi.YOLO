@@ -2,11 +2,11 @@
 {
     public class BoundingBoxResult : BoundingBox
     {
-        private double confidence;
-        private int labelIndex;
-        private string name;
+        private readonly double confidence;
+        private readonly int labelIndex;
+        private readonly string? name;
         
-        public BoundingBoxResult(string name, int labelIndex, double x, double y, double width, double height, double confidence)
+        public BoundingBoxResult(string? name, int labelIndex, double x, double y, double width, double height, double confidence)
             : base(x, y, width, height)
         {
             this.name = name;
@@ -30,7 +30,7 @@
             }
         }
 
-        public string Name
+        public string? Name
         {
             get
             {

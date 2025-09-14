@@ -6,7 +6,7 @@ namespace DiGi.YOLO
 {
     public static partial class Modify
     {
-        public static bool Append(this BoundingBoxResultFile boundingBoxResultFile, string path)
+        public static bool Append(this BoundingBoxResultFile? boundingBoxResultFile, string? path)
         {
             if(boundingBoxResultFile == null || string.IsNullOrWhiteSpace(path))
             {
@@ -18,16 +18,16 @@ namespace DiGi.YOLO
                 return false;
             }
 
-            List<string> values = new List<string>();
+            List<string> values = [];
             foreach(BoundingBoxResult boundingBoxResult in boundingBoxResultFile)
             {
-                string value = boundingBoxResult?.ToString();
+                string? value = boundingBoxResult?.ToString();
                 if(string.IsNullOrWhiteSpace(value))
                 {
                     continue;
                 }
 
-                values.Add(value);
+                values.Add(value!);
             }
 
             File.AppendAllLines(path, values);

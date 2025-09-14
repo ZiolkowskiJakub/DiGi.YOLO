@@ -7,7 +7,7 @@ namespace DiGi.YOLO
 {
     public static partial class Modify
     {
-        public static bool ClearData(this YOLOModel yOLOModel)
+        public static bool ClearData(this YOLOModel? yOLOModel)
         {
             if (yOLOModel == null)
             {
@@ -16,7 +16,7 @@ namespace DiGi.YOLO
 
             bool result = false;
 
-            foreach (string directory in new string[] { yOLOModel.GetDirectory_Images(), yOLOModel.GetDirectory_Labels() })
+            foreach (string? directory in new string?[] { yOLOModel.GetDirectory_Images(), yOLOModel.GetDirectory_Labels() })
             {
                 if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
                 {
@@ -37,7 +37,7 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-                foreach (string directory in new string[] { yOLOModel.GetDirectory_Images(category), yOLOModel.GetDirectory_Labels(category) })
+                foreach (string? directory in new string?[] { yOLOModel.GetDirectory_Images(category), yOLOModel.GetDirectory_Labels(category) })
                 {
                     if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory))
                     {
