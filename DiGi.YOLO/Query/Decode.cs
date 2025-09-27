@@ -9,7 +9,7 @@
                 return string.Empty;
             }
 
-            return path.Replace("%20", " ").Replace("/", @"\");
+            return path!.Replace("%20", " ").Replace("/", @"\");
         }
     }
 }
