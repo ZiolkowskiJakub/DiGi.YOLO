@@ -20,15 +20,15 @@ namespace DiGi.YOLO
             }
 
             LabelFile result = new();
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 string[] values = line.Split([" "], System.StringSplitOptions.RemoveEmptyEntries);
-                if(values.Length < 5)
+                if (values.Length < 5)
                 {
                     continue;
                 }
 
-                if(!int.TryParse(values[0], out int labelIndex))
+                if (!int.TryParse(values[0], out int labelIndex))
                 {
                     continue;
                 }
@@ -57,7 +57,6 @@ namespace DiGi.YOLO
             }
 
             return result;
-
         }
     }
 }

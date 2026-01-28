@@ -8,7 +8,7 @@ namespace DiGi.YOLO.Classes
         private readonly double width;
         private readonly double x;
         private readonly double y;
-        
+
         public BoundingBox(double x, double y, double width, double height)
         {
             this.x = x;
@@ -35,9 +35,9 @@ namespace DiGi.YOLO.Classes
 
         public double X
         {
-            get 
-            { 
-                return x; 
+            get
+            {
+                return x;
             }
         }
 

@@ -64,16 +64,15 @@ namespace DiGi.YOLO.Classes
         public Image(string? path)
             : base(path)
         {
-
         }
-        
+
         public LabelFile GetLabelFile()
         {
-            LabelFile result = new ();
+            LabelFile result = new();
 
-            foreach(KeyValuePair<int, HashSet<BoundingBox>> keyValuePair in boundingBoxes)
+            foreach (KeyValuePair<int, HashSet<BoundingBox>> keyValuePair in boundingBoxes)
             {
-                if(keyValuePair.Value == null)
+                if (keyValuePair.Value == null)
                 {
                     continue;
                 }

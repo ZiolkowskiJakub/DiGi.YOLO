@@ -9,12 +9,11 @@ namespace DiGi.YOLO.Classes
 
         public LabelFile()
         {
-
         }
 
         public bool Add(int labelIndex, BoundingBox? boundingBox)
         {
-            if(boundingBox == null || labelIndex < 0)
+            if (boundingBox == null || labelIndex < 0)
             {
                 return false;
             }
@@ -28,7 +27,7 @@ namespace DiGi.YOLO.Classes
             HashSet<int> result = [];
             foreach (Tuple<int, BoundingBox> tuple in tuples)
             {
-                if(tuple == null)
+                if (tuple == null)
                 {
                     continue;
                 }
@@ -42,14 +41,14 @@ namespace DiGi.YOLO.Classes
         public List<BoundingBox> GetBoundingBoxes(int labelIndex)
         {
             List<BoundingBox> result = [];
-            foreach(Tuple<int, BoundingBox> tuple in tuples)
+            foreach (Tuple<int, BoundingBox> tuple in tuples)
             {
-                if(tuple == null)
+                if (tuple == null)
                 {
                     continue;
                 }
 
-                if(tuple.Item1 != labelIndex)
+                if (tuple.Item1 != labelIndex)
                 {
                     continue;
                 }
@@ -82,7 +81,7 @@ namespace DiGi.YOLO.Classes
         {
             List<string> values = [];
 
-            if(tuples != null)
+            if (tuples != null)
             {
                 foreach (Tuple<int, BoundingBox> tuple in tuples)
                 {

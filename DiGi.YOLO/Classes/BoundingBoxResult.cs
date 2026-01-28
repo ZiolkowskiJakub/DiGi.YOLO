@@ -5,7 +5,7 @@
         private readonly double confidence;
         private readonly int labelIndex;
         private readonly string? name;
-        
+
         public BoundingBoxResult(string? name, int labelIndex, double x, double y, double width, double height, double confidence)
             : base(x, y, width, height)
         {
@@ -37,7 +37,7 @@
                 return name;
             }
         }
-        
+
         public override bool Equals(object @object)
         {
             return @object != null && @object.GetType() == GetType() && ToString() == @object.ToString();

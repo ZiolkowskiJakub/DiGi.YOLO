@@ -9,14 +9,13 @@ namespace DiGi.YOLO.Classes
 
         public BoundingBoxResultFile()
         {
-
         }
 
         public override string? ToString()
         {
             List<string> values = [];
 
-            if(boundingBoxResults != null)
+            if (boundingBoxResults != null)
             {
                 foreach (BoundingBoxResult boundingBoxResult in boundingBoxResults)
                 {

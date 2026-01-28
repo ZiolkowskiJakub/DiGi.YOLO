@@ -31,13 +31,13 @@
         {
             return @object != null && @object.GetType() == GetType() && ToString() == @object.ToString();
         }
-        
+
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
         }
-        
-        public override string ToString() 
+
+        public override string ToString()
         {
             return string.Format("{0}: {1}", index, name ?? string.Empty);
         }

@@ -13,7 +13,7 @@ namespace DiGi.YOLO.Classes
         private readonly Dictionary<Category, string?> directoryNames = [];
         private readonly Dictionary<string, Image> images = [];
         private readonly SortedDictionary<int, Label> labels = [];
-        
+
         public YOLOModel()
         {
             directoryNames[Category.Train] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Train));
@@ -50,12 +50,12 @@ namespace DiGi.YOLO.Classes
 
         public bool Add(string? path, params Category[]? categories)
         {
-            if(string.IsNullOrEmpty(path) || categories is null)
+            if (string.IsNullOrEmpty(path) || categories is null)
             {
                 return false;
             }
 
-            if(!images.TryGetValue(path!, out Image image) || image == null)
+            if (!images.TryGetValue(path!, out Image image) || image == null)
             {
                 image = new Image(path);
                 images[path!] = image;
@@ -81,7 +81,7 @@ namespace DiGi.YOLO.Classes
         public bool Add(string? labelName)
         {
             int index = LabelIndex(labelName);
-            if(index != -1)
+            if (index != -1)
             {
                 return false;
             }
@@ -94,7 +94,7 @@ namespace DiGi.YOLO.Classes
 
         public bool Add(Label? label)
         {
-            if(label == null)
+            if (label == null)
             {
                 return false;
             }
@@ -128,7 +128,7 @@ namespace DiGi.YOLO.Classes
 
         public bool Add(string? path, LabelFile? labelFile)
         {
-            if(string.IsNullOrWhiteSpace(path) || labelFile == null)
+            if (string.IsNullOrWhiteSpace(path) || labelFile == null)
             {
                 return false;
             }
@@ -143,7 +143,7 @@ namespace DiGi.YOLO.Classes
                     continue;
                 }
 
-                if(Add(path, label.Name, labelFile.GetBoundingBox(i)))
+                if (Add(path, label.Name, labelFile.GetBoundingBox(i)))
                 {
                     result = true;
                 }
@@ -154,7 +154,7 @@ namespace DiGi.YOLO.Classes
 
         public bool Add(ConfigurationFile? configurationFile)
         {
-            if(configurationFile == null)
+            if (configurationFile == null)
             {
                 return false;
             }
@@ -170,9 +170,9 @@ namespace DiGi.YOLO.Classes
             }
 
             IEnumerable<Category> categories = configurationFile.GetCategories();
-            if(categories != null)
+            if (categories != null)
             {
-                foreach(Category category in categories)
+                foreach (Category category in categories)
                 {
                     directoryNames[category] = configurationFile.GetDirectoryNames(category);
                 }
@@ -232,7 +232,7 @@ namespace DiGi.YOLO.Classes
                 testDirectoryName = null;
             }
 
-            ConfigurationFile result = new (
+            ConfigurationFile result = new(
                 directory,
                 trainDirectoryName,
                 validateDirectoryName,
@@ -292,7 +292,7 @@ namespace DiGi.YOLO.Classes
             string? directory_Images = GetDirectory_Images();
 
             string[]? values = directory_Images?.Replace('/', '\\').Split('\\');
-            if(values == null)
+            if (values == null)
             {
                 return null;
             }
@@ -319,7 +319,7 @@ namespace DiGi.YOLO.Classes
             string? directory_Images = GetDirectory_Images(directory, category);
 
             string[]? values = directory_Images?.Replace('/', '\\').Split('\\');
-            if(values == null)
+            if (values == null)
             {
                 return null;
             }
@@ -420,12 +420,12 @@ namespace DiGi.YOLO.Classes
 
             return result;
         }
-        
+
         public int LabelIndex(string? labelName)
         {
-            foreach(KeyValuePair<int, Label> keyValuePair in labels)
+            foreach (KeyValuePair<int, Label> keyValuePair in labels)
             {
-                if(keyValuePair.Value?.Name == labelName)
+                if (keyValuePair.Value?.Name == labelName)
                 {
                     return keyValuePair.Key;
                 }

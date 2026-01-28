@@ -4,7 +4,7 @@
     {
         public static string? Decode(string? path)
         {
-            if(string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrWhiteSpace(path))
             {
                 return string.Empty;
             }

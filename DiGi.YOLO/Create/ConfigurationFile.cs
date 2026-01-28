@@ -31,7 +31,7 @@ namespace DiGi.YOLO
             {
                 string value = values[i].TrimStart();
 
-                if(value.StartsWith("#"))
+                if (value.StartsWith("#"))
                 {
                     continue;
                 }
@@ -67,16 +67,14 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-
                 int index = value.IndexOf(":");
-                if(!int.TryParse(value.Substring(0, index), out int labelIndex))
+                if (!int.TryParse(value.Substring(0, index), out int labelIndex))
                 {
                     break;
                 }
 
                 labels.Add(new Label(labelIndex, value.Substring(index + 1).TrimStart()));
             }
-
 
             return new ConfigurationFile(directory, trainDirectoryName, validateDirectoryName, testDirectoryName, labels);
         }

@@ -8,21 +8,21 @@ namespace DiGi.YOLO
     {
         public static bool Append(this BoundingBoxResultFile? boundingBoxResultFile, string? path)
         {
-            if(boundingBoxResultFile == null || string.IsNullOrWhiteSpace(path))
+            if (boundingBoxResultFile == null || string.IsNullOrWhiteSpace(path))
             {
                 return false;
             }
 
-            if(!Directory.Exists(Path.GetDirectoryName(path)))
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
             {
                 return false;
             }
 
             List<string> values = [];
-            foreach(BoundingBoxResult boundingBoxResult in boundingBoxResultFile)
+            foreach (BoundingBoxResult boundingBoxResult in boundingBoxResultFile)
             {
                 string? value = boundingBoxResult?.ToString();
-                if(string.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     continue;
                 }

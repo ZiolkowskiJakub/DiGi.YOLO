@@ -9,13 +9,13 @@ namespace DiGi.YOLO
     {
         public static YOLOModel? Read(string? path)
         {
-            if(string.IsNullOrWhiteSpace(path) || !File.Exists(path))
+            if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
             {
                 return null;
             }
 
             ConfigurationFile? configurationFile = Create.ConfigurationFile(path);
-            if(configurationFile == null)
+            if (configurationFile == null)
             {
                 return null;
             }

@@ -6,7 +6,7 @@ namespace DiGi.YOLO
     {
         public static BoundingBox? BoundingBox(double imageWidth, double imageHeight, double topLeftX, double topLeftY, double width, double height)
         {
-            if(double.IsNaN(imageWidth) ||
+            if (double.IsNaN(imageWidth) ||
                 double.IsNaN(imageHeight) ||
                 double.IsNaN(topLeftX) ||
                 double.IsNaN(topLeftY) ||
@@ -16,7 +16,7 @@ namespace DiGi.YOLO
                 return null;
             }
 
-            double centerX = topLeftX  + (width / 2);
+            double centerX = topLeftX + (width / 2);
             double centerY = topLeftY + (height / 2);
 
             return new BoundingBox(centerX / imageWidth, centerY / imageHeight, width / imageWidth, height / imageHeight);

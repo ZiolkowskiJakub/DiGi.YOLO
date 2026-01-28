@@ -10,23 +10,23 @@ namespace DiGi.YOLO.Classes
         private readonly Dictionary<Category, string?> directoryNames = [];
         private readonly HashSet<Label> labels = [];
 
-        public ConfigurationFile() 
-        { 
+        public ConfigurationFile()
+        {
         }
 
-        public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels) 
+        public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels)
         {
             this.directory = directory;
-            
+
             directoryNames[Category.Train] = trainDirectoryName;
             directoryNames[Category.Validate] = validateDirectoryName;
             directoryNames[Category.Test] = testDirectoryName;
 
-            if(labels != null)
+            if (labels != null)
             {
                 foreach (Label label in labels)
                 {
-                    if(label == null)
+                    if (label == null)
                     {
                         continue;
                     }
@@ -51,7 +51,7 @@ namespace DiGi.YOLO.Classes
 
         public string? GetDirectory(Category category)
         {
-            if(!directoryNames.TryGetValue(category, out string? directoryNames_Temp) || string.IsNullOrWhiteSpace(directoryNames_Temp))
+            if (!directoryNames.TryGetValue(category, out string? directoryNames_Temp) || string.IsNullOrWhiteSpace(directoryNames_Temp))
             {
                 return null;
             }
@@ -76,13 +76,13 @@ namespace DiGi.YOLO.Classes
                 return labels;
             }
         }
-        
+
         public override string? ToString()
         {
             List<string> values = [string.Format("path: {0}", Query.Encode(directory))];
-            foreach(Category category in Enum.GetValues(typeof(Category)))
+            foreach (Category category in Enum.GetValues(typeof(Category)))
             {
-                if(!directoryNames.TryGetValue(category, out string? directoryName))
+                if (!directoryNames.TryGetValue(category, out string? directoryName))
                 {
                     directoryName = string.Empty;
                 }
@@ -91,9 +91,9 @@ namespace DiGi.YOLO.Classes
             }
 
             values.Add("names:");
-            foreach(Label label in labels)
+            foreach (Label label in labels)
             {
-                if(label == null)
+                if (label == null)
                 {
                     continue;
                 }
