@@ -1,4 +1,4 @@
-﻿namespace DiGi.YOLO.Constans
+﻿namespace DiGi.YOLO.Constants
 {
     public static class FileExtension
     {
