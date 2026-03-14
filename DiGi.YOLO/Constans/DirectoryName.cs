@@ -1,4 +1,4 @@
-﻿namespace DiGi.YOLO.Constants
+﻿namespace DiGi.YOLO.Constans
 {
     public static class DirectoryName
     {
