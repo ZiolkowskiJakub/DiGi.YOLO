@@ -16,9 +16,9 @@ namespace DiGi.YOLO.Classes
 
         public YOLOModel()
         {
-            directoryNames[Category.Train] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Train));
-            directoryNames[Category.Validate] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Validate));
-            directoryNames[Category.Test] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Test));
+            directoryNames[Category.Train] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Train));
+            directoryNames[Category.Validate] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Validate));
+            directoryNames[Category.Test] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Test));
         }
 
         public YOLOModel(ConfigurationFile? configurationFile)
@@ -30,9 +30,9 @@ namespace DiGi.YOLO.Classes
         {
             this.directory = directory;
 
-            directoryNames[Category.Train] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Train));
-            directoryNames[Category.Validate] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Validate));
-            directoryNames[Category.Test] = Path.Combine(Constans.DirectoryName.Images, Query.DirectoryName(Category.Test));
+            directoryNames[Category.Train] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Train));
+            directoryNames[Category.Validate] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Validate));
+            directoryNames[Category.Test] = Path.Combine(Constants.DirectoryName.Images, Query.DirectoryName(Category.Test));
         }
 
         public string? Directory
@@ -249,7 +249,7 @@ namespace DiGi.YOLO.Classes
                 return null;
             }
 
-            return Path.Combine(directory, Constans.DirectoryName.Images);
+            return Path.Combine(directory, Constants.DirectoryName.Images);
         }
 
         public string? GetDirectory_Images(string? directory, Category category)
@@ -271,7 +271,7 @@ namespace DiGi.YOLO.Classes
             }
             else
             {
-                result = Path.Combine(directory, Constans.DirectoryName.Images, Query.DirectoryName(category));
+                result = Path.Combine(directory, Constants.DirectoryName.Images, Query.DirectoryName(category));
             }
 
             return result;
@@ -297,14 +297,14 @@ namespace DiGi.YOLO.Classes
                 return null;
             }
 
-            int lastIndex = Array.LastIndexOf(values, Constans.DirectoryName.Images);
+            int lastIndex = Array.LastIndexOf(values, Constants.DirectoryName.Images);
 
             if (lastIndex == -1)
             {
                 return directory;
             }
 
-            values[lastIndex] = Constans.DirectoryName.Labels;
+            values[lastIndex] = Constants.DirectoryName.Labels;
 
             return string.Join("\\", values);
         }
@@ -324,14 +324,14 @@ namespace DiGi.YOLO.Classes
                 return null;
             }
 
-            int lastIndex = Array.LastIndexOf(values, Constans.DirectoryName.Images);
+            int lastIndex = Array.LastIndexOf(values, Constants.DirectoryName.Images);
 
             if (lastIndex == -1)
             {
                 return directory;
             }
 
-            values[lastIndex] = Constans.DirectoryName.Labels;
+            values[lastIndex] = Constants.DirectoryName.Labels;
 
             return string.Join("\\", values);
         }
