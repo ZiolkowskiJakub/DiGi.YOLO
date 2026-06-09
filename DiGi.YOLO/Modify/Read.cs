@@ -7,6 +7,11 @@ namespace DiGi.YOLO
 {
     public static partial class Modify
     {
+        /// <summary>
+        /// Reads a YOLO model configuration and associated image and label files from the specified path.
+        /// </summary>
+        /// <param name="path">The file system path to the configuration file.</param>
+        /// <returns>A <see cref="YOLOModel"/> instance if the configuration is valid and found; otherwise, null.</returns>
         public static YOLOModel? Read(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))

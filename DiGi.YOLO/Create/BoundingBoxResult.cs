@@ -4,6 +4,11 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
+        /// <summary>
+        /// Parses a tab-separated string into a <see cref="BoundingBoxResult"/> object.
+        /// </summary>
+        /// <param name="text">The tab-delimited string containing bounding box data (name, label index, x, y, width, height, and confidence).</param>
+        /// <returns>A <see cref="BoundingBoxResult"/> instance if the input is valid; otherwise, <c>null</c>.</returns>
         public static BoundingBoxResult? BoundingBoxResult(string? text)
         {
             if (string.IsNullOrWhiteSpace(text))

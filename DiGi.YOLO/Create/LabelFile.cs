@@ -6,6 +6,11 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
+        /// <summary>
+        /// Parses a YOLO label file from the specified path and returns a LabelFile object containing the bounding boxes.
+        /// </summary>
+        /// <param name="path">The file system path to the label file.</param>
+        /// <returns>A <see cref="LabelFile"/> instance if the file exists and contains valid data; otherwise, null.</returns>
         public static LabelFile? LabelFile(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))

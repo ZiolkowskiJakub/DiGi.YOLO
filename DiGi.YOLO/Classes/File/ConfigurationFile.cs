@@ -4,16 +4,30 @@ using System.Collections.Generic;
 
 namespace DiGi.YOLO.Classes
 {
+    /// <summary>
+    /// Represents the configuration settings for a YOLO project, including directory paths and labels.
+    /// </summary>
     public class ConfigurationFile
     {
         private readonly string? directory;
         private readonly Dictionary<Category, string?> directoryNames = [];
         private readonly HashSet<Label> labels = [];
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationFile"/> class.
+        /// </summary>
         public ConfigurationFile()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationFile"/> class with specified directory paths and labels.
+        /// </summary>
+        /// <param name="directory">The base root directory path.</param>
+        /// <param name="trainDirectoryName">The relative name of the training directory.</param>
+        /// <param name="validateDirectoryName">The relative name of the validation directory.</param>
+        /// <param name="testDirectoryName">The relative name of the test directory.</param>
+        /// <param name="labels">A collection of labels to be associated with this configuration.</param>
         public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels)
         {
             this.directory = directory;
@@ -36,6 +50,9 @@ namespace DiGi.YOLO.Classes
             }
         }
 
+        /// <summary>
+        /// Gets the base root directory path.
+        /// </summary>
         public string? Directory
         {
             get
@@ -44,11 +61,20 @@ namespace DiGi.YOLO.Classes
             }
         }
 
+        /// <summary>
+        /// Retrieves all categories defined within the configuration.
+        /// </summary>
+        /// <returns>An enumerable collection of <see cref="Category"/> values.</returns>
         public IEnumerable<Category> GetCategories()
         {
             return directoryNames.Keys;
         }
 
+        /// <summary>
+        /// Gets the full combined path for a specific category.
+        /// </summary>
+        /// <param name="category">The category for which to retrieve the full directory path.</param>
+        /// <returns>The absolute path combining the base directory and the category folder, or <see langword="null"/> if not found or empty.</returns>
         public string? GetDirectory(Category category)
         {
             if (!directoryNames.TryGetValue(category, out string? directoryNames_Temp) || string.IsNullOrWhiteSpace(directoryNames_Temp))
@@ -59,6 +85,11 @@ namespace DiGi.YOLO.Classes
             return System.IO.Path.Combine(directory, directoryNames_Temp);
         }
 
+        /// <summary>
+        /// Gets the relative directory name for a specific category.
+        /// </summary>
+        /// <param name="category">The category for which to retrieve the folder name.</param>
+        /// <returns>The relative directory name, or <see langword="null"/> if not found or empty.</returns>
         public string? GetDirectoryNames(Category category)
         {
             if (!directoryNames.TryGetValue(category, out string? result) || string.IsNullOrWhiteSpace(result))
@@ -69,6 +100,9 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
+        /// <summary>
+        /// Gets the collection of labels associated with this configuration.
+        /// </summary>
         public IEnumerable<Label> Labels
         {
             get
@@ -77,6 +111,10 @@ namespace DiGi.YOLO.Classes
             }
         }
 
+        /// <summary>
+        /// Returns a string representation of the configuration file, formatted for output or storage.
+        /// </summary>
+        /// <returns>A formatted string containing the base path, category paths, and label names.</returns>
         public override string? ToString()
         {
             List<string> values = [string.Format("path: {0}", Query.Encode(directory))];

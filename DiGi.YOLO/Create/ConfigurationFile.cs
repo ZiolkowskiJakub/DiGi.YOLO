@@ -6,6 +6,11 @@ namespace DiGi.YOLO
 {
     public static partial class Create
     {
+        /// <summary>
+        /// Parses a configuration file from the specified path and creates a <see cref="ConfigurationFile"/> instance.
+        /// </summary>
+        /// <param name="path">The file system path to the configuration file.</param>
+        /// <returns>A <see cref="ConfigurationFile"/> object if the file exists and is successfully parsed; otherwise, <c>null</c>.</returns>
         public static ConfigurationFile? ConfigurationFile(string? path)
         {
             if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
