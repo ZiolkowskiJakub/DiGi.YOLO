@@ -26,10 +26,7 @@ namespace DiGi.YOLO.Classes
             this.name = name;
         }
 
-        /// <summary>
-        /// Gets the numerical index of the label.
-        /// </summary>
-        /// <returns>The integer index of the label.</returns>
+        /// <summary> Gets the numerical index of the label. </summary>
         public int Index
         {
             get
@@ -38,10 +35,7 @@ namespace DiGi.YOLO.Classes
             }
         }
 
-        /// <summary>
-        /// Gets the descriptive name of the label.
-        /// </summary>
-        /// <returns>The string name of the label, or null if not specified.</returns>
+        /// <summary> Gets the descriptive name of the label. </summary>
         public string? Name
         {
             get
