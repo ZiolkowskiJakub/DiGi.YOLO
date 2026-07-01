@@ -9,14 +9,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build and Generate Docs (Always Runs)
-        run: dotnet build --configuration Release
-
       # Gracefully attempt to check out DiGi.Maintenance for scripts
       - name: Try checkout DiGi.Maintenance
         id: checkout-maintenance
@@ -31,7 +23,7 @@ jobs:
       - name: Run Wiki Sync Script (Conditional)
         if: steps.checkout-maintenance.outcome == 'success' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WIKI_SYNC_PAT || secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
           if (Test-Path ./DiGi.Maintenance/Scripts/SyncWiki.ps1) {
