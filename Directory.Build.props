@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Major>0</Major>
     <Minor>8</Minor>
-	<Build>4</Build>
+	<Build>5</Build>
 
     <!-- Assembly binding version (keep stable for compatibility) -->
     <AssemblyVersion>$(Major).$(Minor).$(Build)</AssemblyVersion>
