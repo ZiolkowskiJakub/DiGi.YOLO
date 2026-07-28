@@ -1,6 +1,6 @@
 ---
 name: coding-general
-description: Use whenever writing or editing C# code in this workspace - naming/typing rules, the DiGi.Core Query/Modify/Create/Convert architecture, files vs user files assets, and the SerializableObject serialization pattern.
+description: Use whenever writing or editing C# code in this workspace - naming/typing rules, CancellationToken ordering, member-access simplification, the DiGi.Core Query/Modify/Create/Convert architecture, files vs user files assets, and the SerializableObject serialization pattern.
 ---
 
 # System Prompt: C# Engineering Plugin Expert
@@ -42,8 +42,43 @@ description: Use whenever writing or editing C# code in this workspace - naming/
      ```csharp
      public async Task<IActionResult> GetDetailsByReferenceAsync([FromQuery(Name = "reference")] string? reference)
      ```
-8. **Project Structure:** Assume the C# codebase consists of multiple SEPARATE projects, not a single monolithic solution. Handle namespaces and references accordingly.
-9. **Output Optimization:** Prioritize highest code quality and output token minimization. Skip conversational filler, polite introductions, and conclusions. Output only the necessary code, logic, or requested explanations.
+8. **`CancellationToken` is always the LAST parameter (CA1068).** This holds for every method — public, private, static, extension, local — and for every overload. When adding a new optional parameter to an existing signature, insert it *before* the token; never append after it.
+   - **Correct:**
+     ```csharp
+     public static async Task<bool> ClearAsync(NpgsqlConnection? npgsqlConnection, string tableName, int commandTimeout = 30, CancellationToken cancellationToken = default)
+     ```
+   - **Incorrect** — appending after the token is the usual way this rule gets broken:
+     ```csharp
+     public static async Task<bool> ClearAsync(NpgsqlConnection? npgsqlConnection, string tableName, CancellationToken cancellationToken = default, int commandTimeout = 30)
+     ```
+   - The `<param>` tags in the XML doc block must be reordered to match, so the docs still mirror the signature exactly (see `XML Documentation - Audit.md`).
+   - **Pass the token by name at call sites** — `cancellationToken: cancellationToken` — whenever intervening parameters are left at their defaults. Positional calls silently rebind if the signature is ever reordered again; named arguments do not, and they turn a reordering into a compile error rather than a wrong-argument bug.
+     ```csharp
+     await ClearAsync(npgsqlConnection, TableName.Building, cancellationToken: cancellationToken);
+     ```
+   - **Watch for overload ambiguity when reordering.** Moving the token past a trailing `int` can make two overloads structurally identical in their tail, so a `null` argument that used to bind unambiguously becomes CS0121. Disambiguate with a named argument for the differing parameter (`excludedReferences: null`), not with a cast.
+   - **Detection:** `grep -rnE "CancellationToken [a-zA-Z_]+( = default)?, " --include=*.cs .` — every hit that is not the final parameter is a violation.
+9. **Simplify member access (IDE0002/IDE0001) — but verify the binding first.** Inside the `DiGi` root, drop any namespace qualifier the compiler does not need. A `DiGi.` prefix on a type that already resolves is redundant noise.
+   - **Correct** — in `namespace DiGi.GIS.PostgreSQL.UI.Classes`, `Serilog` resolves up the enclosing chain to `DiGi.Serilog`:
+     ```csharp
+     Serilog.Modify.Log(Serilog.Enums.LogEventLevel.Error, "Import failed");
+     ```
+   - **Incorrect** — the prefix adds nothing:
+     ```csharp
+     DiGi.Serilog.Modify.Log(DiGi.Serilog.Enums.LogEventLevel.Error, "Import failed");
+     ```
+   - **The exception — innermost-namespace shadowing.** C# resolves the FIRST segment against each enclosing namespace from innermost outwards, and once it binds there is **no fallback**. If a nearer namespace owns that segment, the shortened form binds somewhere else entirely. From `DiGi.GIS.PostgreSQL.UI.Classes`, `WebAPI` binds to `DiGi.GIS.WebAPI` (not `DiGi.WebAPI`), because `DiGi.GIS.WebAPI` is found first:
+     ```csharp
+     // KEEP the prefix - "WebAPI.Query" binds to DiGi.GIS.WebAPI.Query, which does not exist:
+     // error CS0234: The type or namespace name 'Query' does not exist in the namespace 'DiGi.GIS.WebAPI'
+     postResponse = await DiGi.WebAPI.Query.GetAsync<Building>(httpClient, requestUri, postOptions);
+     ```
+     The same trap applies to `Core`, `Geometry`, `Analytical` and any other segment that repeats at several depths — and to a static partial class calling its own namesake in a parent namespace (`DiGi.WebAPI.Modify.PostAsync` from inside `DiGi.GIS.WebAPI.Modify`).
+   - **Method:** remove the qualifier, then **rebuild**. A shadowed name usually fails with CS0234/CS0246 — restore the prefix and leave a short comment saying why. Do not shorten a qualifier you have not compiled.
+   - **Danger case:** if BOTH namespaces expose a matching member, the shortened form compiles and silently calls the wrong one. When a segment repeats at several depths and both candidates have the member, keep the qualifier regardless of the analyzer suggestion.
+   - **Scope:** this rule is about code. Leave `<see cref="..."/>` targets in XML docs as they are — match whatever the surrounding file already does rather than churning doc comments.
+10. **Project Structure:** Assume the C# codebase consists of multiple SEPARATE projects, not a single monolithic solution. Handle namespaces and references accordingly.
+11. **Output Optimization:** Prioritize highest code quality and output token minimization. Skip conversational filler, polite introductions, and conclusions. Output only the necessary code, logic, or requested explanations.
 
 
 
@@ -61,6 +96,32 @@ Data models are strictly separated from business logic (anemic models + static e
 - **`Modify`** (`/Modify`) — modifies the state/properties of the existing object.
 - **`Create`** (`/Create`) — creates and returns a completely new object from input data.
 - **`Convert`** (`/Convert`, subdirs `/Convert/To[TargetArea]` e.g. `/Convert/ToSystem`, `/Convert/ToEPW`, `/Convert/ToDiGi`) — converts/formats/transforms an object or raw components into another representation; method names follow `To[TargetArea]_[TargetType]` (`ToSystem_String`, `ToSystem_DateTime`, `ToEPW_DateTime`).
+
+### Exception — interface-contract members are implemented ON the class
+The anemic-model + static-extension rule governs behavior that is **not** part of an interface the
+`/Classes` type implements. When a method is declared on an interface the class implements, it MUST be a
+normal **instance method on that class** — C# offers no other way to satisfy the contract, and moving it
+to a `Query`/`Modify` extension leaves the interface unimplemented (CS0535).
+
+This is the deliberate design for **behavior-rich geometry primitives**. `DiGi.Geometry`'s `Ellipse2D`,
+`Circle2D`, `Segment2D`, `Polygon2D`, `Rectangle2D`, their spatial counterparts, etc. implement rich
+behavioral interfaces and therefore carry their behavior as instance methods — for example
+`IBoundable2D.GetBoundingBox()`, `ITransformable2D.Transform(...)`, `IMovable2D.Move(...)`, and
+`IClosedCurve2D.{GetInternalPoint, InRange, Inside, GetArea}`. These types are **not** anemic, and that
+is correct.
+
+- **Do not "migrate" a geometry primitive's instance methods to `Query`/`Modify` extensions, and do not
+  flag them as anemic-model violations.** Deleting a contract implementation breaks the interface and
+  diverges from the entire library. Compare `Circle2D` and `Ellipse2D`: same interfaces
+  (`IEllipse2D, IBoundable2D`), both implement all behavior as instance methods, and neither has any
+  per-type `Query`/`Modify` extensions.
+- **Before proposing to move or remove such a method, check the interface chain first** (the `I*2D`
+  hierarchy under `Planar/Interfaces` / `Spatial/Interfaces`). Only behavior that is genuinely not a
+  contract member — and that belongs to a data model rather than a geometry primitive — goes into the
+  static partial classes.
+- **Private helpers are allowed on such a class.** The "strictly avoid private methods" rule below is
+  scoped to the static partial utility classes (`Query`/`Modify`/`Create`/`Convert`), not to
+  `/Classes` types that implement behavioral interfaces.
 
 ### Method Encapsulation and Reusability in Utility Classes
 - **Strictly avoid creating private methods** within `Query`, `Convert`, `Modify`, and similar partial utility classes.
@@ -392,4 +453,3 @@ namespace DiGi.Maintenance
     }
 }
 ```
-
