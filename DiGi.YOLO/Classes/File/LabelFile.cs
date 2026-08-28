@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace DiGi.YOLO.Classes
 {
@@ -132,7 +133,7 @@ namespace DiGi.YOLO.Classes
                         continue;
                     }
 
-                    values.Add(string.Format("{0} {1}", tuple!.Item1, value));
+                    values.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1}", tuple!.Item1, value));
                 }
             }
 

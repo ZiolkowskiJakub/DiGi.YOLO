@@ -1,5 +1,6 @@
-﻿using DiGi.YOLO.Classes;
+using DiGi.YOLO.Classes;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace DiGi.YOLO
@@ -33,27 +34,27 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-                if (!int.TryParse(values[0], out int labelIndex))
+                if (!int.TryParse(values[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int labelIndex))
                 {
                     continue;
                 }
 
-                if (!double.TryParse(values[1], out double x))
+                if (!double.TryParse(values[1], NumberStyles.Float, CultureInfo.InvariantCulture, out double x))
                 {
                     continue;
                 }
 
-                if (!double.TryParse(values[2], out double y))
+                if (!double.TryParse(values[2], NumberStyles.Float, CultureInfo.InvariantCulture, out double y))
                 {
                     continue;
                 }
 
-                if (!double.TryParse(values[3], out double width))
+                if (!double.TryParse(values[3], NumberStyles.Float, CultureInfo.InvariantCulture, out double width))
                 {
                     continue;
                 }
 
-                if (!double.TryParse(values[4], out double height))
+                if (!double.TryParse(values[4], NumberStyles.Float, CultureInfo.InvariantCulture, out double height))
                 {
                     continue;
                 }

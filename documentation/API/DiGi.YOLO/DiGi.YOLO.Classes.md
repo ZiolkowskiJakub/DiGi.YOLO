@@ -125,7 +125,7 @@ Implements [Y](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IBoundingBox.Y 'DiGi
 Determines whether the specified object is equal to the current bounding box based on its coordinates and dimensions\.
 
 ```csharp
-public override bool Equals(object @object);
+public override bool Equals(object? @object);
 ```
 #### Parameters
 
@@ -143,7 +143,7 @@ True if the objects are equal; otherwise, false\.
 
 ## BoundingBox\.GetHashCode\(\) Method
 
-Returns a hash code for the current bounding box based on its string representation\.
+Returns a hash code for the current bounding box based on its coordinates and dimensions\.
 
 ```csharp
 public override int GetHashCode();
@@ -278,10 +278,10 @@ public string? Name { get; }
 
 ## BoundingBoxResult\.Equals\(object\) Method
 
-Determines whether the specified object is equal to the current bounding box result based on its string representation\.
+Determines whether the specified object is equal to the current bounding box result based on its properties\.
 
 ```csharp
-public override bool Equals(object @object);
+public override bool Equals(object? @object);
 ```
 #### Parameters
 
@@ -345,20 +345,6 @@ Initializes a new instance of the [BoundingBoxResultFile](DiGi.YOLO.Classes.md#D
 ```csharp
 public BoundingBoxResultFile();
 ```
-### Fields
-
-<a name='DiGi.YOLO.Classes.BoundingBoxResultFile.boundingBoxResults'></a>
-
-## BoundingBoxResultFile\.boundingBoxResults Field
-
-Gets or sets the list of bounding box results\.
-
-```csharp
-public List<BoundingBoxResult> boundingBoxResults;
-```
-
-#### Field Value
-[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[BoundingBoxResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.BoundingBoxResult 'DiGi\.YOLO\.Classes\.BoundingBoxResult')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
 ### Methods
 
 <a name='DiGi.YOLO.Classes.BoundingBoxResultFile.ToString()'></a>

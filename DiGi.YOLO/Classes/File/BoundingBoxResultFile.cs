@@ -9,11 +9,6 @@ namespace DiGi.YOLO.Classes
     public class BoundingBoxResultFile : List<BoundingBoxResult>
     {
         /// <summary>
-        /// Gets or sets the list of bounding box results.
-        /// </summary>
-        public List<BoundingBoxResult> boundingBoxResults = [];
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BoundingBoxResultFile"/> class.
         /// </summary>
         public BoundingBoxResultFile()
@@ -29,18 +24,15 @@ namespace DiGi.YOLO.Classes
         {
             List<string> values = [];
 
-            if (boundingBoxResults != null)
+            foreach (BoundingBoxResult boundingBoxResult in this)
             {
-                foreach (BoundingBoxResult boundingBoxResult in boundingBoxResults)
+                string? value = boundingBoxResult?.ToString();
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    string? value = boundingBoxResult?.ToString();
-                    if (string.IsNullOrWhiteSpace(value))
-                    {
-                        continue;
-                    }
-
-                    values.Add(value!);
+                    continue;
                 }
+
+                values.Add(value!);
             }
 
             return string.Join(Environment.NewLine, values);

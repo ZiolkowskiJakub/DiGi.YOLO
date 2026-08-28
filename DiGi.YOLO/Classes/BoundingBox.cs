@@ -1,4 +1,6 @@
-﻿using DiGi.YOLO.Interfaces;
+using DiGi.YOLO.Interfaces;
+using System;
+using System.Globalization;
 
 namespace DiGi.YOLO.Classes
 {
@@ -76,18 +78,33 @@ namespace DiGi.YOLO.Classes
         /// </summary>
         /// <param name="object">The object to compare with the current bounding box.</param>
         /// <returns>True if the objects are equal; otherwise, false.</returns>
-        public override bool Equals(object @object)
+        public override bool Equals(object? @object)
         {
-            return @object != null && @object.GetType() == GetType() && ToString() == @object.ToString();
+            if (@object is not BoundingBox boundingBox)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, boundingBox))
+            {
+                return true;
+            }
+
+            if (@object.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return x == boundingBox.x && y == boundingBox.y && width == boundingBox.width && height == boundingBox.height;
         }
 
         /// <summary>
-        /// Returns a hash code for the current bounding box based on its string representation.
+        /// Returns a hash code for the current bounding box based on its coordinates and dimensions.
         /// </summary>
         /// <returns>A hash code for the current object.</returns>
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return Tuple.Create(x, y, width, height).GetHashCode();
         }
 
         /// <summary>
@@ -96,7 +113,7 @@ namespace DiGi.YOLO.Classes
         /// <returns>A string representation of the bounding box.</returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2} {3}", x, y, width, height);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", x, y, width, height);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace DiGi.YOLO.Classes
+using System;
+using System.Globalization;
+
+namespace DiGi.YOLO.Classes
 {
     /// <summary>
     /// Represents the result of a bounding box detection, containing spatial coordinates, label information, and confidence score.
@@ -61,13 +64,28 @@
         }
 
         /// <summary>
-        /// Determines whether the specified object is equal to the current bounding box result based on its string representation.
+        /// Determines whether the specified object is equal to the current bounding box result based on its properties.
         /// </summary>
         /// <param name="object">The object to compare with the current object.</param>
         /// <returns><c>true</c> if the objects are equal; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object @object)
+        public override bool Equals(object? @object)
         {
-            return @object != null && @object.GetType() == GetType() && ToString() == @object.ToString();
+            if (@object is not BoundingBoxResult boundingBoxResult)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, boundingBoxResult))
+            {
+                return true;
+            }
+
+            if (@object.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return base.Equals(boundingBoxResult) && labelIndex == boundingBoxResult.labelIndex && confidence == boundingBoxResult.confidence && string.Equals(name, boundingBoxResult.name, StringComparison.Ordinal);
         }
 
         /// <summary>
@@ -76,7 +94,7 @@
         /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
-            return ToString().GetHashCode();
+            return Tuple.Create(base.GetHashCode(), labelIndex, confidence, name).GetHashCode();
         }
 
         /// <summary>
@@ -85,7 +103,7 @@
         /// <returns>A tab-separated string containing the detection details.</returns>
         public override string ToString()
         {
-            return string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", name, labelIndex, X, Y, Width, Height, confidence);
+            return string.Format(CultureInfo.InvariantCulture, "{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", name, labelIndex, X, Y, Width, Height, confidence);
         }
     }
 }
