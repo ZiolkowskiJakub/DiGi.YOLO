@@ -44,10 +44,12 @@ for imagePath in imagePaths:
             continue
 
         for box in result.boxes:
-            x, y, width, height = box.xyxy[0].tolist()
+            x1, y1, x2, y2 = box.xyxy[0].tolist()
+            width = x2 - x1
+            height = y2 - y1
             confidence = box.conf.item()
             labelIndex = int(box.cls.item())
-            values.append(f"{fileName}\t{labelIndex}\t{x}\t{y}\t{width}\t{height}\t{confidence}\n")
+            values.append(f"{fileName}\t{labelIndex}\t{x1}\t{y1}\t{width}\t{height}\t{confidence}\n")
 
 if outputPath and values:
     outputDir = os.path.dirname(os.path.abspath(outputPath))
