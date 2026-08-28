@@ -16,6 +16,11 @@ namespace DiGi.YOLO.Constants
         public const string Predict = "predict.py";
 
         /// <summary>
+        /// The file name of the preflight check script.
+        /// </summary>
+        public const string Check = "check.py";
+
+        /// <summary>
         /// The file name of the utility script.
         /// </summary>
         public const string Utils = "utils.py";

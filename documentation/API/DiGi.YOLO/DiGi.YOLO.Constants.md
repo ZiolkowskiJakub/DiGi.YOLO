@@ -122,6 +122,19 @@ public static class FileName
 Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → FileName
 ### Fields
 
+<a name='DiGi.YOLO.Constants.FileName.Check'></a>
+
+## FileName\.Check Field
+
+The file name of the preflight check script\.
+
+```csharp
+public const string Check = "check.py";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.FileName.Conf'></a>
 
 ## FileName\.Conf Field

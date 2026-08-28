@@ -555,6 +555,47 @@ The path string to be encoded\. This value can be null\.
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 An encoded version of the path, or an empty string if the provided path is null or whitespace\.
 
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken)'></a>
+
+## Query\.ExecuteProcess\(string, string, string, CancellationToken\) Method
+
+Executes a process with captured standard output and standard error streams while supporting cancellation\.
+
+Launches the process without creating a window, using UTF-8 encodings for both streams. Reading both streams asynchronously prevents deadlocks when process output buffers fill up.
+
+```csharp
+public static (int ExitCode,System.Collections.Generic.List<string> StandardOutput,System.Collections.Generic.List<string> StandardError) ExecuteProcess(string executablePath, string arguments, string workingDirectory, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken).executablePath'></a>
+
+`executablePath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The full path of the executable process to run\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken).arguments'></a>
+
+`arguments` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The command line arguments passed to the process\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The working directory context for the process execution\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels process execution\.
+
+#### Returns
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+A tuple containing the process exit code, standard output lines, and standard error lines\.
+
 <a name='DiGi.YOLO.Query.NormalizedPath(string)'></a>
 
 ## Query\.NormalizedPath\(string\) Method
@@ -606,3 +647,100 @@ The path of an interpreter, the name of one on PATH, or `null` to search for one
 #### Returns
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 The full path of the interpreter, or `null` when none was found\.
+
+<a name='DiGi.YOLO.Query.PythonPaths(string)'></a>
+
+## Query\.PythonPaths\(string\) Method
+
+Resolves all potential CPython interpreter candidate paths on PATH\.
+
+If [path](DiGi.YOLO.md#DiGi.YOLO.Query.PythonPaths(string).path 'DiGi\.YOLO\.Query\.PythonPaths\(string\)\.path') names an existing file, it is returned as the single candidate. Otherwise, PATH is searched for [path](DiGi.YOLO.md#DiGi.YOLO.Query.PythonPaths(string).path 'DiGi\.YOLO\.Query\.PythonPaths\(string\)\.path') (if provided), "python", and "python3" in order, returning all distinct existing candidates found.
+
+```csharp
+public static System.Collections.Generic.List<string> PythonPaths(string? path=null);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.PythonPaths(string).path'></a>
+
+`path` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The full path of an interpreter, the command name of one on PATH, or `null` to search PATH\.
+
+#### Returns
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')  
+A list of distinct resolved interpreter paths in search order\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken)'></a>
+
+## Query\.YOLOEnvironmentResult\(string, string, string, CancellationToken\) Method
+
+Probes Python interpreter candidates in a specified working directory context to detect whether the machine can execute YOLO workloads\.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, string? workingDirectory, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, a command name on PATH, or `null` to search PATH\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the trained model file to probe for compatibility, or `null`\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory where scripts are written and executed, or `null` to use temporary storage\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels probing\.
+
+#### Returns
+[YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
+The result of the environment preflight check\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,System.Threading.CancellationToken)'></a>
+
+## Query\.YOLOEnvironmentResult\(string, string, CancellationToken\) Method
+
+Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions\.
+
+Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable') set to `false` and diagnostic reasons in [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Messages 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Messages').
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,System.Threading.CancellationToken).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, a command name on PATH, or `null` to search PATH\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,System.Threading.CancellationToken).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the trained model file to probe for compatibility, or `null`\.
+
+<a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels probing\.
+
+#### Returns
+[YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
+The result of the environment preflight check\.

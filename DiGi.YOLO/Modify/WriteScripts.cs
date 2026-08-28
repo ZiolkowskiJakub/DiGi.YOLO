@@ -39,6 +39,7 @@ namespace DiGi.YOLO
             [
                 Constants.FileName.Train,
                 Constants.FileName.Predict,
+                Constants.FileName.Check,
                 Constants.FileName.Utils,
                 Constants.FileName.Requirements,
                 Constants.FileName.Conf

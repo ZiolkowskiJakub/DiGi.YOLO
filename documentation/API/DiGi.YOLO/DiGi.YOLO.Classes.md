@@ -1022,6 +1022,259 @@ public override string ToString();
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 A string containing the labels and bounding boxes separated by new lines\.
 
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult'></a>
+
+## YOLOEnvironmentResult Class
+
+Represents the preflight check result of probing the CPython environment and YOLO dependencies on a machine\.
+
+Reports whether the interpreter can run YOLO, its version, installed dependency versions, CUDA availability, model compatibility, and any diagnostic messages explaining why the environment is not runnable.
+
+```csharp
+public class YOLOEnvironmentResult : DiGi.Core.Classes.SerializableResult, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableResult](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableresult 'DiGi\.Core\.Classes\.SerializableResult') → YOLOEnvironmentResult
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_)'></a>
+
+## YOLOEnvironmentResult\(bool, string, string, string, string, Nullable\<bool\>, string, string, IEnumerable\<string\>, Nullable\<DateTimeOffset\>\) Constructor
+
+Initializes a new instance of the [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult') class\.
+
+```csharp
+public YOLOEnvironmentResult(bool runnable, string? pythonPath, string? pythonVersion, string? ultralyticsVersion, string? torchVersion, System.Nullable<bool> cudaAvailable, string? modelPath, string? modelUltralyticsVersion, System.Collections.Generic.IEnumerable<string>? messages, System.Nullable<System.DateTimeOffset> checkedTime);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).runnable'></a>
+
+`runnable` [System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+A value indicating whether the probed Python interpreter can execute YOLO prediction workloads\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The full path of the Python interpreter that was probed\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).pythonVersion'></a>
+
+`pythonVersion` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The Python version reported by the interpreter\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).ultralyticsVersion'></a>
+
+`ultralyticsVersion` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The installed version of the ultralytics package, or `null` when import failed\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).torchVersion'></a>
+
+`torchVersion` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The installed version of PyTorch, or `null` when import failed\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).cudaAvailable'></a>
+
+`cudaAvailable` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+A value indicating whether PyTorch reports CUDA acceleration available\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the model checkpoint probed, or `null` when none was provided\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).modelUltralyticsVersion'></a>
+
+`modelUltralyticsVersion` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The ultralytics version recorded inside the model checkpoint, or `null` when unreadable\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).messages'></a>
+
+`messages` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The diagnostic messages detailing why the environment is not runnable or warnings encountered\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(bool,string,string,string,string,System.Nullable_bool_,string,string,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_).checkedTime'></a>
+
+`checkedTime` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The moment the preflight probe completed\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(DiGi.YOLO.Classes.YOLOEnvironmentResult)'></a>
+
+## YOLOEnvironmentResult\(YOLOEnvironmentResult\) Constructor
+
+Initializes a new instance of the [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult') class by copying an existing result\.
+
+```csharp
+public YOLOEnvironmentResult(DiGi.YOLO.Classes.YOLOEnvironmentResult? yOLOEnvironmentResult);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(DiGi.YOLO.Classes.YOLOEnvironmentResult).yOLOEnvironmentResult'></a>
+
+`yOLOEnvironmentResult` [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')
+
+The source result instance to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOEnvironmentResult\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult') class using a JSON object\.
+
+```csharp
+public YOLOEnvironmentResult(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.YOLOEnvironmentResult(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the result data\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.Checked'></a>
+
+## YOLOEnvironmentResult\.Checked Property
+
+Gets the moment the preflight probe completed\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> Checked { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.CudaAvailable'></a>
+
+## YOLOEnvironmentResult\.CudaAvailable Property
+
+Gets a value indicating whether PyTorch reports CUDA GPU hardware acceleration available\.
+
+```csharp
+public System.Nullable<bool> CudaAvailable { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.Messages'></a>
+
+## YOLOEnvironmentResult\.Messages Property
+
+Gets the diagnostic messages detailing why the environment is not runnable or warnings encountered during probing\.
+
+```csharp
+public System.Collections.Generic.List<string>? Messages { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.ModelPath'></a>
+
+## YOLOEnvironmentResult\.ModelPath Property
+
+Gets the path of the model checkpoint probed, or `null` when no model path was supplied\.
+
+```csharp
+public string? ModelPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.ModelUltralyticsVersion'></a>
+
+## YOLOEnvironmentResult\.ModelUltralyticsVersion Property
+
+Gets the ultralytics version recorded inside the model checkpoint file, or `null` when unreadable\.
+
+```csharp
+public string? ModelUltralyticsVersion { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.PythonPath'></a>
+
+## YOLOEnvironmentResult\.PythonPath Property
+
+Gets the full path of the CPython interpreter that was probed\.
+
+```csharp
+public string? PythonPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.PythonVersion'></a>
+
+## YOLOEnvironmentResult\.PythonVersion Property
+
+Gets the Python version string reported by the interpreter\.
+
+```csharp
+public string? PythonVersion { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable'></a>
+
+## YOLOEnvironmentResult\.Runnable Property
+
+Gets a value indicating whether the probed Python interpreter can execute YOLO prediction workloads\.
+
+```csharp
+public bool Runnable { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.TorchVersion'></a>
+
+## YOLOEnvironmentResult\.TorchVersion Property
+
+Gets the installed version of PyTorch, or `null` when import failed\.
+
+```csharp
+public string? TorchVersion { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOEnvironmentResult.UltralyticsVersion'></a>
+
+## YOLOEnvironmentResult\.UltralyticsVersion Property
+
+Gets the installed version of the ultralytics package, or `null` when import failed\.
+
+```csharp
+public string? UltralyticsVersion { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Classes.YOLOModel'></a>
 
 ## YOLOModel Class

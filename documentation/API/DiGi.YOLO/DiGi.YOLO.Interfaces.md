@@ -80,6 +80,7 @@ public interface IYOLOObject : DiGi.Core.Interfaces.IObject
 ```
 
 Derived  
+↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 ↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')  
 ↳ [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject')
@@ -97,6 +98,7 @@ public interface IYOLOSerializableObject : DiGi.YOLO.Interfaces.IYOLOObject, DiG
 ```
 
 Derived  
+↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 ↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')
 
