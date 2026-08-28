@@ -11,6 +11,26 @@ The repository contains the following core components and assemblies:
 
 ---
 
+## 🤖 YOLO Model & Execution Pipeline
+
+### Frozen Weights Provenance
+The model weights embedded and consumed by the inference pipeline are produced by the following training run:
+* **Run Directory:** `runs/detect/train8`
+* **Training Epochs:** 150 epochs
+* **Image Size (`imgsz`):** 640
+
+### Python Helper Scripts & Requirements
+`DiGi.YOLO` embeds Python helper scripts (`train.py`, `predict.py`, `utils.py`, `requirements.txt`) as binary resources.
+* **Script Export:** Callers can extract these runner scripts without instantiating a `YOLOModel` by calling `Modify.WriteScripts(targetDirectory)`.
+* **Inference (`predict.py`):** Supports command-line options:
+  - `--model`: Path to trained YOLO `.pt` model weights file (default: `YOLO/models/model.pt`).
+  - `--source`: Path to input image file or directory containing images (default: `YOLO/input`).
+  - `--conf`: Confidence threshold float (default: `0.1`).
+  - `--output`: Output filepath for bounding box results (`.bbrf`) in write mode (`"w"`) (default: `YOLO/output/results.bbrf`).
+* **Python Environment:** Install pinned dependencies via `pip install -r requirements.txt` (`ultralytics`, `torch`).
+
+---
+
 ## 📐 Core Architectural Pattern (DiGi.Core Pattern)
 
 This project strictly separates **Data Models** (anemic schemas) from **Business/Calculation Logic** (static extension methods). All new features must strictly follow this pattern.

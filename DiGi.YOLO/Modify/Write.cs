@@ -1,4 +1,4 @@
-﻿using DiGi.YOLO.Classes;
+using DiGi.YOLO.Classes;
 using DiGi.YOLO.Enums;
 using System.Collections.Generic;
 using System.IO;
@@ -77,9 +77,7 @@ namespace DiGi.YOLO
                 }
             }
 
-            File.WriteAllBytes(Path.Combine(directory, "train.py"), Properties.Resources.train);
-            File.WriteAllBytes(Path.Combine(directory, "predict.py"), Properties.Resources.predict);
-            File.WriteAllBytes(Path.Combine(directory, "utils.py"), Properties.Resources.utils);
+            WriteScripts(directory);
 
             return true;
         }

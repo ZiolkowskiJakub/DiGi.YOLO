@@ -13,7 +13,7 @@ def main():
     print(f"Used model: {modelPath}")
     
     model = YOLO(modelPath)
-    model.train(data="conf.yaml", imgsz=640, epochs=100)
+    model.train(data="conf.yaml", imgsz=640, epochs=150)
 
 if __name__ == "__main__":
     main()

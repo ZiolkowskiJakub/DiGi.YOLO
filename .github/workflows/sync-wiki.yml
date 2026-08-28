@@ -1,6 +1,6 @@
 name: Sync API Docs to Wiki
 
-on: [push]
+on: [push] # Triggers on every single push
 
 jobs:
   build-and-sync:

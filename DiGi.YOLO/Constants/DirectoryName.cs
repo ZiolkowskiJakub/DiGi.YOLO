@@ -1,4 +1,4 @@
-﻿namespace DiGi.YOLO.Constants
+namespace DiGi.YOLO.Constants
 {
     /// <summary>
     /// Provides constant values for standard directory names used in YOLO dataset structures.
@@ -14,5 +14,10 @@
         /// The name of the directory containing label files.
         /// </summary>
         public const string Labels = "labels";
+
+        /// <summary>
+        /// The name of the directory containing YOLO deployment scripts and configuration files.
+        /// </summary>
+        public const string YOLO = "YOLO";
     }
 }

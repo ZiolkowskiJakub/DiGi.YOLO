@@ -277,6 +277,27 @@ The YOLO model instance containing the data to be written\.
 [System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')  
 True if the writing process was successful; otherwise, false\.
 
+<a name='DiGi.YOLO.Modify.WriteScripts(string)'></a>
+
+## Modify\.WriteScripts\(string\) Method
+
+Writes the YOLO Python runner scripts and configuration files from the output YOLO directory to the specified directory\.
+
+```csharp
+public static bool WriteScripts(string? directory);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Modify.WriteScripts(string).directory'></a>
+
+`directory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The target directory path where scripts will be written\.
+
+#### Returns
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')  
+True if script files were successfully copied; otherwise, false\.
+
 <a name='DiGi.YOLO.Query'></a>
 
 ## Query Class
