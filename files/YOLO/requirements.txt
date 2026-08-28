@@ -1,2 +1,16 @@
-ultralytics
-torch
+# Pinned against the frozen weights the pipeline depends on (YOLO/models/model.pt).
+#
+# ultralytics is exact because the checkpoint records the version that wrote it:
+#   version 8.3.130, saved 2025-05-23, run name train8, 150 epochs, imgsz 640.
+# The detector is frozen, so a different ultralytics is a different detector.
+#
+# torch is a floor rather than an exact pin. The checkpoint does not record which torch
+# saved it, but it carries a .storage_alignment entry, which torch only began writing at
+# 2.6.0 - so it was saved by 2.6 or later. An exact pin is avoided on purpose: torch wheels
+# are specific to a platform and CUDA build, and pinning one makes this file uninstallable
+# on a machine set up differently.
+#
+# torchvision is deliberately absent: ultralytics declares it and version-locks it to torch.
+
+ultralytics==8.3.130
+torch>=2.6

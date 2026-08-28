@@ -1570,3 +1570,402 @@ The name of the label to search for\.
 #### Returns
 [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')  
 The integer index of the label if found; otherwise, \-1\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions'></a>
+
+## YOLOPredictionOptions Class
+
+Provides the settings one run of the YOLO prediction script needs: which interpreter runs it, which weights it scores with, which images it reads, and where it writes its results\.
+
+The constructors only assign. Use [YOLOPredictionOptions\(string, string, string, string, string, double\)](DiGi.YOLO.md#DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double) 'DiGi\.YOLO\.Create\.YOLOPredictionOptions\(string, string, string, string, string, double\)') to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.
+
+```csharp
+public class YOLOPredictionOptions : DiGi.Core.Classes.SerializableOptions, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableOptions](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableoptions 'DiGi\.Core\.Classes\.SerializableOptions') → YOLOPredictionOptions
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.YOLOPredictionOptions()'></a>
+
+## YOLOPredictionOptions\(\) Constructor
+
+Initializes a new instance of the [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions') class with default values\.
+
+```csharp
+public YOLOPredictionOptions();
+```
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.YOLOPredictionOptions(DiGi.YOLO.Classes.YOLOPredictionOptions)'></a>
+
+## YOLOPredictionOptions\(YOLOPredictionOptions\) Constructor
+
+Initializes a new instance of the [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions') class by copying an existing options instance\.
+
+```csharp
+public YOLOPredictionOptions(DiGi.YOLO.Classes.YOLOPredictionOptions? yOLOPredictionOptions);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.YOLOPredictionOptions(DiGi.YOLO.Classes.YOLOPredictionOptions).yOLOPredictionOptions'></a>
+
+`yOLOPredictionOptions` [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')
+
+The source options instance to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.YOLOPredictionOptions(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOPredictionOptions\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions') class using a JSON object\.
+
+```csharp
+public YOLOPredictionOptions(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.YOLOPredictionOptions(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the configuration settings\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.Confidence'></a>
+
+## YOLOPredictionOptions\.Confidence Property
+
+Gets or sets the confidence threshold a detection has to reach to be reported, passed to predict\.py as \-\-conf\.
+
+The default matches the script's own default. Lowering it returns more boxes and more false positives; the weights are frozen, so this is the only knob over how much the detector reports.
+
+```csharp
+public double Confidence { get; set; }
+```
+
+#### Property Value
+[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.ModelPath'></a>
+
+## YOLOPredictionOptions\.ModelPath Property
+
+Gets or sets the path of the trained weights file the prediction scores with, passed to predict\.py as \-\-model\.
+
+Left null the script falls back to its own search, which picks whichever training run is newest on disk. Name the file, so a run is reproducible.
+
+```csharp
+public string? ModelPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.OutputPath'></a>
+
+## YOLOPredictionOptions\.OutputPath Property
+
+Gets or sets the path of the bounding box result file the prediction writes, passed to predict\.py as \-\-output\.
+
+The script opens it for writing rather than appending, so re-running a source directory replaces the previous answer instead of doubling it.
+
+```csharp
+public string? OutputPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.PythonPath'></a>
+
+## YOLOPredictionOptions\.PythonPath Property
+
+Gets or sets the path of the CPython interpreter that runs the prediction script, or the name of one on PATH\.
+
+This has to be CPython with ultralytics and torch installed. The IronPython engine in DiGi.Scripting.Python cannot host either of them.
+
+```csharp
+public string? PythonPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.SourceDirectory'></a>
+
+## YOLOPredictionOptions\.SourceDirectory Property
+
+Gets or sets the directory holding the images to score, passed to predict\.py as \-\-source\.
+
+The script reads the .jpg, .jpeg and .png files directly in the directory and does not descend into it.
+
+```csharp
+public string? SourceDirectory { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.WorkingDirectory'></a>
+
+## YOLOPredictionOptions\.WorkingDirectory Property
+
+Gets or sets the directory the prediction process runs in, which is also where the runner keeps the Python scripts\.
+
+predict.py imports utils.py, and Python resolves that import against the directory the script itself sits in, so the two files have to stay together. The runner puts them there with [WriteScripts\(string\)](DiGi.YOLO.md#DiGi.YOLO.Modify.WriteScripts(string) 'DiGi\.YOLO\.Modify\.WriteScripts\(string\)') when they are missing. Ultralytics also writes its own caches here.
+
+```csharp
+public string? WorkingDirectory { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult'></a>
+
+## YOLOPredictionResult Class
+
+Represents what one run of the YOLO prediction script did: how it ended, what it said, and the result lines it produced\.
+
+The detections are kept as the raw lines of the bounding box result file rather than as parsed objects, so that a result read back from JSON is the same result that was written. Parse them with [BoundingBoxResultFile\(this YOLOPredictionResult\)](DiGi.YOLO.md#DiGi.YOLO.Create.BoundingBoxResultFile(thisDiGi.YOLO.Classes.YOLOPredictionResult) 'DiGi\.YOLO\.Create\.BoundingBoxResultFile\(this DiGi\.YOLO\.Classes\.YOLOPredictionResult\)').
+
+```csharp
+public class YOLOPredictionResult : DiGi.Core.Classes.SerializableResult, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableResult](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableresult 'DiGi\.Core\.Classes\.SerializableResult') → YOLOPredictionResult
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(DiGi.YOLO.Classes.YOLOPredictionResult)'></a>
+
+## YOLOPredictionResult\(YOLOPredictionResult\) Constructor
+
+Initializes a new instance of the [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult') class by copying an existing result\.
+
+```csharp
+public YOLOPredictionResult(DiGi.YOLO.Classes.YOLOPredictionResult? yOLOPredictionResult);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(DiGi.YOLO.Classes.YOLOPredictionResult).yOLOPredictionResult'></a>
+
+`yOLOPredictionResult` [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')
+
+The source result to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_)'></a>
+
+## YOLOPredictionResult\(int, int, string, IEnumerable\<string\>, IEnumerable\<string\>, IEnumerable\<string\>, Nullable\<DateTimeOffset\>, Nullable\<DateTimeOffset\>\) Constructor
+
+Initializes a new instance of the [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult') class\.
+
+```csharp
+public YOLOPredictionResult(int exitCode, int imageCount, string? outputPath, System.Collections.Generic.IEnumerable<string>? values, System.Collections.Generic.IEnumerable<string>? standardOutput, System.Collections.Generic.IEnumerable<string>? standardError, System.Nullable<System.DateTimeOffset> start, System.Nullable<System.DateTimeOffset> end);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).exitCode'></a>
+
+`exitCode` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The code the prediction process ended with, or \-1 when the runner never got one\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).imageCount'></a>
+
+`imageCount` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The number of images found in the source directory\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).outputPath'></a>
+
+`outputPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the bounding box result file the run was told to write\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).values'></a>
+
+`values` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The lines of the bounding box result file the run produced\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The trailing lines the process wrote to its standard output stream\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardError'></a>
+
+`standardError` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The trailing lines the process wrote to its standard error stream\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).start'></a>
+
+`start` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The moment the run began\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(int,int,string,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).end'></a>
+
+`end` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The moment the run ended\.
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOPredictionResult\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult') class using a JSON object\.
+
+```csharp
+public YOLOPredictionResult(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.YOLOPredictionResult(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the result data\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.Duration'></a>
+
+## YOLOPredictionResult\.Duration Property
+
+Gets how long the run took, or `null` when either end of it is unknown\.
+
+```csharp
+public System.Nullable<System.TimeSpan> Duration { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan 'System\.TimeSpan')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.End'></a>
+
+## YOLOPredictionResult\.End Property
+
+Gets the moment the run ended\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> End { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.ExitCode'></a>
+
+## YOLOPredictionResult\.ExitCode Property
+
+Gets the code the prediction process ended with\. Zero means it ran to completion\.
+
+-1 is the runner's own code for a run it never handed to the interpreter or took back from it - the process could not be started, the source directory was gone, or the run was cancelled. [StandardError](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult.StandardError 'DiGi\.YOLO\.Classes\.YOLOPredictionResult\.StandardError') carries the reason in the first two cases; a caller that cancelled already knows about the third.
+
+```csharp
+public int ExitCode { get; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.ImageCount'></a>
+
+## YOLOPredictionResult\.ImageCount Property
+
+Gets the number of images found in the source directory\.
+
+Zero here with an exit code of zero is a run that had nothing to do, which is worth telling apart from a run that scored images and found nothing on them.
+
+```csharp
+public int ImageCount { get; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.OutputPath'></a>
+
+## YOLOPredictionResult\.OutputPath Property
+
+Gets the path of the bounding box result file the run was told to write\.
+
+```csharp
+public string? OutputPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.StandardError'></a>
+
+## YOLOPredictionResult\.StandardError Property
+
+Gets the trailing lines the process wrote to its standard error stream, at most [OutputLines](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Count.OutputLines 'DiGi\.YOLO\.Constants\.Count\.OutputLines') of them\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardError { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.StandardOutput'></a>
+
+## YOLOPredictionResult\.StandardOutput Property
+
+Gets the trailing lines the process wrote to its standard output stream, at most [OutputLines](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Count.OutputLines 'DiGi\.YOLO\.Constants\.Count\.OutputLines') of them\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardOutput { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.Start'></a>
+
+## YOLOPredictionResult\.Start Property
+
+Gets the moment the run began\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> Start { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.Succeeded'></a>
+
+## YOLOPredictionResult\.Succeeded Property
+
+Gets a value indicating whether the run completed and produced its result file\.
+
+```csharp
+public bool Succeeded { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionResult.Values'></a>
+
+## YOLOPredictionResult\.Values Property
+
+Gets the lines of the bounding box result file the run produced, or `null` when it produced none\.
+
+An empty list is a run that scored images and detected nothing; `null` is a run that wrote no file at all.
+
+```csharp
+public System.Collections.Generic.List<string>? Values { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')

@@ -14,10 +14,25 @@ The repository contains the following core components and assemblies:
 ## 🤖 YOLO Model & Execution Pipeline
 
 ### Frozen Weights Provenance
-The model weights embedded and consumed by the inference pipeline are produced by the following training run:
-* **Run Directory:** `runs/detect/train8`
-* **Training Epochs:** 150 epochs
-* **Image Size (`imgsz`):** 640
+The pipeline depends on one frozen checkpoint, `YOLO/models/model.pt`. The values below are read out of the checkpoint itself rather than recorded by hand, so they cannot drift from the artefact:
+
+| | |
+|---|---|
+| Run name | `train8` |
+| Saved | 2025-05-23 |
+| ultralytics | 8.3.130 |
+| Epochs | 150 |
+| Image size (`imgsz`) | 640 |
+| Batch | 16 |
+| Seed | 0 |
+| Optimizer | `auto` |
+| Started from | `runs/detect/train7/weights/best.pt` |
+
+`train8` is a continuation of `train7` rather than a run from a pretrained checkpoint, so the 150 epochs are on top of that earlier run.
+
+The weights are not in git (130 MB). They live in the git-ignored `user files/YOLO/models/`.
+
+To read these back from any `.pt` without installing torch: the file is a zip, and `data.pkl` inside it unpickles to a dictionary carrying `version`, `date` and `train_args`.
 
 ### Python Helper Scripts & Requirements
 `DiGi.YOLO` embeds Python helper scripts (`train.py`, `predict.py`, `utils.py`, `requirements.txt`) as binary resources.
@@ -27,7 +42,23 @@ The model weights embedded and consumed by the inference pipeline are produced b
   - `--source`: Path to input image file or directory containing images (default: `YOLO/input`).
   - `--conf`: Confidence threshold float (default: `0.1`).
   - `--output`: Output filepath for bounding box results (`.bbrf`) in write mode (`"w"`) (default: `YOLO/output/results.bbrf`).
-* **Python Environment:** Install pinned dependencies via `pip install -r requirements.txt` (`ultralytics`, `torch`).
+* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.3.130`, the version the frozen checkpoint records as having written it) because a different ultralytics is a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning.
+
+### Running a Prediction from C#
+`Modify.Predict` runs `predict.py` in a CPython process and reports the run. `DiGi.Scripting.Python` is IronPython and cannot host `ultralytics`/`torch`, so it is not an alternative.
+
+```csharp
+YOLOPredictionOptions? yOLOPredictionOptions = Create.YOLOPredictionOptions(null, pathWeights, directorySourceImages, pathBoundingBoxResultFile);
+
+YOLOPredictionResult? yOLOPredictionResult = yOLOPredictionOptions.Predict(cancellationToken);
+
+BoundingBoxResultFile? boundingBoxResultFile = Create.BoundingBoxResultFile(yOLOPredictionResult);
+```
+
+* `Create.YOLOPredictionOptions(...)` resolves the interpreter (a `null` path searches `PATH` for `python`, then `python3`), normalises the paths and returns `null` when the combination cannot make a run.
+* The runner writes the scripts into the working directory when they are missing, removes a stale `.bbrf` so a failed run cannot be read as this one, and answers a source directory holding no images without starting a process.
+* `YOLOPredictionResult` carries the exit code, the tail of both output streams, the image count and the run's `DateTimeOffset` bounds. `Create.BoundingBoxResultFile(result)` gives `null` for a run that did not complete.
+* Cancelling kills the interpreter only - `netstandard2.0` has no process-tree kill, so torch worker processes can outlive it.
 
 ---
 

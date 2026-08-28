@@ -23,6 +23,22 @@
 
 
 
+  <!-- The Python scripts ship inside the assembly so that Modify.WriteScripts works in any host, not only
+       where a build happened to copy the YOLO folder next to it. CopyFiles below still lays them out in bin. -->
+  <ItemGroup>
+    <EmbeddedResource Include="$(ProjectDir)..\files\YOLO\*.*" LogicalName="$(RootNamespace).YOLO.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="10.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DiGi.Core">
+      <HintPath>..\..\DiGi.Core\bin\DiGi.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <Target Name="CopyFiles" AfterTargets="Build">
     <ItemGroup>
       <_Files Include="$(ProjectDir)..\files\**\*.*" />

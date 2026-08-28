@@ -3,6 +3,34 @@
 ## DiGi\.YOLO\.Constants Namespace
 ### Classes
 
+<a name='DiGi.YOLO.Constants.Count'></a>
+
+## Count Class
+
+Provides constant counts used to bound the data collected while running the YOLO scripts\.
+
+```csharp
+public static class Count
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → Count
+### Fields
+
+<a name='DiGi.YOLO.Constants.Count.OutputLines'></a>
+
+## Count\.OutputLines Field
+
+The number of trailing lines kept from each of the prediction process output streams\.
+
+predict.py prints a line for every image it processes and ultralytics prints more on top of that, so a county sized run writes megabytes to its output streams. Only the tail is kept, because that is the part carrying the reason a run ended the way it did.
+
+```csharp
+public const int OutputLines = 200;
+```
+
+#### Field Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
 <a name='DiGi.YOLO.Constants.DirectoryName'></a>
 
 ## DirectoryName Class
