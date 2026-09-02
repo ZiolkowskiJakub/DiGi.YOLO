@@ -7,7 +7,7 @@ namespace DiGi.YOLO.Classes
 {
     /// <summary>
     /// Provides the settings one run of the YOLO prediction script needs: which interpreter runs it, which weights it scores with, which images it reads, and where it writes its results.
-    /// <para>The constructors only assign. Use <see cref="Create.YOLOPredictionOptions(string?, string?, string?, string?, string?, double)"/> to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.</para>
+    /// <para>The constructors only assign. Use <see cref="Create.YOLOPredictionOptions(string?, string?, string?, string?, string?, double, int)"/> to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.</para>
     /// </summary>
     public class YOLOPredictionOptions : SerializableOptions, IYOLOSerializableObject
     {
@@ -28,6 +28,7 @@ namespace DiGi.YOLO.Classes
         {
             if (yOLOPredictionOptions != null)
             {
+                BatchSize = yOLOPredictionOptions.BatchSize;
                 Confidence = yOLOPredictionOptions.Confidence;
                 ModelPath = yOLOPredictionOptions.ModelPath;
                 OutputPath = yOLOPredictionOptions.OutputPath;
@@ -45,6 +46,13 @@ namespace DiGi.YOLO.Classes
             : base(jsonObject)
         {
         }
+
+        /// <summary>
+        /// Gets or sets the number of images passed to the prediction model in a single inference batch, passed to predict.py as --batch.
+        /// <para>Batching amortizes Python call overhead and GPU kernel launches over multiple images. The default is 32. Turning it down reduces GPU memory usage.</para>
+        /// </summary>
+        [JsonInclude, JsonPropertyName(nameof(BatchSize))]
+        public int BatchSize { get; set; } = 32;
 
         /// <summary>
         /// Gets or sets the confidence threshold a detection has to reach to be reported, passed to predict.py as --conf.

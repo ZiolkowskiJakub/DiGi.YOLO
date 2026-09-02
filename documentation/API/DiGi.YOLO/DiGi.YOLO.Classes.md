@@ -1816,7 +1816,7 @@ The integer index of the label if found; otherwise, \-1\.
 
 Provides the settings one run of the YOLO prediction script needs: which interpreter runs it, which weights it scores with, which images it reads, and where it writes its results\.
 
-The constructors only assign. Use [YOLOPredictionOptions\(string, string, string, string, string, double\)](DiGi.YOLO.md#DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double) 'DiGi\.YOLO\.Create\.YOLOPredictionOptions\(string, string, string, string, string, double\)') to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.
+The constructors only assign. Use [YOLOPredictionOptions\(string, string, string, string, string, double, int\)](DiGi.YOLO.md#DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int) 'DiGi\.YOLO\.Create\.YOLOPredictionOptions\(string, string, string, string, string, double, int\)') to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.
 
 ```csharp
 public class YOLOPredictionOptions : DiGi.Core.Classes.SerializableOptions, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
@@ -1871,6 +1871,21 @@ public YOLOPredictionOptions(System.Text.Json.Nodes.JsonObject? jsonObject);
 
 The JSON object containing the configuration settings\.
 ### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOPredictionOptions.BatchSize'></a>
+
+## YOLOPredictionOptions\.BatchSize Property
+
+Gets or sets the number of images passed to the prediction model in a single inference batch, passed to predict\.py as \-\-batch\.
+
+Batching amortizes Python call overhead and GPU kernel launches over multiple images. The default is 32. Turning it down reduces GPU memory usage.
+
+```csharp
+public int BatchSize { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
 
 <a name='DiGi.YOLO.Classes.YOLOPredictionOptions.Confidence'></a>
 

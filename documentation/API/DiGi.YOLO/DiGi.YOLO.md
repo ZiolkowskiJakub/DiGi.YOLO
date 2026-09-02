@@ -250,6 +250,67 @@ The confidence threshold a detection has to reach to be reported\.
 [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 The options, or `null` when no interpreter was found, a required path is missing, or the confidence is not a value between zero and one\.
 
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int)'></a>
+
+## Create\.YOLOPredictionOptions\(string, string, string, string, string, double, int\) Method
+
+Builds the options for one run of the YOLO prediction script with a custom batch size, resolving the interpreter, normalizing the paths and then checking that the combination can actually make a run\.
+
+The [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions') constructors only assign, so this is where the work belongs. It resolves first and validates afterwards, because the interpreter is usually given by name rather than by path and a name cannot be checked until it has been looked up.
+
+The working directory is not created here. It is created by [Predict\(this YOLOPredictionOptions, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Modify.Predict(thisDiGi.YOLO.Classes.YOLOPredictionOptions,System.Threading.CancellationToken) 'DiGi\.YOLO\.Modify\.Predict\(this DiGi\.YOLO\.Classes\.YOLOPredictionOptions, System\.Threading\.CancellationToken\)'), along with the scripts that have to sit in it.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOPredictionOptions? YOLOPredictionOptions(string? pythonPath, string? modelPath, string? sourceDirectory, string? outputPath, string? workingDirectory, double confidence, int batchSize);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, or the name of one on PATH\. Null searches PATH\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the trained weights file to score with\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).sourceDirectory'></a>
+
+`sourceDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory holding the images to score\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).outputPath'></a>
+
+`outputPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the bounding box result file to write\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory the process runs in and the scripts are kept in\. Null uses the directory holding the output file\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).confidence'></a>
+
+`confidence` [System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')
+
+The confidence threshold a detection has to reach to be reported\.
+
+<a name='DiGi.YOLO.Create.YOLOPredictionOptions(string,string,string,string,string,double,int).batchSize'></a>
+
+`batchSize` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The number of images passed to the model in a single inference batch\.
+
+#### Returns
+[YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
+The options, or `null` when no interpreter was found, a required path is missing, the confidence is not a value between zero and one, or the batch size is less than one\.
+
 <a name='DiGi.YOLO.Modify'></a>
 
 ## Modify Class
@@ -308,6 +369,59 @@ The YOLO model instance whose data should be cleared\.
 #### Returns
 [System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')  
 True if any files were successfully deleted; otherwise, false\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken)'></a>
+
+## Modify\.Predict\(string, string, string, string, int, CancellationToken\) Method
+
+Runs the YOLO prediction script over a directory of images in a CPython process with a custom batch size and returns the detections it found\.
+
+A convenience over [Predict\(this YOLOPredictionOptions, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Modify.Predict(thisDiGi.YOLO.Classes.YOLOPredictionOptions,System.Threading.CancellationToken) 'DiGi\.YOLO\.Modify\.Predict\(this DiGi\.YOLO\.Classes\.YOLOPredictionOptions, System\.Threading\.CancellationToken\)') for callers that only want the detections. A run that did not complete gives `null`, with no account of why - take the other overload when that matters, which for an unattended run it does.
+
+```csharp
+public static DiGi.YOLO.Classes.BoundingBoxResultFile? Predict(string? pythonPath, string? modelPath, string? sourceDirectory, string? outputPath, int batchSize, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, or the name of one on PATH\. Null searches PATH\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the trained weights file to score with\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).sourceDirectory'></a>
+
+`sourceDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory holding the images to score\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).outputPath'></a>
+
+`outputPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the bounding box result file to write\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).batchSize'></a>
+
+`batchSize` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The number of images passed to the model in a single inference batch\.
+
+<a name='DiGi.YOLO.Modify.Predict(string,string,string,string,int,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels the run\.
+
+#### Returns
+[BoundingBoxResultFile](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.BoundingBoxResultFile 'DiGi\.YOLO\.Classes\.BoundingBoxResultFile')  
+The detections, or `null` when the options could not be built or the run did not complete\.
 
 <a name='DiGi.YOLO.Modify.Predict(string,string,string,string,System.Threading.CancellationToken)'></a>
 

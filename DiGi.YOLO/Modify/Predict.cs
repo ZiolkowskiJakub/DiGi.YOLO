@@ -108,6 +108,10 @@ namespace DiGi.YOLO
             //argparse parses --conf with float(), which reads a decimal point and nothing else
             stringBuilder_Arguments.Append(" --conf ").Append(yOLOPredictionOptions.Confidence.ToString("R", CultureInfo.InvariantCulture));
 
+            //argparse parses --batch with int()
+            int batchSize = yOLOPredictionOptions.BatchSize < 1 ? 32 : yOLOPredictionOptions.BatchSize;
+            stringBuilder_Arguments.Append(" --batch ").Append(batchSize.ToString(CultureInfo.InvariantCulture));
+
             (int exitCode, List<string> standardOutput, List<string> standardError) = Query.ExecuteProcess(pythonPath!, stringBuilder_Arguments.ToString(), workingDirectory!, cancellationToken);
 
             List<string>? values = exitCode == 0 && File.Exists(outputPath) ? [.. File.ReadAllLines(outputPath)] : null;
@@ -127,7 +131,23 @@ namespace DiGi.YOLO
         /// <returns>The detections, or <c>null</c> when the options could not be built or the run did not complete.</returns>
         public static BoundingBoxResultFile? Predict(string? pythonPath, string? modelPath, string? sourceDirectory, string? outputPath, CancellationToken cancellationToken = default)
         {
-            YOLOPredictionOptions? yOLOPredictionOptions = Create.YOLOPredictionOptions(pythonPath, modelPath, sourceDirectory, outputPath);
+            return Predict(pythonPath, modelPath, sourceDirectory, outputPath, 32, cancellationToken);
+        }
+
+        /// <summary>
+        /// Runs the YOLO prediction script over a directory of images in a CPython process with a custom batch size and returns the detections it found.
+        /// <para>A convenience over <see cref="Predict(YOLOPredictionOptions?, CancellationToken)"/> for callers that only want the detections. A run that did not complete gives <c>null</c>, with no account of why - take the other overload when that matters, which for an unattended run it does.</para>
+        /// </summary>
+        /// <param name="pythonPath">The path of the CPython interpreter, or the name of one on PATH. Null searches PATH.</param>
+        /// <param name="modelPath">The path of the trained weights file to score with.</param>
+        /// <param name="sourceDirectory">The directory holding the images to score.</param>
+        /// <param name="outputPath">The path of the bounding box result file to write.</param>
+        /// <param name="batchSize">The number of images passed to the model in a single inference batch.</param>
+        /// <param name="cancellationToken">The token that cancels the run.</param>
+        /// <returns>The detections, or <c>null</c> when the options could not be built or the run did not complete.</returns>
+        public static BoundingBoxResultFile? Predict(string? pythonPath, string? modelPath, string? sourceDirectory, string? outputPath, int batchSize, CancellationToken cancellationToken = default)
+        {
+            YOLOPredictionOptions? yOLOPredictionOptions = Create.YOLOPredictionOptions(pythonPath, modelPath, sourceDirectory, outputPath, null, 0.1, batchSize);
             if (yOLOPredictionOptions == null)
             {
                 return null;
