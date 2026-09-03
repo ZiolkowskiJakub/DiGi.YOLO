@@ -11,6 +11,15 @@ The repository contains the following core components and assemblies:
 
 ---
 
+## 📖 Documentation & Guides
+
+Comprehensive guides and operational documentation are available in the [DiGi.YOLO GitHub Wiki](https://github.com/ZiolkowskiJakub/DiGi.YOLO/wiki):
+* **[Year Built Prediction Pipeline](https://github.com/ZiolkowskiJakub/DiGi.YOLO/wiki/Year-Built-Prediction-Pipeline):** End-to-end architecture, frozen weights provenance, Python requirements, database row scoping, and superseding the legacy file-based workflow.
+* **[Running Scripts Manually](https://github.com/ZiolkowskiJakub/DiGi.YOLO/wiki/Running-Scripts-Manually):** Standalone execution guide for `predict.py`, `train.py`, and `export.py`.
+* **[ConsoleApp Operator Guide (DiGi.GIS.YOLO.UI)](https://github.com/ZiolkowskiJakub/DiGi.GIS.YOLO.UI/wiki/Using-the-ConsoleApp):** Complete operational manual for the headless runner `DiGi.GIS.YOLO.UI.ConsoleApp.exe`.
+
+---
+
 ## 🤖 YOLO Model & Execution Pipeline
 
 ### Frozen Weights Provenance
