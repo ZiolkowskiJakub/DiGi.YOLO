@@ -34,15 +34,32 @@ The weights are not in git (130 MB). They live in the git-ignored `user files/YO
 
 To read these back from any `.pt` without installing torch: the file is a zip, and `data.pkl` inside it unpickles to a dictionary carrying `version`, `date` and `train_args`.
 
+### Frozen ONNX Export Provenance
+The same detector is also scored in process, without an interpreter, by
+[DiGi.YOLO.ONNX](https://github.com/ZiolkowskiJakub/DiGi.YOLO.ONNX). That path consumes an ONNX export of the checkpoint above, produced once by `export.py`. The export is as frozen as the checkpoint it came from, so it is recorded the same way - by a digest read off the artefact:
+
+| | |
+|---|---|
+| Exported | 2026-09-03 |
+| Exported by | ultralytics 8.3.130, torch 2.7.0+cu128, onnx 1.22.0, onnxslim 0.1.96 |
+| Flags | `format=onnx`, `imgsz=640`, `opset=12`, `dynamic=True`, `simplify=True`, `half=False`, `nms=False` |
+| Bytes | 273 083 173 |
+| SHA-256 | `7cfb1a79209fa27a43f07a2151dfebaad3baedf93c94bc25a92a6bdbc4040213` |
+
+The graph is `nc = 1` (`{0: 'Building'}`) and answers `[batch, 5, 8400]`. `dynamic=True` is what lets the C# runner feed whole batches; a static export pins the batch to one. `nms=False` is deliberate - suppression stays on the C# side, where it can be matched to the thresholds ultralytics applies internally (IoU `0.7`, at most `300` detections) rather than baked into the graph.
+
+Like the weights, the export is not in git (260 MB) and lives in the git-ignored `user files/YOLO/models/`.
+
 ### Python Helper Scripts & Requirements
-`DiGi.YOLO` embeds Python helper scripts (`train.py`, `predict.py`, `utils.py`, `requirements.txt`) as binary resources.
+`DiGi.YOLO` embeds Python helper scripts (`train.py`, `predict.py`, `export.py`, `check.py`, `utils.py`, `requirements.txt`, `conf.yaml`) as binary resources.
 * **Script Export:** Callers can extract these runner scripts without instantiating a `YOLOModel` by calling `Modify.WriteScripts(targetDirectory)`.
 * **Inference (`predict.py`):** Supports command-line options:
   - `--model`: Path to trained YOLO `.pt` model weights file (default: `YOLO/models/model.pt`).
   - `--source`: Path to input image file or directory containing images (default: `YOLO/input`).
   - `--conf`: Confidence threshold float (default: `0.1`).
   - `--output`: Output filepath for bounding box results (`.bbrf`) in write mode (`"w"`) (default: `YOLO/output/results.bbrf`).
-* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.3.130`, the version the frozen checkpoint records as having written it) because a different ultralytics is a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning.
+* **Export (`export.py`):** Turns the frozen checkpoint into the ONNX graph the in-process detector scores with. Options: `--model`, `--output`, `--imgsz` (default `640`), `--opset` (default `12`), `--static` (fixed axes instead of a dynamic batch). It prints the size and SHA-256 of what it wrote, which is what the provenance table above records. This is a one-off preparation step - it is why removing the Python dependency removes it from every *run* rather than from the repository.
+* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.3.130`, the version the frozen checkpoint records as having written it) because a different ultralytics is a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning. `onnx` and `onnxslim` sit under an export-only heading there: `export.py` needs them and nothing that runs a prediction does.
 
 ### Running a Prediction from C#
 `Modify.Predict` runs `predict.py` in a CPython process and reports the run. `DiGi.Scripting.Python` is IronPython and cannot host `ultralytics`/`torch`, so it is not an alternative.

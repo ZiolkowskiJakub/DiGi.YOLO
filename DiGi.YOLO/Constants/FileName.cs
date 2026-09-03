@@ -1,4 +1,4 @@
-namespace DiGi.YOLO.Constants
+﻿namespace DiGi.YOLO.Constants
 {
     /// <summary>
     /// Provides constant values for file names used in YOLO runner scripts and configuration files.
@@ -19,6 +19,11 @@ namespace DiGi.YOLO.Constants
         /// The file name of the preflight check script.
         /// </summary>
         public const string Check = "check.py";
+
+        /// <summary>
+        /// The file name of the ONNX export script.
+        /// </summary>
+        public const string Export = "export.py";
 
         /// <summary>
         /// The file name of the utility script.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 
@@ -40,6 +40,7 @@ namespace DiGi.YOLO
                 Constants.FileName.Train,
                 Constants.FileName.Predict,
                 Constants.FileName.Check,
+                Constants.FileName.Export,
                 Constants.FileName.Utils,
                 Constants.FileName.Requirements,
                 Constants.FileName.Conf

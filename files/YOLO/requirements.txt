@@ -14,3 +14,15 @@
 
 ultralytics==8.3.130
 torch>=2.6
+
+# Export only. These are needed by export.py to turn the frozen checkpoint into the ONNX graph the
+# in-process detector scores with, and by nothing that runs a prediction. An inference machine that
+# never exports does not need them; onnxslim in particular is only pulled in because export.py asks
+# for simplify=True.
+#
+# Neither is pinned, unlike ultralytics above, because the artefact they produce is itself frozen and
+# recorded: export.py prints the size and SHA-256 of the graph it wrote and the README carries both,
+# along with the onnx and onnxslim versions that produced it. A different simplifier would therefore
+# show up as a different digest rather than as a silently different detector.
+onnx
+onnxslim

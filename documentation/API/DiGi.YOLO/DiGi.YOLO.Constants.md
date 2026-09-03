@@ -148,6 +148,19 @@ public const string Conf = "conf.yaml";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.FileName.Export'></a>
+
+## FileName\.Export Field
+
+The file name of the ONNX export script\.
+
+```csharp
+public const string Export = "export.py";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.FileName.Predict'></a>
 
 ## FileName\.Predict Field
