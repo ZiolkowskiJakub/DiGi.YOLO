@@ -11,7 +11,7 @@ namespace DiGi.YOLO
     {
         /// <summary>
         /// Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions.
-        /// <para>Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with <see cref="Classes.YOLOEnvironmentResult.Runnable"/> set to <c>false</c> and diagnostic reasons in <see cref="Classes.YOLOEnvironmentResult.Messages"/>.</para>
+        /// <para>Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with <see cref="Classes.YOLOEnvironmentResult.Runnable"/> set to <c>false</c> and diagnostic reasons in <see cref="Classes.YOLOEnvironmentResult.Messages"/>. Non-fatal findings are returned in <see cref="Classes.YOLOEnvironmentResult.Warnings"/> and do not affect <see cref="Classes.YOLOEnvironmentResult.Runnable"/>.</para>
         /// </summary>
         /// <param name="pythonPath">The path of the CPython interpreter, a command name on PATH, or <c>null</c> to search PATH.</param>
         /// <param name="modelPath">The path of the trained model file to probe for compatibility, or <c>null</c>.</param>
@@ -49,21 +49,23 @@ namespace DiGi.YOLO
                     Directory.CreateDirectory(path_Working);
                 }
 
-                if (!File.Exists(Path.Combine(path_Working, Constants.FileName.Check)))
-                {
-                    Modify.WriteScripts(path_Working);
-                }
+                //Always rewritten, never only when missing: the probe must run the check.py that shipped with this
+                //build. A preflight directory persists between runs, so a guard that wrote once and then skipped would
+                //keep executing the probe of whichever build first touched the directory - the exact stale-script failure
+                //that makes a preflight fix appear to do nothing. WriteScripts is idempotent and small, so the cost is a
+                //few file copies per probe.
+                Modify.WriteScripts(path_Working);
             }
             catch (Exception exception)
             {
-                return new YOLOEnvironmentResult(false, pythonPath, null, null, null, null, path_Model, null, [string.Format("Failed to prepare working directory '{0}': {1}", path_Working, exception.Message)], start);
+                return new YOLOEnvironmentResult(false, pythonPath, null, null, null, null, path_Model, null, [string.Format("Failed to prepare working directory '{0}': {1}", path_Working, exception.Message)], null, start);
             }
 
             List<string> candidates = PythonPaths(pythonPath);
             if (candidates.Count == 0)
             {
                 string message = string.IsNullOrWhiteSpace(pythonPath) ? "No Python interpreter found on PATH." : string.Format("Interpreter path '{0}' was not found.", pythonPath);
-                return new YOLOEnvironmentResult(false, pythonPath, null, null, null, null, path_Model, null, [message], start);
+                return new YOLOEnvironmentResult(false, pythonPath, null, null, null, null, path_Model, null, [message], null, start);
             }
 
             string Quoted(string? value)
@@ -79,6 +81,7 @@ namespace DiGi.YOLO
             }
 
             List<string> messages_Accumulated = [];
+            List<string> warnings_Accumulated = [];
 
             foreach (string candidate in candidates)
             {
@@ -141,13 +144,25 @@ namespace DiGi.YOLO
                         }
                     }
 
+                    List<string> warnings_Candidate = [];
+                    if (jsonNode["warnings"] is JsonArray jsonArray_Warnings)
+                    {
+                        foreach (JsonNode? item in jsonArray_Warnings)
+                        {
+                            if (item != null)
+                            {
+                                warnings_Candidate.Add(item.ToString());
+                            }
+                        }
+                    }
+
                     if (runnable)
                     {
-                        return new YOLOEnvironmentResult(true, candidate, pythonVersion, ultralyticsVersion, torchVersion, cudaAvailable, path_Model, modelUltralyticsVersion, messages_Candidate, start);
+                        return new YOLOEnvironmentResult(true, candidate, pythonVersion, ultralyticsVersion, torchVersion, cudaAvailable, path_Model, modelUltralyticsVersion, messages_Candidate, warnings_Candidate, start);
                     }
 
                     string prefix = string.Format("Candidate '{0}': ", candidate);
-                    if (messages_Candidate.Count == 0)
+                    if (messages_Candidate.Count == 0 && warnings_Candidate.Count == 0)
                     {
                         messages_Accumulated.Add(string.Concat(prefix, "Not runnable."));
                     }
@@ -156,6 +171,11 @@ namespace DiGi.YOLO
                         foreach (string msg in messages_Candidate)
                         {
                             messages_Accumulated.Add(string.Concat(prefix, msg));
+                        }
+
+                        foreach (string warning in warnings_Candidate)
+                        {
+                            warnings_Accumulated.Add(string.Concat(prefix, warning));
                         }
                     }
                 }
@@ -166,7 +186,7 @@ namespace DiGi.YOLO
             }
 
             string? primaryPath = candidates.Count > 0 ? candidates[0] : pythonPath;
-            return new YOLOEnvironmentResult(false, primaryPath, null, null, null, null, path_Model, null, messages_Accumulated, start);
+            return new YOLOEnvironmentResult(false, primaryPath, null, null, null, null, path_Model, null, messages_Accumulated, warnings_Accumulated, start);
         }
     }
 }

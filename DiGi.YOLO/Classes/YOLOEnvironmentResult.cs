@@ -9,7 +9,7 @@ namespace DiGi.YOLO.Classes
 {
     /// <summary>
     /// Represents the preflight check result of probing the CPython environment and YOLO dependencies on a machine.
-    /// <para>Reports whether the interpreter can run YOLO, its version, installed dependency versions, CUDA availability, model compatibility, and any diagnostic messages explaining why the environment is not runnable.</para>
+    /// <para>Reports whether the interpreter can run YOLO, its version, installed dependency versions, CUDA availability, model compatibility, and any diagnostic messages explaining why the environment is not runnable. Non-fatal findings, such as a model whose header could not be read, are reported in <see cref="Warnings"/> and do not affect <see cref="Runnable"/>.</para>
     /// </summary>
     public class YOLOEnvironmentResult : SerializableResult, IYOLOSerializableObject
     {
@@ -43,6 +43,9 @@ namespace DiGi.YOLO.Classes
         [JsonInclude, JsonPropertyName(nameof(UltralyticsVersion))]
         private readonly string? ultralyticsVersion;
 
+        [JsonInclude, JsonPropertyName(nameof(Warnings))]
+        private readonly List<string>? warnings;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="YOLOEnvironmentResult"/> class.
         /// </summary>
@@ -54,7 +57,8 @@ namespace DiGi.YOLO.Classes
         /// <param name="cudaAvailable">A value indicating whether PyTorch reports CUDA acceleration available.</param>
         /// <param name="modelPath">The path of the model checkpoint probed, or <c>null</c> when none was provided.</param>
         /// <param name="modelUltralyticsVersion">The ultralytics version recorded inside the model checkpoint, or <c>null</c> when unreadable.</param>
-        /// <param name="messages">The diagnostic messages detailing why the environment is not runnable or warnings encountered.</param>
+        /// <param name="messages">The diagnostic messages detailing why the environment is not runnable.</param>
+        /// <param name="warnings">The diagnostic messages that do not prevent the environment from running, such as a model whose header could not be read.</param>
         /// <param name="checkedTime">The moment the preflight probe completed.</param>
         public YOLOEnvironmentResult(
             bool runnable,
@@ -66,6 +70,7 @@ namespace DiGi.YOLO.Classes
             string? modelPath,
             string? modelUltralyticsVersion,
             IEnumerable<string>? messages,
+            IEnumerable<string>? warnings,
             DateTimeOffset? checkedTime)
         {
             this.runnable = runnable;
@@ -77,6 +82,7 @@ namespace DiGi.YOLO.Classes
             this.modelPath = modelPath;
             this.modelUltralyticsVersion = modelUltralyticsVersion;
             this.messages = messages == null ? null : new List<string>(messages);
+            this.warnings = warnings == null ? null : new List<string>(warnings);
             this.checkedTime = checkedTime;
         }
 
@@ -99,6 +105,7 @@ namespace DiGi.YOLO.Classes
                 runnable = yOLOEnvironmentResult.runnable;
                 torchVersion = yOLOEnvironmentResult.torchVersion;
                 ultralyticsVersion = yOLOEnvironmentResult.ultralyticsVersion;
+                warnings = yOLOEnvironmentResult.warnings == null ? null : new List<string>(yOLOEnvironmentResult.warnings);
             }
         }
 
@@ -136,7 +143,8 @@ namespace DiGi.YOLO.Classes
         }
 
         /// <summary>
-        /// Gets the diagnostic messages detailing why the environment is not runnable or warnings encountered during probing.
+        /// Gets the diagnostic messages detailing why the environment is not runnable.
+        /// <para>Non-fatal findings are reported in <see cref="Warnings"/> instead.</para>
         /// </summary>
         [JsonIgnore]
         public List<string>? Messages
@@ -228,6 +236,18 @@ namespace DiGi.YOLO.Classes
             get
             {
                 return ultralyticsVersion;
+            }
+        }
+
+        /// <summary>
+        /// Gets the diagnostic messages that do not prevent the environment from running, such as a model whose header could not be read.
+        /// </summary>
+        [JsonIgnore]
+        public List<string>? Warnings
+        {
+            get
+            {
+                return warnings;
             }
         }
     }

@@ -830,7 +830,7 @@ The result of the environment preflight check\.
 
 Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions\.
 
-Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable') set to `false` and diagnostic reasons in [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Messages 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Messages').
+Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable') set to `false` and diagnostic reasons in [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Messages 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Messages'). Non-fatal findings are returned in [Warnings](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Warnings 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Warnings') and do not affect [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable').
 
 ```csharp
 public static DiGi.YOLO.Classes.YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
