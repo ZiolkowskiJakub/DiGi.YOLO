@@ -351,7 +351,7 @@ public BoundingBoxResultFile();
 
 ## BoundingBoxResultFile\.ToString\(\) Method
 
-Returns a string representation of the bounding box results contained in the file, 
+Returns a string representation of the bounding box results contained in the file,
 with each result on a new line\.
 
 ```csharp

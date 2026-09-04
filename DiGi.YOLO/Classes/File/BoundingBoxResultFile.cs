@@ -16,7 +16,7 @@ namespace DiGi.YOLO.Classes
         }
 
         /// <summary>
-        /// Returns a string representation of the bounding box results contained in the file, 
+        /// Returns a string representation of the bounding box results contained in the file,
         /// with each result on a new line.
         /// </summary>
         /// <returns>A string containing the concatenated string representations of all valid bounding box results.</returns>

@@ -68,7 +68,7 @@ namespace DiGi.YOLO
                 return new YOLOEnvironmentResult(false, pythonPath, null, null, null, null, path_Model, null, [message], null, start);
             }
 
-            string Quoted(string? value)
+            static string Quoted(string? value)
             {
                 return string.Concat("\"", value, "\"");
             }

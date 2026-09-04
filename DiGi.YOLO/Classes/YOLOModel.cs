@@ -198,7 +198,7 @@ namespace DiGi.YOLO.Classes
             return result;
         }
 
-/// <summary>
+        /// <summary>
         /// Adds the specified configuration file settings to the YOLO model.
         /// </summary>
         /// <param name="configurationFile">The configuration file containing directory and label information.</param>
@@ -392,7 +392,7 @@ namespace DiGi.YOLO.Classes
             return string.Join("\\", values);
         }
 
-/// <summary>
+        /// <summary>
         /// Retrieves the labels directory path based on a provided image directory and category.
         /// </summary>
         /// <param name="directory">The base directory path to evaluate.</param>

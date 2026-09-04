@@ -1,4 +1,4 @@
-﻿namespace DiGi.YOLO.Constants
+namespace DiGi.YOLO.Constants
 {
     /// <summary>
     /// Provides constant values for file names used in YOLO runner scripts and configuration files.

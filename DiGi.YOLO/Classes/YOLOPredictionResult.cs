@@ -61,9 +61,9 @@ namespace DiGi.YOLO.Classes
             this.exitCode = exitCode;
             this.imageCount = imageCount;
             this.outputPath = outputPath;
-            this.values = values == null ? null : new List<string>(values);
-            this.standardOutput = standardOutput == null ? null : new List<string>(standardOutput);
-            this.standardError = standardError == null ? null : new List<string>(standardError);
+            this.values = values == null ? null : [.. values];
+            this.standardOutput = standardOutput == null ? null : [.. standardOutput];
+            this.standardError = standardError == null ? null : [.. standardError];
             this.start = start;
             this.end = end;
         }
@@ -81,10 +81,10 @@ namespace DiGi.YOLO.Classes
                 exitCode = yOLOPredictionResult.exitCode;
                 imageCount = yOLOPredictionResult.imageCount;
                 outputPath = yOLOPredictionResult.outputPath;
-                standardError = yOLOPredictionResult.standardError == null ? null : new List<string>(yOLOPredictionResult.standardError);
-                standardOutput = yOLOPredictionResult.standardOutput == null ? null : new List<string>(yOLOPredictionResult.standardOutput);
+                standardError = yOLOPredictionResult.standardError == null ? null : [.. yOLOPredictionResult.standardError];
+                standardOutput = yOLOPredictionResult.standardOutput == null ? null : [.. yOLOPredictionResult.standardOutput];
                 start = yOLOPredictionResult.start;
-                values = yOLOPredictionResult.values == null ? null : new List<string>(yOLOPredictionResult.values);
+                values = yOLOPredictionResult.values == null ? null : [.. yOLOPredictionResult.values];
             }
         }
 

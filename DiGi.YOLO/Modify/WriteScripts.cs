@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -61,18 +61,16 @@ namespace DiGi.YOLO
 
                 string resourceName = string.Format("{0}.{1}.{2}", typeof(Query).Namespace, Constants.DirectoryName.YOLO, fileName);
 
-                using (Stream? stream = assembly.GetManifestResourceStream(resourceName))
+                using Stream? stream = assembly.GetManifestResourceStream(resourceName);
+                if (stream == null)
                 {
-                    if (stream == null)
-                    {
-                        result = false;
-                        continue;
-                    }
+                    result = false;
+                    continue;
+                }
 
-                    using (FileStream fileStream = File.Create(path_Target))
-                    {
-                        stream.CopyTo(fileStream);
-                    }
+                using (FileStream fileStream = File.Create(path_Target))
+                {
+                    stream.CopyTo(fileStream);
                 }
             }
 

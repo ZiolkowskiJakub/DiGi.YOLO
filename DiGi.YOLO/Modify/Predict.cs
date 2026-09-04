@@ -1,7 +1,6 @@
 using DiGi.YOLO.Classes;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -94,7 +93,7 @@ namespace DiGi.YOLO
                 File.Delete(outputPath);
             }
 
-            string Quoted(string? value)
+            static string Quoted(string? value)
             {
                 return string.Concat("\"", value, "\"");
             }

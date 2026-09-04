@@ -35,7 +35,7 @@ namespace DiGi.YOLO
             Queue<string> queue_StandardError = new();
             Queue<string> queue_StandardOutput = new();
 
-            void Collect(Queue<string> values, string? value)
+            static void Collect(Queue<string> values, string? value)
             {
                 if (value == null)
                 {

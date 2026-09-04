@@ -81,8 +81,8 @@ namespace DiGi.YOLO.Classes
             this.cudaAvailable = cudaAvailable;
             this.modelPath = modelPath;
             this.modelUltralyticsVersion = modelUltralyticsVersion;
-            this.messages = messages == null ? null : new List<string>(messages);
-            this.warnings = warnings == null ? null : new List<string>(warnings);
+            this.messages = messages == null ? null : [.. messages];
+            this.warnings = warnings == null ? null : [.. warnings];
             this.checkedTime = checkedTime;
         }
 
@@ -97,7 +97,7 @@ namespace DiGi.YOLO.Classes
             {
                 checkedTime = yOLOEnvironmentResult.checkedTime;
                 cudaAvailable = yOLOEnvironmentResult.cudaAvailable;
-                messages = yOLOEnvironmentResult.messages == null ? null : new List<string>(yOLOEnvironmentResult.messages);
+                messages = yOLOEnvironmentResult.messages == null ? null : [.. yOLOEnvironmentResult.messages];
                 modelPath = yOLOEnvironmentResult.modelPath;
                 modelUltralyticsVersion = yOLOEnvironmentResult.modelUltralyticsVersion;
                 pythonPath = yOLOEnvironmentResult.pythonPath;
@@ -105,7 +105,7 @@ namespace DiGi.YOLO.Classes
                 runnable = yOLOEnvironmentResult.runnable;
                 torchVersion = yOLOEnvironmentResult.torchVersion;
                 ultralyticsVersion = yOLOEnvironmentResult.ultralyticsVersion;
-                warnings = yOLOEnvironmentResult.warnings == null ? null : new List<string>(yOLOEnvironmentResult.warnings);
+                warnings = yOLOEnvironmentResult.warnings == null ? null : [.. yOLOEnvironmentResult.warnings];
             }
         }
 
