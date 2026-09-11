@@ -11,7 +11,7 @@ namespace DiGi.YOLO
     {
         /// <summary>
         /// Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions.
-        /// <para>Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with <see cref="Classes.YOLOEnvironmentResult.Runnable"/> set to <c>false</c> and diagnostic reasons in <see cref="Classes.YOLOEnvironmentResult.Messages"/>. Non-fatal findings are returned in <see cref="Classes.YOLOEnvironmentResult.Warnings"/> and do not affect <see cref="Classes.YOLOEnvironmentResult.Runnable"/>.</para>
+        /// <para>Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with <see cref="YOLOEnvironmentResult.Runnable"/> set to <c>false</c> and diagnostic reasons in <see cref="YOLOEnvironmentResult.Messages"/>. Non-fatal findings are returned in <see cref="YOLOEnvironmentResult.Warnings"/> and do not affect <see cref="YOLOEnvironmentResult.Runnable"/>.</para>
         /// </summary>
         /// <param name="pythonPath">The path of the CPython interpreter, a command name on PATH, or <c>null</c> to search PATH.</param>
         /// <param name="modelPath">The path of the trained model file to probe for compatibility, or <c>null</c>.</param>
@@ -129,7 +129,7 @@ namespace DiGi.YOLO
                     string? pythonVersion = jsonNode["python_version"]?.ToString();
                     string? ultralyticsVersion = jsonNode["ultralytics_version"]?.ToString();
                     string? torchVersion = jsonNode["torch_version"]?.ToString();
-                    bool? cudaAvailable = jsonNode["cuda_available"] is JsonValue cudaValue && cudaValue.TryGetValue<bool>(out bool cudaBool) ? cudaBool : null;
+                    bool? cudaAvailable = jsonNode["cuda_available"] is JsonValue cudaValue && cudaValue.TryGetValue(out bool cudaBool) ? cudaBool : null;
                     string? modelUltralyticsVersion = jsonNode["model_ultralytics_version"]?.ToString();
 
                     List<string> messages_Candidate = [];
