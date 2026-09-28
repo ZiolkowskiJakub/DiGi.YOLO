@@ -1,8 +1,12 @@
-# Pinned against the frozen weights the pipeline depends on (YOLO/models/model.pt).
+# Pinned against the frozen weights the pipeline depends on (YOLO/models/model.pt) and against the
+# pretrained checkpoint new detectors are trained from (yolo26x.pt).
 #
-# ultralytics is exact because the checkpoint records the version that wrote it:
-#   version 8.3.130, saved 2025-05-23, run name train8, 150 epochs, imgsz 640.
-# The detector is frozen, so a different ultralytics is a different detector.
+# ultralytics is exact because a different ultralytics can be a different detector. The frozen
+# checkpoint was written by 8.3.130 (saved 2025-05-23, run name train8, 150 epochs, imgsz 640);
+# 8.4.165 was adopted on 2026-09-28 (ZiolkowskiJakub/DiGi.YOLO#17) after it reproduced that
+# checkpoint's detections on 1 000 held images: identical detection counts, box edges within
+# 0.017 px, confidence within 0.0004, every matched pair at IoU >= 0.9999. 8.3.130 cannot load
+# YOLO26 checkpoints at all, which is what forced the move.
 #
 # torch is a floor rather than an exact pin. The checkpoint does not record which torch
 # saved it, but it carries a .storage_alignment entry, which torch only began writing at
@@ -12,7 +16,7 @@
 #
 # torchvision is deliberately absent: ultralytics declares it and version-locks it to torch.
 
-ultralytics==8.3.130
+ultralytics==8.4.165
 torch>=2.6
 
 # Export only. These are needed by export.py to turn the frozen checkpoint into the ONNX graph the

@@ -43,6 +43,20 @@ The weights are not in git (130 MB). They live in the git-ignored `user files/YO
 
 To read these back from any `.pt` without installing torch: the file is a zip, and `data.pkl` inside it unpickles to a dictionary carrying `version`, `date` and `train_args`.
 
+### Pretrained Base Checkpoint
+New detectors are trained from the latest ultralytics pretrained weights rather than continued from `train8` alone ([#17](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/17)). The checkpoint is fetched once, never downloaded implicitly at train time, and stored in the git-ignored `user files/YOLO/models/base/`:
+
+| | |
+|---|---|
+| File | `yolo26x.pt` (COCO, 80 classes) |
+| Source | [ultralytics/assets `v8.4.0`](https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26x.pt) |
+| Written by | ultralytics 8.3.222, 2025-12-30 |
+| Parameters | 58 993 368 |
+| Bytes | 118 667 365 |
+| SHA-256 | `9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92` |
+
+ultralytics 8.3.130 cannot load it; `check.py` reports a warning when the installed ultralytics is older than the version that wrote the model it is given. An ONNX export of a YOLO26 detector made with the flags below still answers the raw `[batch, 4 + nc, 8400]` layout (`nms=False`), so the in-process decoder is unchanged.
+
 ### Frozen ONNX Export Provenance
 The same detector is also scored in process, without an interpreter, by
 [DiGi.YOLO.ONNX](https://github.com/ZiolkowskiJakub/DiGi.YOLO.ONNX). That path consumes an ONNX export of the checkpoint above, produced once by `export.py`. The export is as frozen as the checkpoint it came from, so it is recorded the same way - by a digest read off the artefact:
@@ -68,7 +82,7 @@ Like the weights, the export is not in git (260 MB) and lives in the git-ignored
   - `--conf`: Confidence threshold float (default: `0.1`).
   - `--output`: Output filepath for bounding box results (`.bbrf`) in write mode (`"w"`) (default: `YOLO/output/results.bbrf`).
 * **Export (`export.py`):** Turns the frozen checkpoint into the ONNX graph the in-process detector scores with. Options: `--model`, `--output`, `--imgsz` (default `640`), `--opset` (default `12`), `--static` (fixed axes instead of a dynamic batch). It prints the size and SHA-256 of what it wrote, which is what the provenance table above records. This is a one-off preparation step - it is why removing the Python dependency removes it from every *run* rather than from the repository.
-* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.3.130`, the version the frozen checkpoint records as having written it) because a different ultralytics is a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning. `onnx` and `onnxslim` sit under an export-only heading there: `export.py` needs them and nothing that runs a prediction does.
+* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.4.165`; the frozen checkpoint was written by 8.3.130, and 8.4.165 was adopted in #17 only after reproducing its detections on 1 000 held images - identical counts, box edges within 0.017 px) because a different ultralytics can be a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning. `onnx` and `onnxslim` sit under an export-only heading there: `export.py` needs them and nothing that runs a prediction does.
 
 ### Running a Prediction from C#
 `Modify.Predict` runs `predict.py` in a CPython process and reports the run. `DiGi.Scripting.Python` is IronPython and cannot host `ultralytics`/`torch`, so it is not an alternative.

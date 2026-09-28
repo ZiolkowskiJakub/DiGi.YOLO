@@ -7,8 +7,8 @@ from utils import GetDirectory, GetModelPath
 
 # Exports the frozen checkpoint to ONNX so the detector can be scored in process, without an
 # interpreter. This is a one-off preparation step: it still needs ultralytics, and it must be run
-# with the version that wrote the checkpoint (8.3.130 - see requirements.txt), or the exported graph
-# is not the frozen detector any more.
+# with the version pinned in requirements.txt (8.4.165), which is the one verified to reproduce the
+# checkpoint's detections - any other version is not proven to export the same detector.
 #
 # opset 12 is the widest opset the runtimes in use accept without complaint. dynamic is on so the
 # exported graph takes any batch size; a static export pins the batch to one, and the C# runner then

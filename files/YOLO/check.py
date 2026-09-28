@@ -48,6 +48,23 @@ if args.model:
             # weights. A missing model, interpreter or torch is what stops a run.
             warnings.append(f"Could not read model metadata: {exception}")
 
+def _version_tuple(version):
+    parts = []
+    for part in version.split("+")[0].split("."):
+        digits = "".join(character for character in part if character.isdigit())
+        parts.append(int(digits) if digits else 0)
+    return tuple(parts)
+
+# An ultralytics older than the one that wrote the checkpoint may not know its modules - 8.3.130 cannot
+# load a YOLO26 checkpoint at all. A newer one loads older checkpoints, so only the older direction is
+# reported, and only as a warning: torch.load above already proved the header readable.
+if ultralytics_version and model_ultralytics_version:
+    try:
+        if _version_tuple(ultralytics_version) < _version_tuple(model_ultralytics_version):
+            warnings.append(f"ultralytics {ultralytics_version} is older than {model_ultralytics_version}, which wrote the model; upgrade to the version in requirements.txt")
+    except Exception:
+        pass
+
 runnable = ultralytics_version is not None and torch_version is not None and len(messages) == 0
 
 result = {
