@@ -12,6 +12,7 @@ namespace DiGi.YOLO
         /// <summary>
         /// Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions.
         /// <para>Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with <see cref="YOLOEnvironmentResult.Runnable"/> set to <c>false</c> and diagnostic reasons in <see cref="YOLOEnvironmentResult.Messages"/>. Non-fatal findings are returned in <see cref="YOLOEnvironmentResult.Warnings"/> and do not affect <see cref="YOLOEnvironmentResult.Runnable"/>.</para>
+        /// <para>The probe isolates the ultralytics settings file in its working directory through YOLO_CONFIG_DIR, so switching ultralytics versions between probes no longer rewrites or loses the other's settings, and it reads the JSON payload of check.py from between the script's marker lines rather than from whatever line happens to start with a brace.</para>
         /// </summary>
         /// <param name="pythonPath">The path of the CPython interpreter, a command name on PATH, or <c>null</c> to search PATH.</param>
         /// <param name="modelPath">The path of the trained model file to probe for compatibility, or <c>null</c>.</param>
@@ -24,10 +25,11 @@ namespace DiGi.YOLO
 
         /// <summary>
         /// Probes Python interpreter candidates in a specified working directory context to detect whether the machine can execute YOLO workloads.
+        /// <para>The ultralytics settings file is isolated in the working directory: the probe points YOLO_CONFIG_DIR at its .yolo-config folder, and reads the JSON payload of check.py from between the script's marker lines.</para>
         /// </summary>
         /// <param name="pythonPath">The path of the CPython interpreter, a command name on PATH, or <c>null</c> to search PATH.</param>
         /// <param name="modelPath">The path of the trained model file to probe for compatibility, or <c>null</c>.</param>
-        /// <param name="workingDirectory">The directory where scripts are written and executed, or <c>null</c> to use temporary storage.</param>
+        /// <param name="workingDirectory">The directory where scripts are written and executed, or <c>null</c> to use temporary storage. The ultralytics settings file of the probe is isolated in this directory.</param>
         /// <param name="cancellationToken">The token that cancels probing.</param>
         /// <returns>The result of the environment preflight check.</returns>
         public static YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, string? workingDirectory, CancellationToken cancellationToken = default)
@@ -42,6 +44,8 @@ namespace DiGi.YOLO
                 path_Working = Path.Combine(Path.GetTempPath(), "DiGi_YOLO_Preflight");
             }
 
+            Dictionary<string, string> environmentVariables = new();
+
             try
             {
                 if (!Directory.Exists(path_Working))
@@ -55,6 +59,13 @@ namespace DiGi.YOLO
                 //that makes a preflight fix appear to do nothing. WriteScripts is idempotent and small, so the cost is a
                 //few file copies per probe.
                 Modify.WriteScripts(path_Working);
+
+                //Isolates the ultralytics settings file in the working directory: without YOLO_CONFIG_DIR every run
+                //reads and writes the shared machine-wide settings file, so whichever version runs after the other
+                //rewrites the file it does not expect, prints a settings notice on stdout and loses the custom values
+                //the other version had stored. Creation can fail on a read-only working directory, which the probe
+                //answers as a failed preflight rather than throwing
+                environmentVariables = ConfigEnvironmentVariables(path_Working!);
             }
             catch (Exception exception)
             {
@@ -91,7 +102,7 @@ namespace DiGi.YOLO
                     break;
                 }
 
-                (int exitCode, List<string> standardOutput, List<string> standardError) = ExecuteProcess(candidate, arguments_Base, path_Working!, cancellationToken);
+                (int exitCode, List<string> standardOutput, List<string> standardError) = ExecuteProcess(candidate, arguments_Base, path_Working!, environmentVariables, cancellationToken);
 
                 if (exitCode != 0)
                 {
@@ -100,15 +111,8 @@ namespace DiGi.YOLO
                     continue;
                 }
 
-                string? line_Json = null;
-                foreach (string line in standardOutput)
-                {
-                    if (!string.IsNullOrWhiteSpace(line) && line.TrimStart().StartsWith("{"))
-                    {
-                        line_Json = line.Trim();
-                        break;
-                    }
-                }
+                //The payload sits between the check.py markers, so a settings notice or any other line printed before it is never picked up
+                string? line_Json = CheckJsonLine(standardOutput);
 
                 if (string.IsNullOrWhiteSpace(line_Json))
                 {

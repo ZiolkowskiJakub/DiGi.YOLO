@@ -13,6 +13,7 @@ namespace DiGi.YOLO
         /// <summary>
         /// Runs the YOLO prediction script over a directory of images in a CPython process and reports how the run went.
         /// <para>The scripts are laid down in the working directory when they are not already there, a stale result file is removed so a failed run cannot be mistaken for this one, and the process is then run with its output streams captured. A source directory holding no images is answered without starting a process at all, because predict.py writes no result file in that case and the missing file would otherwise be indistinguishable from a crash.</para>
+        /// <para>The ultralytics settings file is isolated in the working directory: the process is started with YOLO_CONFIG_DIR pointing at the .yolo-config folder of that directory, so the run never reads or rewrites the shared machine-wide settings file another ultralytics version uses.</para>
         /// <para>The run is synchronous. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing. Only the interpreter is killed - this targets netstandard2.0, which has no overload for killing a whole process tree, so torch worker processes can outlive the cancellation.</para>
         /// </summary>
         /// <param name="yOLOPredictionOptions">The settings for the run.</param>
@@ -111,7 +112,10 @@ namespace DiGi.YOLO
             int batchSize = yOLOPredictionOptions.BatchSize < 1 ? 32 : yOLOPredictionOptions.BatchSize;
             stringBuilder_Arguments.Append(" --batch ").Append(batchSize.ToString(CultureInfo.InvariantCulture));
 
-            (int exitCode, List<string> standardOutput, List<string> standardError) = Query.ExecuteProcess(pythonPath!, stringBuilder_Arguments.ToString(), workingDirectory!, cancellationToken);
+            //Isolates the ultralytics settings file in the working directory, so the run never reads or rewrites the shared machine-wide settings file another ultralytics version uses
+            Dictionary<string, string> environmentVariables = Query.ConfigEnvironmentVariables(workingDirectory!);
+
+            (int exitCode, List<string> standardOutput, List<string> standardError) = Query.ExecuteProcess(pythonPath!, stringBuilder_Arguments.ToString(), workingDirectory!, environmentVariables, cancellationToken);
 
             List<string>? values = exitCode == 0 && File.Exists(outputPath) ? [.. File.ReadAllLines(outputPath)] : null;
 

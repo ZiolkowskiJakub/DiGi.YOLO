@@ -478,6 +478,8 @@ Runs the YOLO prediction script over a directory of images in a CPython process 
 
 The scripts are laid down in the working directory when they are not already there, a stale result file is removed so a failed run cannot be mistaken for this one, and the process is then run with its output streams captured. A source directory holding no images is answered without starting a process at all, because predict.py writes no result file in that case and the missing file would otherwise be indistinguishable from a crash.
 
+The ultralytics settings file is isolated in the working directory: the process is started with YOLO_CONFIG_DIR pointing at the .yolo-config folder of that directory, so the run never reads or rewrites the shared machine-wide settings file another ultralytics version uses.
+
 The run is synchronous. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing. Only the interpreter is killed - this targets netstandard2.0, which has no overload for killing a whole process tree, so torch worker processes can outlive the cancellation.
 
 ```csharp
@@ -606,6 +608,52 @@ public static class Query
 Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → Query
 ### Methods
 
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_)'></a>
+
+## Query\.CheckJsonLine\(List\<string\>\) Method
+
+Finds the JSON payload line of a check\.py run in its captured stdout\.
+
+The payload is the first non-empty line between the [CheckJsonBegin](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckJsonBegin 'DiGi\.YOLO\.Constants\.Marker\.CheckJsonBegin') and [CheckJsonEnd](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckJsonEnd 'DiGi\.YOLO\.Constants\.Marker\.CheckJsonEnd') markers, so the result does not depend on what the interpreter or ultralytics print before or after it - a settings notice included.
+
+```csharp
+public static string? CheckJsonLine(System.Collections.Generic.List<string> standardOutput);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+The captured stdout lines of the run\.
+
+#### Returns
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
+The JSON payload line, or `null` when the markers or the payload between them are absent\.
+
+<a name='DiGi.YOLO.Query.ConfigEnvironmentVariables(string)'></a>
+
+## Query\.ConfigEnvironmentVariables\(string\) Method
+
+Returns the environment variables a run in the given working directory gets, pointing ultralytics at the settings directory of that working directory\.
+
+The YOLO_CONFIG_DIR variable is set to the .yolo-config folder inside the working directory (created when missing), so the settings file an ultralytics version reads and writes lives in the working directory instead of the shared machine-wide one. Without it, whichever version runs after the other rewrites the file it does not expect, prints a settings notice on stdout and loses the custom values the other version had stored.
+
+```csharp
+public static System.Collections.Generic.Dictionary<string,string> ConfigEnvironmentVariables(string workingDirectory);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.ConfigEnvironmentVariables(string).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The working directory of the run\.
+
+#### Returns
+[System\.Collections\.Generic\.Dictionary&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')  
+The environment variables to set on the process the run starts\.
+
 <a name='DiGi.YOLO.Query.Decode(string)'></a>
 
 ## Query\.Decode\(string\) Method
@@ -668,6 +716,53 @@ The path string to be encoded\. This value can be null\.
 #### Returns
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 An encoded version of the path, or an empty string if the provided path is null or whitespace\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken)'></a>
+
+## Query\.ExecuteProcess\(string, string, string, Dictionary\<string,string\>, CancellationToken\) Method
+
+Executes a process with captured standard output and standard error streams, additional environment variables and cancellation support\.
+
+Same contract as [ExecuteProcess\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Threading\.CancellationToken\)'), with the environment variables set on the process on top of the inherited environment.
+
+```csharp
+public static (int ExitCode,System.Collections.Generic.List<string> StandardOutput,System.Collections.Generic.List<string> StandardError) ExecuteProcess(string executablePath, string arguments, string workingDirectory, System.Collections.Generic.Dictionary<string,string>? environmentVariables, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken).executablePath'></a>
+
+`executablePath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The full path of the executable process to run\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken).arguments'></a>
+
+`arguments` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The command line arguments passed to the process\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The working directory context for the process execution\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken).environmentVariables'></a>
+
+`environmentVariables` [System\.Collections\.Generic\.Dictionary&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')
+
+The environment variables set on the process on top of the inherited environment, or `null`\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels process execution\.
+
+#### Returns
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+A tuple containing the process exit code, standard output lines, and standard error lines\.
 
 <a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken)'></a>
 
@@ -791,6 +886,8 @@ A list of distinct resolved interpreter paths in search order\.
 
 Probes Python interpreter candidates in a specified working directory context to detect whether the machine can execute YOLO workloads\.
 
+The ultralytics settings file is isolated in the working directory: the probe points YOLO_CONFIG_DIR at its .yolo-config folder, and reads the JSON payload of check.py from between the script's marker lines.
+
 ```csharp
 public static DiGi.YOLO.Classes.YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, string? workingDirectory, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
 ```
@@ -812,7 +909,7 @@ The path of the trained model file to probe for compatibility, or `null`\.
 
 `workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
-The directory where scripts are written and executed, or `null` to use temporary storage\.
+The directory where scripts are written and executed, or `null` to use temporary storage\. The ultralytics settings file of the probe is isolated in this directory\.
 
 <a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken).cancellationToken'></a>
 
@@ -831,6 +928,8 @@ The result of the environment preflight check\.
 Probes Python interpreter candidates to detect whether the machine can execute YOLO workloads, returning environment details and dependency versions\.
 
 Checks candidate interpreters on PATH in order and reports the first interpreter that is runnable. Never throws an exception; probe failures or invalid interpreters are returned with [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable') set to `false` and diagnostic reasons in [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Messages 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Messages'). Non-fatal findings are returned in [Warnings](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Warnings 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Warnings') and do not affect [Runnable](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult.Runnable 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult\.Runnable').
+
+The probe isolates the ultralytics settings file in its working directory through YOLO_CONFIG_DIR, so switching ultralytics versions between probes no longer rewrites or loses the other's settings, and it reads the JSON payload of check.py from between the script's marker lines rather than from whatever line happens to start with a brace.
 
 ```csharp
 public static DiGi.YOLO.Classes.YOLOEnvironmentResult YOLOEnvironmentResult(string? pythonPath, string? modelPath, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));

@@ -83,6 +83,21 @@ public const string YOLO = "YOLO";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.DirectoryName.YoloConfig'></a>
+
+## DirectoryName\.YoloConfig Field
+
+The name of the directory holding the ultralytics settings isolated to the working directory a run executes in\.
+
+Each run points the YOLO_CONFIG_DIR environment variable at this folder, so the settings file an ultralytics version reads and writes lives in the working directory instead of the shared machine-wide one. Without it, switching ultralytics versions between runs rewrites the other's settings, prints a settings notice on stdout and loses custom values such as runs_dir.
+
+```csharp
+public const string YoloConfig = ".yolo-config";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.FileExtension'></a>
 
 ## FileExtension Class
@@ -208,6 +223,49 @@ The file name of the utility script\.
 
 ```csharp
 public const string Utils = "utils.py";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.Marker'></a>
+
+## Marker Class
+
+Provides constant values for the stdout contract of the preflight check script\.
+
+```csharp
+public static class Marker
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → Marker
+### Fields
+
+<a name='DiGi.YOLO.Constants.Marker.CheckJsonBegin'></a>
+
+## Marker\.CheckJsonBegin Field
+
+The line check\.py prints immediately before its JSON payload\.
+
+The payload is the first non-empty line between this marker and [CheckJsonEnd](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckJsonEnd 'DiGi\.YOLO\.Constants\.Marker\.CheckJsonEnd'), so a caller finds it without depending on what the interpreter or ultralytics print first - a settings notice included. The markers and their use are stated in check.py in files/YOLO.
+
+```csharp
+public const string CheckJsonBegin = "YOLO_CHECK_JSON_BEGIN";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.Marker.CheckJsonEnd'></a>
+
+## Marker\.CheckJsonEnd Field
+
+The line check\.py prints immediately after its JSON payload\.
+
+Paired with [CheckJsonBegin](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckJsonBegin 'DiGi\.YOLO\.Constants\.Marker\.CheckJsonBegin'); see check.py in files/YOLO.
+
+```csharp
+public const string CheckJsonEnd = "YOLO_CHECK_JSON_END";
 ```
 
 #### Field Value

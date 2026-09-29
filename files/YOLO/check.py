@@ -78,4 +78,10 @@ result = {
     "warnings": warnings
 }
 
+# The stdout contract: the JSON payload sits between two marker lines, so a caller finds it without depending on
+# what the interpreter or ultralytics print before it - the banner and settings notices included. The C# side
+# (Query/CheckJsonLine.cs) reads the first non-empty line between the markers; everything else on stdout is noise
+# it must not parse.
+print("YOLO_CHECK_JSON_BEGIN")
 print(json.dumps(result))
+print("YOLO_CHECK_JSON_END")

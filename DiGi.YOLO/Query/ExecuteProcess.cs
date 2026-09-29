@@ -19,6 +19,21 @@ namespace DiGi.YOLO
         /// <returns>A tuple containing the process exit code, standard output lines, and standard error lines.</returns>
         public static (int ExitCode, List<string> StandardOutput, List<string> StandardError) ExecuteProcess(string executablePath, string arguments, string workingDirectory, CancellationToken cancellationToken = default)
         {
+            return ExecuteProcess(executablePath, arguments, workingDirectory, null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Executes a process with captured standard output and standard error streams, additional environment variables and cancellation support.
+        /// <para>Same contract as <see cref="ExecuteProcess(string, string, string, CancellationToken)"/>, with the environment variables set on the process on top of the inherited environment.</para>
+        /// </summary>
+        /// <param name="executablePath">The full path of the executable process to run.</param>
+        /// <param name="arguments">The command line arguments passed to the process.</param>
+        /// <param name="workingDirectory">The working directory context for the process execution.</param>
+        /// <param name="environmentVariables">The environment variables set on the process on top of the inherited environment, or <c>null</c>.</param>
+        /// <param name="cancellationToken">The token that cancels process execution.</param>
+        /// <returns>A tuple containing the process exit code, standard output lines, and standard error lines.</returns>
+        public static (int ExitCode, List<string> StandardOutput, List<string> StandardError) ExecuteProcess(string executablePath, string arguments, string workingDirectory, Dictionary<string, string>? environmentVariables, CancellationToken cancellationToken = default)
+        {
             ProcessStartInfo processStartInfo = new()
             {
                 Arguments = arguments,
@@ -31,6 +46,14 @@ namespace DiGi.YOLO
                 UseShellExecute = false,
                 WorkingDirectory = workingDirectory
             };
+
+            if (environmentVariables != null)
+            {
+                foreach (KeyValuePair<string, string> pair in environmentVariables)
+                {
+                    processStartInfo.EnvironmentVariables[pair.Key] = pair.Value;
+                }
+            }
 
             Queue<string> queue_StandardError = new();
             Queue<string> queue_StandardOutput = new();
