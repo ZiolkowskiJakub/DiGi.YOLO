@@ -83,7 +83,8 @@ namespace DiGi.YOLO
 
                     string path_Labels = Path.ChangeExtension(Path.Combine(directory_Labels, fileName_Image), ".txt");
 
-                    if (path != path_Image)
+                    //Compared as full paths: an image already saved in place under another spelling of the same path (relative, other casing) would otherwise be copied onto itself, which throws
+                    if (!string.Equals(Query.NormalizedPath(path), Query.NormalizedPath(path_Image), System.StringComparison.OrdinalIgnoreCase))
                     {
                         File.Copy(path, path_Image, true);
                     }
