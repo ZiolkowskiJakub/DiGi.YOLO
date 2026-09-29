@@ -9,6 +9,7 @@ namespace DiGi.YOLO
     {
         /// <summary>
         /// Reads a YOLO model configuration and associated image and label files from the specified path.
+        /// <para>Only "*.jpeg" images are enumerated - the extension the dataset builders write. The dataset directory is the "path:" of the file resolved against the file's own directory; when it does not exist the file's directory is used and <see cref="YOLOModel.Messages"/> says so (see <see cref="Create.ConfigurationFile(string?)"/>).</para>
         /// </summary>
         /// <param name="path">The file system path to the configuration file.</param>
         /// <returns>A <see cref="YOLOModel"/> instance if the configuration is valid and found; otherwise, null.</returns>

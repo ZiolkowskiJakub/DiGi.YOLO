@@ -1,9 +1,8 @@
 import argparse
-import hashlib
 import os
 import shutil
 from ultralytics import YOLO
-from utils import GetDirectory, GetModelPath
+from utils import FileSHA256, GetDirectory, GetModelPath
 
 # Exports the frozen checkpoint to ONNX so the detector can be scored in process, without an
 # interpreter. This is a one-off preparation step: it still needs ultralytics, and it must be run
@@ -46,11 +45,6 @@ if os.path.abspath(outputPath) != os.path.abspath(exportedPath):
 
 # The exported graph is as frozen as the checkpoint it came from, so it is recorded the same way -
 # by a digest read off the artefact rather than by a note somebody kept up to date by hand.
-digest = hashlib.sha256()
-with open(outputPath, "rb") as file:
-    for chunk in iter(lambda: file.read(1024 * 1024), b""):
-        digest.update(chunk)
-
 print(f"Exported: {outputPath}")
 print(f"Bytes: {os.path.getsize(outputPath)}")
-print(f"SHA256: {digest.hexdigest()}")
+print(f"SHA256: {FileSHA256(outputPath)}")

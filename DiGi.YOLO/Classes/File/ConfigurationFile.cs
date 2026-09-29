@@ -12,6 +12,7 @@ namespace DiGi.YOLO.Classes
         private readonly string? directory;
         private readonly Dictionary<Category, string?> directoryNames = [];
         private readonly HashSet<Label> labels = [];
+        private readonly List<string>? messages;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationFile"/> class.
@@ -29,7 +30,23 @@ namespace DiGi.YOLO.Classes
         /// <param name="testDirectoryName">The relative name of the test directory.</param>
         /// <param name="labels">A collection of labels to be associated with this configuration.</param>
         public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels)
+            : this(directory, trainDirectoryName, validateDirectoryName, testDirectoryName, labels, null)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationFile"/> class with specified directory paths, labels and the messages reading the file produced.
+        /// </summary>
+        /// <param name="directory">The base root directory path.</param>
+        /// <param name="trainDirectoryName">The relative name of the training directory.</param>
+        /// <param name="validateDirectoryName">The relative name of the validation directory.</param>
+        /// <param name="testDirectoryName">The relative name of the test directory.</param>
+        /// <param name="labels">A collection of labels to be associated with this configuration.</param>
+        /// <param name="messages">The messages reading the file produced, such as a fall-back of the base directory, or <c>null</c> when there were none.</param>
+        public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, IEnumerable<Label>? labels, IEnumerable<string>? messages)
+        {
+            this.messages = messages == null ? null : [.. messages];
+
             this.directory = directory;
 
             directoryNames[Category.Train] = trainDirectoryName;
@@ -108,6 +125,17 @@ namespace DiGi.YOLO.Classes
             get
             {
                 return labels;
+            }
+        }
+
+        /// <summary>
+        /// Gets the messages reading the file produced, such as a base directory that did not exist and was replaced by the directory of the file, or <c>null</c> when there were none.
+        /// </summary>
+        public List<string>? Messages
+        {
+            get
+            {
+                return messages;
             }
         }
 

@@ -11,6 +11,11 @@ namespace DiGi.YOLO.Constants
         public const string Train = "train.py";
 
         /// <summary>
+        /// The file name of the validation runner script.
+        /// </summary>
+        public const string Validate = "val.py";
+
+        /// <summary>
         /// The file name of the prediction runner script.
         /// </summary>
         public const string Predict = "predict.py";

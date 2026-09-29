@@ -9,7 +9,8 @@ namespace DiGi.YOLO
         /// <summary>
         /// Writes the YOLO Python runner scripts and configuration files into the specified directory.
         /// <para>The scripts ship inside this assembly, so this works in any host that loads it. A YOLO folder sitting beside the assembly is used in preference, which lets a script be edited in a build output and tried without rebuilding.</para>
-        /// <para>predict.py imports utils.py, and Python resolves that against the directory the script sits in, so the files are only useful written together.</para>
+        /// <para>predict.py, train.py and export.py import utils.py, and Python resolves that against the directory the script sits in, so the files are only useful written together.</para>
+        /// <para>The scripts are always rewritten, so a directory never keeps running a script of an older build. The template conf.yaml is the exception: it is data rather than a script, so it is written only when the directory has none and never replaces the conf.yaml of a dataset written there.</para>
         /// </summary>
         /// <param name="directory">The target directory path where scripts will be written.</param>
         /// <returns>True if every script file was written; otherwise, false.</returns>
@@ -38,6 +39,7 @@ namespace DiGi.YOLO
             string[] fileNames =
             [
                 Constants.FileName.Train,
+                Constants.FileName.Validate,
                 Constants.FileName.Predict,
                 Constants.FileName.Check,
                 Constants.FileName.Export,
@@ -51,6 +53,12 @@ namespace DiGi.YOLO
             foreach (string fileName in fileNames)
             {
                 string path_Target = Path.Combine(directory, fileName);
+
+                //The template would otherwise replace the conf.yaml describing the dataset in this directory - every dataset written by Modify.Write lost its labels and absolute path that way
+                if (fileName == Constants.FileName.Conf && File.Exists(path_Target))
+                {
+                    continue;
+                }
 
                 string path_Source = Path.Combine(directory_Source, fileName);
                 if (File.Exists(path_Source))

@@ -157,7 +157,11 @@ A [BoundingBoxResultFile](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.BoundingBoxResu
 
 ## Create\.ConfigurationFile\(string\) Method
 
-Parses a configuration file from the specified path and creates a [ConfigurationFile\(string\)](DiGi.YOLO.md#DiGi.YOLO.Create.ConfigurationFile(string) 'DiGi\.YOLO\.Create\.ConfigurationFile\(string\)') instance\.
+Parses an ultralytics dataset file \(conf\.yaml\) from the specified path and creates a [ConfigurationFile\(string\)](DiGi.YOLO.md#DiGi.YOLO.Create.ConfigurationFile(string) 'DiGi\.YOLO\.Create\.ConfigurationFile\(string\)') instance\.
+
+The file is read key by key. Blank lines, comment lines and trailing " #" comments are skipped. The label block after "names:" ends at the first line that is not an "<int>: <name>" entry, and a file without "names:" has no labels.
+
+The "path:" value is resolved against the directory of the file rather than against the current directory: a missing value means that directory, a relative value is combined with it. When the resolved directory does not exist - typically an absolute path written on another machine - the directory of the file is used instead and [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.ConfigurationFile.Messages 'DiGi\.YOLO\.Classes\.ConfigurationFile\.Messages') says so, because the images would otherwise read as none at all with no error.
 
 ```csharp
 public static DiGi.YOLO.Classes.ConfigurationFile? ConfigurationFile(string? path);
@@ -310,6 +314,90 @@ The number of images passed to the model in a single inference batch\.
 #### Returns
 [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 The options, or `null` when no interpreter was found, a required path is missing, the confidence is not a value between zero and one, or the batch size is less than one\.
+
+<a name='DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string)'></a>
+
+## Create\.YOLOTrainingOptions\(string, string, string, string\) Method
+
+Builds the options for one run of the YOLO training script, resolving the interpreter, normalizing the paths and then checking that the combination can actually make a run\.
+
+The [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions') constructors only assign, so this is where the work belongs. It resolves first and validates afterwards, because the interpreter is usually given by name rather than by path and a name cannot be checked until it has been looked up.
+
+The hyperparameters keep their defaults (150 epochs, patience 50, imgsz 640, batch 16, seed 0, AMP on) and are set on the returned options; [Train\(this YOLOTrainingOptions, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Modify.Train(thisDiGi.YOLO.Classes.YOLOTrainingOptions,System.Threading.CancellationToken) 'DiGi\.YOLO\.Modify\.Train\(this DiGi\.YOLO\.Classes\.YOLOTrainingOptions, System\.Threading\.CancellationToken\)') rejects values that cannot make a run. [Project](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Project 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Project') is set to the "runs\detect" folder of the working directory, always absolute.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOTrainingOptions? YOLOTrainingOptions(string? pythonPath, string? modelPath, string? configurationFilePath, string? workingDirectory=null);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, or the name of one on PATH\. Null searches PATH\.
+
+<a name='DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the start weights: an existing \.pt checkpoint or \.yaml architecture definition\.
+
+<a name='DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string).configurationFilePath'></a>
+
+`configurationFilePath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the dataset configuration file \(conf\.yaml\)\.
+
+<a name='DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory the process runs in and the scripts are kept in\. Null uses the directory holding the configuration file\.
+
+#### Returns
+[YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions')  
+The options, or `null` when no interpreter was found, the configuration file does not exist, or the start file does not exist or is neither a \.pt nor a \.yaml file\.
+
+<a name='DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string)'></a>
+
+## Create\.YOLOValidationOptions\(string, string, string, string\) Method
+
+Builds the options for one run of the YOLO validation script, resolving the interpreter, normalizing the paths and then checking that the combination can actually make a run\.
+
+The [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions') constructors only assign, so this is where the work belongs. The split, image size, batch and confidence keep their defaults (test, 640, 16, the ultralytics default) and are set on the returned options.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOValidationOptions? YOLOValidationOptions(string? pythonPath, string? modelPath, string? configurationFilePath, string? workingDirectory=null);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, or the name of one on PATH\. Null searches PATH\.
+
+<a name='DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the weights file to validate, an existing \.pt checkpoint\.
+
+<a name='DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string).configurationFilePath'></a>
+
+`configurationFilePath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the dataset configuration file \(conf\.yaml\)\.
+
+<a name='DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory the process runs in and the scripts are kept in\. Null uses the directory holding the configuration file\.
+
+#### Returns
+[YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions')  
+The options, or `null` when no interpreter was found, the configuration file does not exist, or the weights file does not exist or is not a \.pt checkpoint\.
 
 <a name='DiGi.YOLO.Modify'></a>
 
@@ -509,6 +597,8 @@ The result of the run, or `null` when the options are missing the interpreter, t
 
 Reads a YOLO model configuration and associated image and label files from the specified path\.
 
+Only "*.jpeg" images are enumerated - the extension the dataset builders write. The dataset directory is the "path:" of the file resolved against the file's own directory; when it does not exist the file's directory is used and [Messages](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOModel.Messages 'DiGi\.YOLO\.Classes\.YOLOModel\.Messages') says so (see [ConfigurationFile\(string\)](DiGi.YOLO.md#DiGi.YOLO.Create.ConfigurationFile(string) 'DiGi\.YOLO\.Create\.ConfigurationFile\(string\)')).
+
 ```csharp
 public static DiGi.YOLO.Classes.YOLOModel? Read(string? path);
 ```
@@ -523,6 +613,72 @@ The file system path to the configuration file\.
 #### Returns
 [YOLOModel](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOModel 'DiGi\.YOLO\.Classes\.YOLOModel')  
 A [YOLOModel](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOModel 'DiGi\.YOLO\.Classes\.YOLOModel') instance if the configuration is valid and found; otherwise, null\.
+
+<a name='DiGi.YOLO.Modify.Train(thisDiGi.YOLO.Classes.YOLOTrainingOptions,System.Threading.CancellationToken)'></a>
+
+## Modify\.Train\(this YOLOTrainingOptions, CancellationToken\) Method
+
+Runs the YOLO training script in a CPython process and reports the identity of the weights it started from and of the weights it wrote\.
+
+The scripts are rewritten in the working directory before every run, so a directory never trains with a train.py of an older build; the conf.yaml of a dataset in that directory is left alone. The start weights are hashed here, before the process starts, because the output streams keep only their tail. A checkpoint start file is preflighted with [YOLOEnvironmentResult\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.YOLOEnvironmentResult\(string, string, string, System\.Threading\.CancellationToken\)'), which rejects an ultralytics too old for it.
+
+The run directory is created under [Project](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Project 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Project'), always passed as an absolute path. A run whose project folder lies inside a YOLO\models folder is refused, and ultralytics numbers a run name that is already taken rather than reusing its directory, so no run can replace the frozen model.pt. The ultralytics settings file is isolated in the .yolo-config folder of the working directory.
+
+The weights identity is read from the success block train.py prints last and confirmed against the file on disk; a digest that does not match is dropped and the result does not succeed. ultralytics may download yolo26n.pt into the "weights" folder of the working directory for its AMP check and falls back to full precision without it - [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Amp') reports the precision actually used.
+
+The run is synchronous and can take hours. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing; torch worker processes can outlive the cancellation.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOTrainingResult? Train(this DiGi.YOLO.Classes.YOLOTrainingOptions? yOLOTrainingOptions, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Modify.Train(thisDiGi.YOLO.Classes.YOLOTrainingOptions,System.Threading.CancellationToken).yOLOTrainingOptions'></a>
+
+`yOLOTrainingOptions` [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions')
+
+The settings for the run\.
+
+<a name='DiGi.YOLO.Modify.Train(thisDiGi.YOLO.Classes.YOLOTrainingOptions,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels the run\.
+
+#### Returns
+[YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult')  
+The result of the run, or `null` when the options are missing the interpreter, the start weights or the configuration file\.
+
+<a name='DiGi.YOLO.Modify.Validate(thisDiGi.YOLO.Classes.YOLOValidationOptions,System.Threading.CancellationToken)'></a>
+
+## Modify\.Validate\(this YOLOValidationOptions, CancellationToken\) Method
+
+Runs the YOLO validation script in a CPython process and reports the box mAP of a weights file on one split of a dataset\.
+
+Run once per weights file on the same split to compare detectors - the frozen train8 and each training candidate on the test split, for instance. The weights are hashed before the run, so every result names exactly which file it measured. The scripts are rewritten in the working directory first, the weights are preflighted with [YOLOEnvironmentResult\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.YOLOEnvironmentResult\(string, string, string, System\.Threading\.CancellationToken\)'), and the ultralytics settings file is isolated in the .yolo-config folder of the working directory.
+
+The run is synchronous. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOValidationResult? Validate(this DiGi.YOLO.Classes.YOLOValidationOptions? yOLOValidationOptions, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Modify.Validate(thisDiGi.YOLO.Classes.YOLOValidationOptions,System.Threading.CancellationToken).yOLOValidationOptions'></a>
+
+`yOLOValidationOptions` [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions')
+
+The settings for the run\.
+
+<a name='DiGi.YOLO.Modify.Validate(thisDiGi.YOLO.Classes.YOLOValidationOptions,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels the run\.
+
+#### Returns
+[YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult')  
+The result of the run, or `null` when the options are missing the interpreter, the weights or the configuration file\.
 
 <a name='DiGi.YOLO.Modify.Write(thisDiGi.YOLO.Classes.BoundingBoxResultFile,string)'></a>
 
@@ -557,6 +713,10 @@ True if the file was written successfully; otherwise, false\.
 
 Writes the YOLO model data, including configuration files, images, and labels, to the filesystem\.
 
+The runner scripts are written first and the dataset's conf.yaml after them. The scripts include a template conf.yaml; [WriteScripts\(string\)](DiGi.YOLO.md#DiGi.YOLO.Modify.WriteScripts(string) 'DiGi\.YOLO\.Modify\.WriteScripts\(string\)') no longer replaces an existing one, and writing the dataset's file last keeps it the file that counts either way.
+
+The "path:" of conf.yaml is written absolute, so ultralytics finds the images whatever directory it is started from rather than resolving the value against its own datasets directory.
+
 ```csharp
 public static bool Write(this DiGi.YOLO.Classes.YOLOModel? yOLOModel);
 ```
@@ -580,7 +740,9 @@ Writes the YOLO Python runner scripts and configuration files into the specified
 
 The scripts ship inside this assembly, so this works in any host that loads it. A YOLO folder sitting beside the assembly is used in preference, which lets a script be edited in a build output and tried without rebuilding.
 
-predict.py imports utils.py, and Python resolves that against the directory the script sits in, so the files are only useful written together.
+predict.py, train.py and export.py import utils.py, and Python resolves that against the directory the script sits in, so the files are only useful written together.
+
+The scripts are always rewritten, so a directory never keeps running a script of an older build. The template conf.yaml is the exception: it is data rather than a script, so it is written only when the directory has none and never replaces the conf.yaml of a dataset written there.
 
 ```csharp
 public static bool WriteScripts(string? directory);
@@ -658,7 +820,7 @@ The environment variables to set on the process the run starts\.
 
 ## Query\.Decode\(string\) Method
 
-Decodes a given path string by replacing URL\-encoded spaces with actual spaces and converting forward slashes to backslashes\.
+Decodes a YAML path value of an ultralytics dataset file: surrounding single or double quotes are removed, URL\-encoded spaces written by earlier versions become spaces, and forward slashes become backslashes\.
 
 ```csharp
 public static string? Decode(string? path);
@@ -700,7 +862,9 @@ A string representing the directory name \(e\.g\., "val", "train", "test"\), or 
 
 ## Query\.Encode\(string\) Method
 
-Encodes a given path string by replacing spaces with "%20" and backslashes with forward slashes\.
+Encodes a path as a YAML value of an ultralytics dataset file: backslashes become forward slashes, and the value is single\-quoted when YAML would otherwise read part of it as a comment or a mapping\.
+
+Spaces are kept as they are. ultralytics hands the value to the file system unchanged, so a "%20" written here would name a directory that does not exist - every path under "user files" did. [Decode\(string\)](DiGi.YOLO.md#DiGi.YOLO.Query.Decode(string) 'DiGi\.YOLO\.Query\.Decode\(string\)') still reads "%20" in files written before this change.
 
 ```csharp
 public static string Encode(string? path);
@@ -804,6 +968,50 @@ The token that cancels process execution\.
 #### Returns
 [&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
 A tuple containing the process exit code, standard output lines, and standard error lines\.
+
+<a name='DiGi.YOLO.Query.FileSHA256(string)'></a>
+
+## Query\.FileSHA256\(string\) Method
+
+Computes the SHA\-256 digest of a file as lowercase hexadecimal \- the form train\.py and export\.py print and the README provenance tables record\.
+
+```csharp
+public static string? FileSHA256(string? path);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.FileSHA256(string).path'></a>
+
+`path` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the file to hash\.
+
+#### Returns
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
+The 64\-character lowercase hexadecimal digest, or `null` when the path is empty, the file does not exist or cannot be read\.
+
+<a name='DiGi.YOLO.Query.ModelKind(string)'></a>
+
+## Query\.ModelKind\(string\) Method
+
+Gets the kind of start file a training run would read from its extension: \.pt is a checkpoint, \.yaml or \.yml an architecture definition\.
+
+The same rule train.py applies, so the runner rejects a start file the script would reject before an interpreter is started.
+
+```csharp
+public static DiGi.YOLO.Enums.ModelKind ModelKind(string? path);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.ModelKind(string).path'></a>
+
+`path` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the start file\. The file does not have to exist\.
+
+#### Returns
+[ModelKind](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.ModelKind 'DiGi\.YOLO\.Enums\.ModelKind')  
+The kind of the file, or [Undefined](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.ModelKind.Undefined 'DiGi\.YOLO\.Enums\.ModelKind\.Undefined') when the path is empty or has another extension\.
 
 <a name='DiGi.YOLO.Query.NormalizedPath(string)'></a>
 
@@ -957,3 +1165,49 @@ The token that cancels probing\.
 #### Returns
 [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 The result of the environment preflight check\.
+
+<a name='DiGi.YOLO.Query.YOLOTrainingOutput(System.Collections.Generic.IEnumerable_string_)'></a>
+
+## Query\.YOLOTrainingOutput\(IEnumerable\<string\>\) Method
+
+Reads the success block train\.py prints at the end of a run \- the path, size and SHA\-256 digest of the best weights and the automatic mixed precision actually used \- from its standard output\.
+
+The output is scanned from the end and the last line under each prefix wins. That is where the block is, and [ExecuteProcess\(string, string, string, Dictionary&lt;string,string&gt;, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Collections\.Generic\.Dictionary\<string,string\>, System\.Threading\.CancellationToken\)') keeps only the tail of a stream, which a long run fills with training progress. Numbers are read with the invariant culture, the only form the script writes.
+
+```csharp
+public static (string? WeightsPath,System.Nullable<long> Bytes,string? SHA256,System.Nullable<bool> Amp) YOLOTrainingOutput(System.Collections.Generic.IEnumerable<string>? standardOutput);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.YOLOTrainingOutput(System.Collections.Generic.IEnumerable_string_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The lines train\.py wrote to standard output\.
+
+#### Returns
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+The weights path, the size in bytes, the lowercase hexadecimal digest and the precision; each is `null` when its line is missing or cannot be read\.
+
+<a name='DiGi.YOLO.Query.YOLOValidationOutput(System.Collections.Generic.IEnumerable_string_)'></a>
+
+## Query\.YOLOValidationOutput\(IEnumerable\<string\>\) Method
+
+Reads the box mAP values val\.py prints at the end of a run from its standard output\.
+
+The output is scanned from the end and the last line under each prefix wins. Values are read with the invariant culture - Python prints a decimal point whatever the machine's culture - and a value outside [0, 1] is rejected.
+
+```csharp
+public static (System.Nullable<double> MAP50,System.Nullable<double> MAP50_95) YOLOValidationOutput(System.Collections.Generic.IEnumerable<string>? standardOutput);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.YOLOValidationOutput(System.Collections.Generic.IEnumerable_string_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The lines val\.py wrote to standard output\.
+
+#### Returns
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+The mAP at IoU 0\.5 and the mAP averaged over IoU 0\.5 to 0\.95; each is `null` when its line is missing or cannot be read\.

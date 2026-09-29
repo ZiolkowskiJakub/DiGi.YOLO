@@ -228,6 +228,19 @@ public const string Utils = "utils.py";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.FileName.Validate'></a>
+
+## FileName\.Validate Field
+
+The file name of the validation runner script\.
+
+```csharp
+public const string Validate = "val.py";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.Marker'></a>
 
 ## Marker Class
@@ -266,6 +279,97 @@ Paired with [CheckJsonBegin](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.C
 
 ```csharp
 public const string CheckJsonEnd = "YOLO_CHECK_JSON_END";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix'></a>
+
+## OutputPrefix Class
+
+Provides the line prefixes the training and validation scripts print their results under, shared by the scripts' output contract and the parsers that read it back\.
+
+```csharp
+public static class OutputPrefix
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → OutputPrefix
+### Fields
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.AMP'></a>
+
+## OutputPrefix\.AMP Field
+
+The prefix of the line train\.py prints the automatic mixed precision actually used under, True or False\.
+
+```csharp
+public const string AMP = "AMP:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.Bytes'></a>
+
+## OutputPrefix\.Bytes Field
+
+The prefix of the line train\.py and export\.py print the size of the written file under, in bytes\.
+
+```csharp
+public const string Bytes = "Bytes:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.MAP50'></a>
+
+## OutputPrefix\.MAP50 Field
+
+The prefix of the line val\.py prints the box mAP at IoU 0\.5 under\.
+
+```csharp
+public const string MAP50 = "mAP50:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.MAP50_95'></a>
+
+## OutputPrefix\.MAP50\_95 Field
+
+The prefix of the line val\.py prints the box mAP averaged over IoU 0\.5 to 0\.95 under\.
+
+```csharp
+public const string MAP50_95 = "mAP50-95:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.SHA256'></a>
+
+## OutputPrefix\.SHA256 Field
+
+The prefix of the line train\.py and export\.py print the lowercase hexadecimal SHA\-256 digest of the written file under\.
+
+```csharp
+public const string SHA256 = "SHA256:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.Weights'></a>
+
+## OutputPrefix\.Weights Field
+
+The prefix of the line train\.py prints the path of the best weights file under\.
+
+```csharp
+public const string Weights = "Weights:";
 ```
 
 #### Field Value

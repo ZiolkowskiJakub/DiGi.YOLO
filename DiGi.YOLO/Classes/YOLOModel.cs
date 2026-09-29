@@ -16,6 +16,7 @@ namespace DiGi.YOLO.Classes
         private readonly Dictionary<Category, string?> directoryNames = [];
         private readonly Dictionary<string, Image> images = [];
         private readonly SortedDictionary<int, Label> labels = [];
+        private List<string>? messages;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="YOLOModel"/> class and sets up default directory paths for train, validate, and test categories.
@@ -62,6 +63,17 @@ namespace DiGi.YOLO.Classes
             set
             {
                 directory = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the messages collected from the configuration files added to the model, such as a dataset directory that did not exist and was replaced by the directory of the file, or <c>null</c> when there were none.
+        /// </summary>
+        public List<string>? Messages
+        {
+            get
+            {
+                return messages;
             }
         }
 
@@ -211,6 +223,13 @@ namespace DiGi.YOLO.Classes
             }
 
             directory = configurationFile.Directory;
+
+            List<string>? messages_ConfigurationFile = configurationFile.Messages;
+            if (messages_ConfigurationFile != null && messages_ConfigurationFile.Count != 0)
+            {
+                messages ??= [];
+                messages.AddRange(messages_ConfigurationFile);
+            }
 
             if (configurationFile.Labels != null)
             {

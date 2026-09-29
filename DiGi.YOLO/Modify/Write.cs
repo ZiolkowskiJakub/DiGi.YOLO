@@ -10,6 +10,8 @@ namespace DiGi.YOLO
     {
         /// <summary>
         /// Writes the YOLO model data, including configuration files, images, and labels, to the filesystem.
+        /// <para>The runner scripts are written first and the dataset's conf.yaml after them. The scripts include a template conf.yaml; <see cref="WriteScripts(string?)"/> no longer replaces an existing one, and writing the dataset's file last keeps it the file that counts either way.</para>
+        /// <para>The "path:" of conf.yaml is written absolute, so ultralytics finds the images whatever directory it is started from rather than resolving the value against its own datasets directory.</para>
         /// </summary>
         /// <param name="yOLOModel">The YOLO model instance containing the data to be written.</param>
         /// <returns>True if the writing process was successful; otherwise, false.</returns>
@@ -20,16 +22,29 @@ namespace DiGi.YOLO
                 return false;
             }
 
-            string? directory = yOLOModel.Directory;
+            string? directory = Query.NormalizedPath(yOLOModel.Directory);
+            if (string.IsNullOrWhiteSpace(directory))
+            {
+                return false;
+            }
 
-            ConfigurationFile? configurationFile = yOLOModel.GetConfigurationFile() ?? new ConfigurationFile();
+            WriteScripts(directory);
 
-            File.WriteAllText(Path.Combine(directory, "conf.yaml"), configurationFile.ToString());
+            ConfigurationFile configurationFile_Model = yOLOModel.GetConfigurationFile() ?? new ConfigurationFile();
+
+            ConfigurationFile configurationFile = new(
+                directory,
+                configurationFile_Model.GetDirectoryNames(Category.Train),
+                configurationFile_Model.GetDirectoryNames(Category.Validate),
+                configurationFile_Model.GetDirectoryNames(Category.Test),
+                configurationFile_Model.Labels);
+
+            File.WriteAllText(Path.Combine(directory, Constants.FileName.Conf), configurationFile.ToString());
 
             foreach (Category category in System.Enum.GetValues(typeof(Category)))
             {
-                string? directory_Images = yOLOModel.GetDirectory_Images(category);
-                string? directory_Labels = yOLOModel.GetDirectory_Labels(category);
+                string? directory_Images = yOLOModel.GetDirectory_Images(directory, category);
+                string? directory_Labels = yOLOModel.GetDirectory_Labels(directory, category);
 
                 IEnumerable<Image> images = yOLOModel.GetImages(category);
                 if (category == Category.Test && (images == null || images.Count() == 0))
@@ -76,8 +91,6 @@ namespace DiGi.YOLO
                     File.WriteAllText(path_Labels, labelFile.ToString());
                 }
             }
-
-            WriteScripts(directory);
 
             return true;
         }

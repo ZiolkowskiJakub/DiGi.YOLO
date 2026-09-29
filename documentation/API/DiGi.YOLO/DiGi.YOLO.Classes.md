@@ -425,6 +425,53 @@ The relative name of the test directory\.
 `labels` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[Label](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.Label 'DiGi\.YOLO\.Classes\.Label')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
 
 A collection of labels to be associated with this configuration\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_)'></a>
+
+## ConfigurationFile\(string, string, string, string, IEnumerable\<Label\>, IEnumerable\<string\>\) Constructor
+
+Initializes a new instance of the [ConfigurationFile](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.ConfigurationFile 'DiGi\.YOLO\.Classes\.ConfigurationFile') class with specified directory paths, labels and the messages reading the file produced\.
+
+```csharp
+public ConfigurationFile(string? directory, string? trainDirectoryName, string? validateDirectoryName, string? testDirectoryName, System.Collections.Generic.IEnumerable<DiGi.YOLO.Classes.Label>? labels, System.Collections.Generic.IEnumerable<string>? messages);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).directory'></a>
+
+`directory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The base root directory path\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).trainDirectoryName'></a>
+
+`trainDirectoryName` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The relative name of the training directory\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).validateDirectoryName'></a>
+
+`validateDirectoryName` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The relative name of the validation directory\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).testDirectoryName'></a>
+
+`testDirectoryName` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The relative name of the test directory\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).labels'></a>
+
+`labels` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[Label](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.Label 'DiGi\.YOLO\.Classes\.Label')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+A collection of labels to be associated with this configuration\.
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.ConfigurationFile(string,string,string,string,System.Collections.Generic.IEnumerable_DiGi.YOLO.Classes.Label_,System.Collections.Generic.IEnumerable_string_).messages'></a>
+
+`messages` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The messages reading the file produced, such as a fall\-back of the base directory, or `null` when there were none\.
 ### Properties
 
 <a name='DiGi.YOLO.Classes.ConfigurationFile.Directory'></a>
@@ -452,6 +499,19 @@ public System.Collections.Generic.IEnumerable<DiGi.YOLO.Classes.Label> Labels { 
 
 #### Property Value
 [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[Label](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.Label 'DiGi\.YOLO\.Classes\.Label')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+<a name='DiGi.YOLO.Classes.ConfigurationFile.Messages'></a>
+
+## ConfigurationFile\.Messages Property
+
+Gets the messages reading the file produced, such as a base directory that did not exist and was replaced by the directory of the file, or `null` when there were none\.
+
+```csharp
+public System.Collections.Generic.List<string>? Messages { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
 ### Methods
 
 <a name='DiGi.YOLO.Classes.ConfigurationFile.GetCategories()'></a>
@@ -1366,6 +1426,19 @@ public string? Directory { get; set; }
 
 #### Property Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOModel.Messages'></a>
+
+## YOLOModel\.Messages Property
+
+Gets the messages collected from the configuration files added to the model, such as a dataset directory that did not exist and was replaced by the directory of the file, or `null` when there were none\.
+
+```csharp
+public System.Collections.Generic.List<string>? Messages { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
 ### Methods
 
 <a name='DiGi.YOLO.Classes.YOLOModel.Add(DiGi.YOLO.Classes.ConfigurationFile)'></a>
@@ -2244,3 +2317,1013 @@ public System.Collections.Generic.List<string>? Values { get; }
 
 #### Property Value
 [System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions'></a>
+
+## YOLOTrainingOptions Class
+
+Provides the settings one run of the YOLO training script needs: which interpreter runs it, which start weights and dataset it trains from, the training hyperparameters, and where the run directory is created\.
+
+The constructors only assign. Use [YOLOTrainingOptions\(string, string, string, string\)](DiGi.YOLO.md#DiGi.YOLO.Create.YOLOTrainingOptions(string,string,string,string) 'DiGi\.YOLO\.Create\.YOLOTrainingOptions\(string, string, string, string\)') to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.
+
+```csharp
+public class YOLOTrainingOptions : DiGi.Core.Classes.SerializableOptions, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableOptions](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableoptions 'DiGi\.Core\.Classes\.SerializableOptions') → YOLOTrainingOptions
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.YOLOTrainingOptions()'></a>
+
+## YOLOTrainingOptions\(\) Constructor
+
+Initializes a new instance of the [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions') class with default values\.
+
+```csharp
+public YOLOTrainingOptions();
+```
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.YOLOTrainingOptions(DiGi.YOLO.Classes.YOLOTrainingOptions)'></a>
+
+## YOLOTrainingOptions\(YOLOTrainingOptions\) Constructor
+
+Initializes a new instance of the [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions') class by copying an existing options instance\.
+
+```csharp
+public YOLOTrainingOptions(DiGi.YOLO.Classes.YOLOTrainingOptions? yOLOTrainingOptions);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.YOLOTrainingOptions(DiGi.YOLO.Classes.YOLOTrainingOptions).yOLOTrainingOptions'></a>
+
+`yOLOTrainingOptions` [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions')
+
+The source options instance to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.YOLOTrainingOptions(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOTrainingOptions\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions') class using a JSON object\.
+
+```csharp
+public YOLOTrainingOptions(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.YOLOTrainingOptions(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the configuration settings\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Amp'></a>
+
+## YOLOTrainingOptions\.Amp Property
+
+Gets or sets whether automatic mixed precision is requested, passed to train\.py as \-\-amp or \-\-no\-amp\.
+
+The default is on. ultralytics checks AMP before training by downloading yolo26n.pt into the "weights" folder of the working directory; when that fails - offline - it silently trains in full precision. [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Amp') reports what was actually used.
+
+```csharp
+public bool Amp { get; set; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Batch'></a>
+
+## YOLOTrainingOptions\.Batch Property
+
+Gets or sets the training batch size, passed to train\.py as \-\-batch\. The default is 16, the batch train8 used\.
+
+```csharp
+public int Batch { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.ConfigurationFilePath'></a>
+
+## YOLOTrainingOptions\.ConfigurationFilePath Property
+
+Gets or sets the absolute path of the dataset configuration file \(conf\.yaml\), passed to train\.py as \-\-data\.
+
+```csharp
+public string? ConfigurationFilePath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Device'></a>
+
+## YOLOTrainingOptions\.Device Property
+
+Gets or sets the device to train on, such as "0", "0,1" or "cpu", passed to train\.py as \-\-device\. Null lets ultralytics choose\.
+
+```csharp
+public string? Device { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Epochs'></a>
+
+## YOLOTrainingOptions\.Epochs Property
+
+Gets or sets the upper bound of training epochs, passed to train\.py as \-\-epochs\. With [Patience](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Patience 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Patience') the run stops earlier when validation stops improving\. The default is 150\.
+
+```csharp
+public int Epochs { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.ImageSize'></a>
+
+## YOLOTrainingOptions\.ImageSize Property
+
+Gets or sets the square training image size, passed to train\.py as \-\-imgsz\. The default is 640, the size inference and the ONNX export use\.
+
+```csharp
+public int ImageSize { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.ModelPath'></a>
+
+## YOLOTrainingOptions\.ModelPath Property
+
+Gets or sets the absolute path of the start weights, passed to train\.py as \-\-model: a checkpoint \(\.pt\) \- model\.pt to continue train8, or a base checkpoint such as yolo26x\.pt \- or an architecture definition \(\.yaml\) for random initialisation\.
+
+```csharp
+public string? ModelPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Name'></a>
+
+## YOLOTrainingOptions\.Name Property
+
+Gets or sets the name of the run directory, passed to train\.py as \-\-name, such as "train9\_fresh"\. Null uses the ultralytics default \("train", numbered when taken\)\.
+
+```csharp
+public string? Name { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Patience'></a>
+
+## YOLOTrainingOptions\.Patience Property
+
+Gets or sets the number of epochs without validation improvement after which training stops, passed to train\.py as \-\-patience\. The default is 50\.
+
+```csharp
+public int Patience { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Project'></a>
+
+## YOLOTrainingOptions\.Project Property
+
+Gets or sets the absolute path of the directory the run directory is created in, passed to train\.py as \-\-project\.
+
+Always passed explicitly: an interpreter from a virtual environment can resolve the ultralytics default runs directory against the repository its package sits in rather than against the working directory.
+
+```csharp
+public string? Project { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.PythonPath'></a>
+
+## YOLOTrainingOptions\.PythonPath Property
+
+Gets or sets the path of the CPython interpreter that runs the script\.
+
+```csharp
+public string? PythonPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Seed'></a>
+
+## YOLOTrainingOptions\.Seed Property
+
+Gets or sets the random seed, passed to train\.py as \-\-seed\. The default is 0, the seed train8 used; both candidates of a comparison use the same one\.
+
+```csharp
+public int Seed { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.WorkingDirectory'></a>
+
+## YOLOTrainingOptions\.WorkingDirectory Property
+
+Gets or sets the directory the process runs in and the scripts are kept in\.
+
+train.py imports utils.py, and Python resolves that import against the directory the script itself sits in, so the two files have to stay together. The ultralytics settings of the run are isolated in its .yolo-config folder.
+
+```csharp
+public string? WorkingDirectory { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult'></a>
+
+## YOLOTrainingResult Class
+
+Describes how one run of the YOLO training script went: its exit code and output, the identity of the weights it started from and of the weights it wrote, and when it ran\.
+
+The start weights are identified by the runner itself, before the process starts, rather than read back from the script's output: the output keeps only its tail, which a long run fills with training progress. The written weights are read from the success block train.py prints last and checked against the file on disk.
+
+```csharp
+public class YOLOTrainingResult : DiGi.Core.Classes.SerializableResult, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableResult](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableresult 'DiGi\.Core\.Classes\.SerializableResult') → YOLOTrainingResult
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(DiGi.YOLO.Classes.YOLOTrainingResult)'></a>
+
+## YOLOTrainingResult\(YOLOTrainingResult\) Constructor
+
+Initializes a new instance of the [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult') class by copying an existing result\.
+
+```csharp
+public YOLOTrainingResult(DiGi.YOLO.Classes.YOLOTrainingResult? yOLOTrainingResult);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(DiGi.YOLO.Classes.YOLOTrainingResult).yOLOTrainingResult'></a>
+
+`yOLOTrainingResult` [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult')
+
+The source result to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_)'></a>
+
+## YOLOTrainingResult\(int, string, string, ModelKind, string, Nullable\<long\>, string, Nullable\<bool\>, IEnumerable\<string\>, IEnumerable\<string\>, Nullable\<DateTimeOffset\>, Nullable\<DateTimeOffset\>\) Constructor
+
+Initializes a new instance of the [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult') class with the specified values\.
+
+```csharp
+public YOLOTrainingResult(int exitCode, string? startModelPath, string? startModelSHA256, DiGi.YOLO.Enums.ModelKind startModelKind, string? weightsPath, System.Nullable<long> bytes, string? sHA256, System.Nullable<bool> amp, System.Collections.Generic.IEnumerable<string>? standardOutput, System.Collections.Generic.IEnumerable<string>? standardError, System.Nullable<System.DateTimeOffset> start, System.Nullable<System.DateTimeOffset> end);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).exitCode'></a>
+
+`exitCode` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The exit code of the interpreter; \-1 when it could not be started, was cancelled, or the runner refused the run\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelPath'></a>
+
+`startModelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The absolute path of the start weights\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelSHA256'></a>
+
+`startModelSHA256` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The lowercase hexadecimal SHA\-256 digest of the start weights\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelKind'></a>
+
+`startModelKind` [ModelKind](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.ModelKind 'DiGi\.YOLO\.Enums\.ModelKind')
+
+Whether the start weights are a checkpoint or an architecture definition\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).weightsPath'></a>
+
+`weightsPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The absolute path of the best weights the run wrote\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).bytes'></a>
+
+`bytes` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The size of the best weights in bytes\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).sHA256'></a>
+
+`sHA256` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The lowercase hexadecimal SHA\-256 digest of the best weights\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).amp'></a>
+
+`amp` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The automatic mixed precision the run actually used\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The tail of the lines the script wrote to standard output\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardError'></a>
+
+`standardError` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The tail of the lines the script wrote to standard error, followed by any message of the runner\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).start'></a>
+
+`start` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+When the run started\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).end'></a>
+
+`end` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+When the run ended\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOTrainingResult\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult') class using a JSON object\.
+
+```csharp
+public YOLOTrainingResult(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the result\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Amp'></a>
+
+## YOLOTrainingResult\.Amp Property
+
+Gets the automatic mixed precision the run actually used, or `null` when the script did not report it\. False although AMP was requested means the AMP check failed, typically offline\.
+
+```csharp
+public System.Nullable<bool> Amp { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Bytes'></a>
+
+## YOLOTrainingResult\.Bytes Property
+
+Gets the size of the best weights in bytes, or `null` when the run wrote none\.
+
+```csharp
+public System.Nullable<long> Bytes { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Duration'></a>
+
+## YOLOTrainingResult\.Duration Property
+
+Gets how long the run took, or `null` when either end of it is unknown\.
+
+```csharp
+public System.Nullable<System.TimeSpan> Duration { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan 'System\.TimeSpan')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.End'></a>
+
+## YOLOTrainingResult\.End Property
+
+Gets when the run ended\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> End { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.ExitCode'></a>
+
+## YOLOTrainingResult\.ExitCode Property
+
+Gets the exit code of the interpreter; \-1 when it could not be started, was cancelled, or the runner refused the run\.
+
+```csharp
+public int ExitCode { get; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.SHA256'></a>
+
+## YOLOTrainingResult\.SHA256 Property
+
+Gets the lowercase hexadecimal SHA\-256 digest of the best weights, or `null` when the run wrote none or the digest the script printed does not match the file\.
+
+```csharp
+public string? SHA256 { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.StandardError'></a>
+
+## YOLOTrainingResult\.StandardError Property
+
+Gets the tail of the lines the script wrote to standard error, followed by any message of the runner\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardError { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.StandardOutput'></a>
+
+## YOLOTrainingResult\.StandardOutput Property
+
+Gets the tail of the lines the script wrote to standard output\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardOutput { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Start'></a>
+
+## YOLOTrainingResult\.Start Property
+
+Gets when the run started\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> Start { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.StartModelKind'></a>
+
+## YOLOTrainingResult\.StartModelKind Property
+
+Gets whether the start weights were a checkpoint or an architecture definition\.
+
+```csharp
+public DiGi.YOLO.Enums.ModelKind StartModelKind { get; }
+```
+
+#### Property Value
+[ModelKind](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.ModelKind 'DiGi\.YOLO\.Enums\.ModelKind')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.StartModelPath'></a>
+
+## YOLOTrainingResult\.StartModelPath Property
+
+Gets the absolute path of the start weights\.
+
+```csharp
+public string? StartModelPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.StartModelSHA256'></a>
+
+## YOLOTrainingResult\.StartModelSHA256 Property
+
+Gets the lowercase hexadecimal SHA\-256 digest of the start weights \- what a provenance table records as "started from"\.
+
+```csharp
+public string? StartModelSHA256 { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Succeeded'></a>
+
+## YOLOTrainingResult\.Succeeded Property
+
+Gets whether the run completed and wrote weights whose identity was confirmed: a zero exit code, a weights path and a digest that matches the file\.
+
+```csharp
+public bool Succeeded { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.WeightsPath'></a>
+
+## YOLOTrainingResult\.WeightsPath Property
+
+Gets the absolute path of the best weights the run wrote, or `null` when it wrote none\.
+
+```csharp
+public string? WeightsPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions'></a>
+
+## YOLOValidationOptions Class
+
+Provides the settings one run of the YOLO validation script needs: which interpreter runs it, which weights it validates, and on which split of which dataset\.
+
+The constructors only assign. Use [YOLOValidationOptions\(string, string, string, string\)](DiGi.YOLO.md#DiGi.YOLO.Create.YOLOValidationOptions(string,string,string,string) 'DiGi\.YOLO\.Create\.YOLOValidationOptions\(string, string, string, string\)') to resolve the interpreter, tidy the paths and reject a combination that cannot make a run.
+
+```csharp
+public class YOLOValidationOptions : DiGi.Core.Classes.SerializableOptions, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableOptions](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableoptions 'DiGi\.Core\.Classes\.SerializableOptions') → YOLOValidationOptions
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.YOLOValidationOptions()'></a>
+
+## YOLOValidationOptions\(\) Constructor
+
+Initializes a new instance of the [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions') class with default values\.
+
+```csharp
+public YOLOValidationOptions();
+```
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.YOLOValidationOptions(DiGi.YOLO.Classes.YOLOValidationOptions)'></a>
+
+## YOLOValidationOptions\(YOLOValidationOptions\) Constructor
+
+Initializes a new instance of the [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions') class by copying an existing options instance\.
+
+```csharp
+public YOLOValidationOptions(DiGi.YOLO.Classes.YOLOValidationOptions? yOLOValidationOptions);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.YOLOValidationOptions(DiGi.YOLO.Classes.YOLOValidationOptions).yOLOValidationOptions'></a>
+
+`yOLOValidationOptions` [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions')
+
+The source options instance to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.YOLOValidationOptions(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOValidationOptions\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions') class using a JSON object\.
+
+```csharp
+public YOLOValidationOptions(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.YOLOValidationOptions(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the configuration settings\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.Batch'></a>
+
+## YOLOValidationOptions\.Batch Property
+
+Gets or sets the validation batch size, passed to val\.py as \-\-batch\. The default is 16\.
+
+```csharp
+public int Batch { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.Confidence'></a>
+
+## YOLOValidationOptions\.Confidence Property
+
+Gets or sets the confidence threshold, passed to val\.py as \-\-conf\. Null uses the ultralytics validation default, which is what mAP is normally reported at\.
+
+```csharp
+public System.Nullable<double> Confidence { get; set; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.ConfigurationFilePath'></a>
+
+## YOLOValidationOptions\.ConfigurationFilePath Property
+
+Gets or sets the absolute path of the dataset configuration file \(conf\.yaml\), passed to val\.py as \-\-data\.
+
+```csharp
+public string? ConfigurationFilePath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.Device'></a>
+
+## YOLOValidationOptions\.Device Property
+
+Gets or sets the device to validate on, such as "0" or "cpu", passed to val\.py as \-\-device\. Null lets ultralytics choose\.
+
+```csharp
+public string? Device { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.ImageSize'></a>
+
+## YOLOValidationOptions\.ImageSize Property
+
+Gets or sets the square validation image size, passed to val\.py as \-\-imgsz\. The default is 640\.
+
+```csharp
+public int ImageSize { get; set; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.ModelPath'></a>
+
+## YOLOValidationOptions\.ModelPath Property
+
+Gets or sets the absolute path of the weights file to validate, passed to val\.py as \-\-model\.
+
+```csharp
+public string? ModelPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.PythonPath'></a>
+
+## YOLOValidationOptions\.PythonPath Property
+
+Gets or sets the path of the CPython interpreter that runs the script\.
+
+```csharp
+public string? PythonPath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.Split'></a>
+
+## YOLOValidationOptions\.Split Property
+
+Gets or sets the dataset split to validate on, passed to val\.py as \-\-split\. [Test](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.Category.Test 'DiGi\.YOLO\.Enums\.Category\.Test') by default; [Train](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.Category.Train 'DiGi\.YOLO\.Enums\.Category\.Train') is not a validation split and is rejected by the factory\.
+
+```csharp
+public DiGi.YOLO.Enums.Category Split { get; set; }
+```
+
+#### Property Value
+[Category](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.Category 'DiGi\.YOLO\.Enums\.Category')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationOptions.WorkingDirectory'></a>
+
+## YOLOValidationOptions\.WorkingDirectory Property
+
+Gets or sets the directory the process runs in and the scripts are kept in\. The ultralytics settings of the run are isolated in its \.yolo\-config folder\.
+
+```csharp
+public string? WorkingDirectory { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult'></a>
+
+## YOLOValidationResult Class
+
+Describes how one run of the YOLO validation script went: its exit code and output, the weights and split it validated, the box mAP it measured, and when it ran\.
+
+```csharp
+public class YOLOValidationResult : DiGi.Core.Classes.SerializableResult, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → [DiGi\.Core\.Classes\.SerializableResult](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableresult 'DiGi\.Core\.Classes\.SerializableResult') → YOLOValidationResult
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(DiGi.YOLO.Classes.YOLOValidationResult)'></a>
+
+## YOLOValidationResult\(YOLOValidationResult\) Constructor
+
+Initializes a new instance of the [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult') class by copying an existing result\.
+
+```csharp
+public YOLOValidationResult(DiGi.YOLO.Classes.YOLOValidationResult? yOLOValidationResult);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(DiGi.YOLO.Classes.YOLOValidationResult).yOLOValidationResult'></a>
+
+`yOLOValidationResult` [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult')
+
+The source result to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_)'></a>
+
+## YOLOValidationResult\(int, string, string, Category, Nullable\<double\>, Nullable\<double\>, IEnumerable\<string\>, IEnumerable\<string\>, Nullable\<DateTimeOffset\>, Nullable\<DateTimeOffset\>\) Constructor
+
+Initializes a new instance of the [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult') class with the specified values\.
+
+```csharp
+public YOLOValidationResult(int exitCode, string? modelPath, string? modelSHA256, DiGi.YOLO.Enums.Category split, System.Nullable<double> mAP50, System.Nullable<double> mAP50_95, System.Collections.Generic.IEnumerable<string>? standardOutput, System.Collections.Generic.IEnumerable<string>? standardError, System.Nullable<System.DateTimeOffset> start, System.Nullable<System.DateTimeOffset> end);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).exitCode'></a>
+
+`exitCode` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+The exit code of the interpreter; \-1 when it could not be started, was cancelled, or the runner refused the run\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).modelPath'></a>
+
+`modelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The absolute path of the validated weights\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).modelSHA256'></a>
+
+`modelSHA256` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The lowercase hexadecimal SHA\-256 digest of the validated weights\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).split'></a>
+
+`split` [Category](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.Category 'DiGi\.YOLO\.Enums\.Category')
+
+The dataset split validated on\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).mAP50'></a>
+
+`mAP50` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The box mAP at IoU 0\.5\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).mAP50_95'></a>
+
+`mAP50_95` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The box mAP averaged over IoU 0\.5 to 0\.95\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The tail of the lines the script wrote to standard output\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardError'></a>
+
+`standardError` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
+
+The tail of the lines the script wrote to standard error, followed by any message of the runner\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).start'></a>
+
+`start` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+When the run started\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(int,string,string,DiGi.YOLO.Enums.Category,System.Nullable_double_,System.Nullable_double_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).end'></a>
+
+`end` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+When the run ended\.
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOValidationResult\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult') class using a JSON object\.
+
+```csharp
+public YOLOValidationResult(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.YOLOValidationResult(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the result\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.Duration'></a>
+
+## YOLOValidationResult\.Duration Property
+
+Gets how long the run took, or `null` when either end of it is unknown\.
+
+```csharp
+public System.Nullable<System.TimeSpan> Duration { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan 'System\.TimeSpan')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.End'></a>
+
+## YOLOValidationResult\.End Property
+
+Gets when the run ended\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> End { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.ExitCode'></a>
+
+## YOLOValidationResult\.ExitCode Property
+
+Gets the exit code of the interpreter; \-1 when it could not be started, was cancelled, or the runner refused the run\.
+
+```csharp
+public int ExitCode { get; }
+```
+
+#### Property Value
+[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.MAP50'></a>
+
+## YOLOValidationResult\.MAP50 Property
+
+Gets the box mAP at IoU 0\.5, or `null` when the script did not report it\.
+
+```csharp
+public System.Nullable<double> MAP50 { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.MAP50_95'></a>
+
+## YOLOValidationResult\.MAP50\_95 Property
+
+Gets the box mAP averaged over IoU 0\.5 to 0\.95, or `null` when the script did not report it\.
+
+```csharp
+public System.Nullable<double> MAP50_95 { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.ModelPath'></a>
+
+## YOLOValidationResult\.ModelPath Property
+
+Gets the absolute path of the validated weights\.
+
+```csharp
+public string? ModelPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.ModelSHA256'></a>
+
+## YOLOValidationResult\.ModelSHA256 Property
+
+Gets the lowercase hexadecimal SHA\-256 digest of the validated weights, so a gate table can name exactly which file each row measured\.
+
+```csharp
+public string? ModelSHA256 { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.Split'></a>
+
+## YOLOValidationResult\.Split Property
+
+Gets the dataset split validated on\.
+
+```csharp
+public DiGi.YOLO.Enums.Category Split { get; }
+```
+
+#### Property Value
+[Category](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.Category 'DiGi\.YOLO\.Enums\.Category')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.StandardError'></a>
+
+## YOLOValidationResult\.StandardError Property
+
+Gets the tail of the lines the script wrote to standard error, followed by any message of the runner\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardError { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.StandardOutput'></a>
+
+## YOLOValidationResult\.StandardOutput Property
+
+Gets the tail of the lines the script wrote to standard output\.
+
+```csharp
+public System.Collections.Generic.List<string>? StandardOutput { get; }
+```
+
+#### Property Value
+[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.Start'></a>
+
+## YOLOValidationResult\.Start Property
+
+Gets when the run started\.
+
+```csharp
+public System.Nullable<System.DateTimeOffset> Start { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOValidationResult.Succeeded'></a>
+
+## YOLOValidationResult\.Succeeded Property
+
+Gets whether the run completed and reported both mAP values\.
+
+```csharp
+public bool Succeeded { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')

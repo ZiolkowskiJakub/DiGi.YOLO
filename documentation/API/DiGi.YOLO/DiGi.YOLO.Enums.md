@@ -31,3 +31,32 @@ The subset of data used for hyperparameter tuning and preventing overfitting dur
 `Test` 2
 
 The subset of data used to provide an unbiased evaluation of the final model performance\.
+
+<a name='DiGi.YOLO.Enums.ModelKind'></a>
+
+## ModelKind Enum
+
+Specifies what kind of file a training run starts from\.
+
+```csharp
+public enum ModelKind
+```
+### Fields
+
+<a name='DiGi.YOLO.Enums.ModelKind.Undefined'></a>
+
+`Undefined` 0
+
+The file is neither a checkpoint nor a definition, or is not known\.
+
+<a name='DiGi.YOLO.Enums.ModelKind.Checkpoint'></a>
+
+`Checkpoint` 1
+
+A trained weights file \(\.pt\), continued from or used as pretrained start weights\.
+
+<a name='DiGi.YOLO.Enums.ModelKind.Definition'></a>
+
+`Definition` 2
+
+An architecture definition \(\.yaml\), trained from random initialisation\.

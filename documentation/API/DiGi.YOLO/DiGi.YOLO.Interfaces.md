@@ -83,6 +83,10 @@ Derived
 ↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 ↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')  
+↳ [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions')  
+↳ [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult')  
+↳ [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions')  
+↳ [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult')  
 ↳ [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject')
 
 Implements [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject')
@@ -100,6 +104,10 @@ public interface IYOLOSerializableObject : DiGi.YOLO.Interfaces.IYOLOObject, DiG
 Derived  
 ↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
-↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')
+↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')  
+↳ [YOLOTrainingOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions')  
+↳ [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult')  
+↳ [YOLOValidationOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationOptions 'DiGi\.YOLO\.Classes\.YOLOValidationOptions')  
+↳ [YOLOValidationResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOValidationResult 'DiGi\.YOLO\.Classes\.YOLOValidationResult')
 
 Implements [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')

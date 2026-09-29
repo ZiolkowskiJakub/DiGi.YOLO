@@ -3,7 +3,7 @@
     public static partial class Query
     {
         /// <summary>
-        /// Decodes a given path string by replacing URL-encoded spaces with actual spaces and converting forward slashes to backslashes.
+        /// Decodes a YAML path value of an ultralytics dataset file: surrounding single or double quotes are removed, URL-encoded spaces written by earlier versions become spaces, and forward slashes become backslashes.
         /// </summary>
         /// <param name="path">The encoded path string to be decoded.</param>
         /// <returns>The decoded path string, or an empty string if the provided path is null or whitespace.</returns>
@@ -14,7 +14,18 @@
                 return string.Empty;
             }
 
-            return path!.Replace("%20", " ").Replace("/", @"\");
+            string result = path!.Trim();
+
+            if (result.Length >= 2 && result.StartsWith("'") && result.EndsWith("'"))
+            {
+                result = result.Substring(1, result.Length - 2).Replace("''", "'");
+            }
+            else if (result.Length >= 2 && result.StartsWith("\"") && result.EndsWith("\""))
+            {
+                result = result.Substring(1, result.Length - 2);
+            }
+
+            return result.Replace("%20", " ").Replace("/", @"\");
         }
     }
 }

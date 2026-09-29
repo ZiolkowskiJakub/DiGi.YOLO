@@ -33,3 +33,14 @@ def GetModelPath(useDefault):
         return defaultPath
 
     return None
+
+
+def FileSHA256(path):
+    import hashlib
+
+    digest = hashlib.sha256()
+    with open(path, "rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(chunk)
+
+    return digest.hexdigest()

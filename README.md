@@ -76,8 +76,9 @@ The graph is `nc = 1` (`{0: 'Building'}`) and answers `[batch, 5, 8400]`. `dynam
 Like the weights, the export is not in git (260 MB) and lives in the git-ignored `user files/YOLO/models/`.
 
 ### Python Helper Scripts & Requirements
-`DiGi.YOLO` embeds Python helper scripts (`train.py`, `predict.py`, `export.py`, `check.py`, `utils.py`, `requirements.txt`, `conf.yaml`) as binary resources.
-* **Script Export:** Callers can extract these runner scripts without instantiating a `YOLOModel` by calling `Modify.WriteScripts(targetDirectory)`.
+`DiGi.YOLO` embeds Python helper scripts (`train.py`, `val.py`, `predict.py`, `export.py`, `check.py`, `utils.py`, `requirements.txt`, `conf.yaml`) as binary resources.
+* **Script Export:** Callers can extract these runner scripts without instantiating a `YOLOModel` by calling `Modify.WriteScripts(targetDirectory)`. The scripts are rewritten on every call; the template `conf.yaml` is written only into a directory that has none, so it never replaces the `conf.yaml` of a dataset.
+* **Training (`train.py`) and validation (`val.py`):** argument driven - see *Training a Detector from C#* below.
 * **Inference (`predict.py`):** Supports command-line options:
   - `--model`: Path to trained YOLO `.pt` model weights file (default: `YOLO/models/model.pt`).
   - `--source`: Path to input image file or directory containing images (default: `YOLO/input`).
@@ -110,6 +111,37 @@ BoundingBoxResultFile? boundingBoxResultFile = Create.BoundingBoxResultFile(yOLO
 * The runner writes the scripts into the working directory when they are missing, removes a stale `.bbrf` so a failed run cannot be read as this one, and answers a source directory holding no images without starting a process.
 * `YOLOPredictionResult` carries the exit code, the tail of both output streams, the image count and the run's `DateTimeOffset` bounds. `Create.BoundingBoxResultFile(result)` gives `null` for a run that did not complete.
 * Cancelling kills the interpreter only - `netstandard2.0` has no process-tree kill, so torch worker processes can outlive it.
+
+### Training a Detector from C#
+`Modify.Train` runs `train.py` and `Modify.Validate` runs `val.py`, the same way `Modify.Predict` runs `predict.py` ([#16](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/16)). A dataset is written with `Modify.Write(YOLOModel)`, whose `conf.yaml` carries an absolute `path:` and the labels.
+
+```csharp
+YOLOTrainingOptions? yOLOTrainingOptions = Create.YOLOTrainingOptions(null, pathStartWeights, pathConfigurationFile);
+yOLOTrainingOptions!.Name = "train9_fresh";
+
+YOLOTrainingResult? yOLOTrainingResult = yOLOTrainingOptions.Train(cancellationToken);
+
+YOLOValidationOptions? yOLOValidationOptions = Create.YOLOValidationOptions(null, yOLOTrainingResult?.WeightsPath, pathConfigurationFile);
+YOLOValidationResult? yOLOValidationResult = yOLOValidationOptions.Validate(cancellationToken);
+```
+
+| `train.py` argument | Default | `YOLOTrainingOptions` |
+|---|---|---|
+| `--model` | `YOLO/models/model.pt` | `ModelPath` - start weights, a local file: a `.pt` checkpoint (`model.pt` to continue `train8`, or `base/yolo26x.pt` for a fresh start) or a `.yaml` architecture definition. Nothing is downloaded by name |
+| `--data` | `conf.yaml` | `ConfigurationFilePath` - always passed absolute |
+| `--epochs` / `--patience` | `150` / `50` | `Epochs` / `Patience` - upper bound and early stopping |
+| `--imgsz` / `--batch` / `--seed` | `640` / `16` / `0` | `ImageSize` / `Batch` / `Seed` - `train8`'s values |
+| `--project` / `--name` | ultralytics defaults | `Project` (always passed, `<working>\runs\detect` by default) / `Name` |
+| `--device` | ultralytics default | `Device` |
+| `--amp` / `--no-amp` | on | `Amp` |
+
+* **Start weights** are identified by the runner before the process starts - path, SHA-256 and kind (`checkpoint` / `definition`) on `YOLOTrainingResult` - because the output streams keep only their tail. `train.py` also prints them, and a checkpoint's `train_args` (for `model.pt` the only surviving record of `train8`'s settings).
+* **Output weights** are read from the block `train.py` prints last (`Weights:`, `Bytes:`, `SHA256:`, `AMP:`) and confirmed against the file on disk; `Succeeded` requires the match.
+* **Never into `YOLO/models`:** a run whose project folder lies inside a `YOLO\models` folder is refused, and ultralytics numbers a taken run name rather than reusing its directory, so no run replaces the frozen `model.pt`.
+* **Preflight and isolation:** a checkpoint is preflighted with `Query.YOLOEnvironmentResult` (an ultralytics too old for the checkpoint is refused), and the run gets its own `YOLO_CONFIG_DIR`. The scripts are rewritten before every run, so a directory never trains with a `train.py` of an older build.
+* **Downloads at train time:** ultralytics' AMP check downloads `yolo26n.pt` into the `weights` folder of the working directory and, offline, silently trains in full precision - `YOLOTrainingResult.Amp` reports the precision actually used. It also downloads `Arial.ttf` into the settings directory. Neither changes the start weights.
+* **YOLO26 loss columns:** a YOLO26 run has no `dfl_loss` in its `results.csv`; nothing here reads it.
+* **Validation:** `val.py --split val|test` (default `test`) prints `mAP50:` and `mAP50-95:`; `YOLOValidationResult` carries both with the SHA-256 of the weights it measured, so a gate table names exactly which file each row is.
 
 ---
 
