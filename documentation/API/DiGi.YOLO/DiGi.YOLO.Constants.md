@@ -70,6 +70,21 @@ public const string Labels = "labels";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.DirectoryName.Models'></a>
+
+## DirectoryName\.Models Field
+
+The name of the directory, directly inside a [YOLO](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.DirectoryName.YOLO 'DiGi\.YOLO\.Constants\.DirectoryName\.YOLO') folder, holding the frozen weights \(model\.pt and the pretrained base checkpoints\)\.
+
+No training run may write into it; see [IsInsideModelsDirectory\(string\)](DiGi.YOLO.md#DiGi.YOLO.Query.IsInsideModelsDirectory(string) 'DiGi\.YOLO\.Query\.IsInsideModelsDirectory\(string\)').
+
+```csharp
+public const string Models = "models";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.DirectoryName.YOLO'></a>
 
 ## DirectoryName\.YOLO Field

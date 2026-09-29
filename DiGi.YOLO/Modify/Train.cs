@@ -79,8 +79,7 @@ namespace DiGi.YOLO
             }
 
             //The run directory is project\name\weights, and ultralytics numbers a run name that is taken rather than reusing its directory. What remains is a project placed where the frozen weights live, which no run may write into
-            string modelsSegment = string.Concat(Path.DirectorySeparatorChar, Constants.DirectoryName.YOLO, Path.DirectorySeparatorChar, "models", Path.DirectorySeparatorChar);
-            if (string.Concat(project, Path.DirectorySeparatorChar).IndexOf(modelsSegment, StringComparison.OrdinalIgnoreCase) >= 0)
+            if (Query.IsInsideModelsDirectory(project))
             {
                 return Refused(string.Format("Refusing to write a run under '{0}': it is inside a YOLO\\models folder, where the frozen weights live.", project));
             }

@@ -16,6 +16,12 @@ namespace DiGi.YOLO.Constants
         public const string Labels = "labels";
 
         /// <summary>
+        /// The name of the directory, directly inside a <see cref="YOLO"/> folder, holding the frozen weights (model.pt and the pretrained base checkpoints).
+        /// <para>No training run may write into it; see <see cref="Query.IsInsideModelsDirectory(string?)"/>.</para>
+        /// </summary>
+        public const string Models = "models";
+
+        /// <summary>
         /// The name of the directory containing YOLO deployment scripts and configuration files.
         /// </summary>
         public const string YOLO = "YOLO";

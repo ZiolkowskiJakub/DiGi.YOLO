@@ -990,6 +990,33 @@ The path of the file to hash\.
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 The 64\-character lowercase hexadecimal digest, or `null` when the path is empty, the file does not exist or cannot be read\.
 
+<a name='DiGi.YOLO.Query.IsInsideModelsDirectory(string)'></a>
+
+## Query\.IsInsideModelsDirectory\(string\) Method
+
+Checks whether a path is a YOLO\\models folder or lies anywhere inside one \- the place the frozen weights live, which no training run may write into\.
+
+The path is made absolute first and compared with a trailing separator, case-insensitively, so "...\YOLO\models" itself and "...\yolo\MODELS\run" both count while a sibling such as "...\YOLO\models_old" does not. The folder names are [YOLO](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.DirectoryName.YOLO 'DiGi\.YOLO\.Constants\.DirectoryName\.YOLO') and [Models](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.DirectoryName.Models 'DiGi\.YOLO\.Constants\.DirectoryName\.Models').
+
+A relative path is resolved against the current directory of the calling process, so a caller handing the path to another process resolves it the way that process will before asking.
+
+A null, blank or unformable path returns `false`: it names no folder, and every caller refuses such a path for its own, more specific reason.
+
+```csharp
+public static bool IsInsideModelsDirectory(string? path);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.IsInsideModelsDirectory(string).path'></a>
+
+`path` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory path to check\.
+
+#### Returns
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')  
+`true` when the path is, or lies inside, a YOLO\\models folder; otherwise `false`\.
+
 <a name='DiGi.YOLO.Query.ModelKind(string)'></a>
 
 ## Query\.ModelKind\(string\) Method
