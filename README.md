@@ -57,6 +57,8 @@ New detectors are trained from the latest ultralytics pretrained weights rather 
 
 ultralytics 8.3.130 cannot load it; `check.py` reports a warning when the installed ultralytics is older than the version that wrote the model it is given. An ONNX export of a YOLO26 detector made with the flags below still answers the raw `[batch, 4 + nc, 8400]` layout (`nms=False`), so the in-process decoder is unchanged.
 
+Both start points train under 8.4.165: a 3-epoch smoke run (2026-09-29, RTX 5090, batch 16, imgsz 640, 240 images pseudo-labelled by `model.pt`) completed from `yolo26x.pt` and from `model.pt`, and each `best.pt` reloads and predicts. YOLO26 trains without the DFL loss term, so its loss columns differ from `train8`'s. Real runs belong to the argument-driven `train.py` ([#16](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/16)).
+
 ### Frozen ONNX Export Provenance
 The same detector is also scored in process, without an interpreter, by
 [DiGi.YOLO.ONNX](https://github.com/ZiolkowskiJakub/DiGi.YOLO.ONNX). That path consumes an ONNX export of the checkpoint above, produced once by `export.py`. The export is as frozen as the checkpoint it came from, so it is recorded the same way - by a digest read off the artefact:
