@@ -12,6 +12,11 @@ from utils import FileSHA256, GetDirectory, GetModelPath
 # opset 12 is the widest opset the runtimes in use accept without complaint. dynamic is on so the
 # exported graph takes any batch size; a static export pins the batch to one, and the C# runner then
 # has to pad every partial batch to feed it.
+#
+# `nms` is left at its default (None, no NMS embedded in the graph): suppression stays on the C# side.
+# Under ultralytics 8.4.165, passing nms=False would select the one-to-one NMS-free head
+# (end2end: True, output [batch, 300, 6]) instead of the raw one-to-many head
+# ([batch, 4 + nc, 8400]) that predict.py scores and DiGi.YOLO.ONNX decodes.
 
 parser = argparse.ArgumentParser(description="YOLO ONNX Export Script")
 parser.add_argument("--model", type=str, default=None, help="Path to trained YOLO model file")
@@ -30,7 +35,7 @@ if not modelPath or not os.path.isfile(modelPath):
 print(f"Model path: {modelPath}")
 model = YOLO(modelPath)
 
-exportedPath = model.export(format="onnx", imgsz=args.imgsz, opset=args.opset, dynamic=not args.static, simplify=True, half=False, nms=False)
+exportedPath = model.export(format="onnx", imgsz=args.imgsz, opset=args.opset, dynamic=not args.static, simplify=True, half=False)
 
 if not exportedPath or not os.path.isfile(exportedPath):
     print("Export did not produce a file.")

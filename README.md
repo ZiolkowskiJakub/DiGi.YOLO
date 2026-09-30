@@ -55,7 +55,7 @@ New detectors are trained from the latest ultralytics pretrained weights rather 
 | Bytes | 118 667 365 |
 | SHA-256 | `9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92` |
 
-ultralytics 8.3.130 cannot load it; `check.py` reports a warning when the installed ultralytics is older than the version that wrote the model it is given. An ONNX export of a YOLO26 detector made with the flags below still answers the raw `[batch, 4 + nc, 8400]` layout (`nms=False`), so the in-process decoder is unchanged.
+ultralytics 8.3.130 cannot load it; `check.py` reports a warning when the installed ultralytics is older than the version that wrote the model it is given. An ONNX export of a YOLO26 detector made with `nms` at its default (`None`, no NMS embedded) answers the raw `[batch, 4 + nc, 8400]` one-to-many head layout, so the in-process decoder is unchanged. Under ultralytics 8.4.165, passing `nms=False` would select the one-to-one NMS-free head and change the output shape.
 
 Both start points train under 8.4.165: a 3-epoch smoke run (2026-09-29, RTX 5090, batch 16, imgsz 640, 240 images pseudo-labelled by `model.pt`) completed from `yolo26x.pt` and from `model.pt`, and each `best.pt` reloads and predicts. YOLO26 trains without the DFL loss term, so its loss columns differ from `train8`'s. Real runs belong to the argument-driven `train.py` ([#16](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/16)).
 
@@ -71,7 +71,7 @@ The same detector is also scored in process, without an interpreter, by
 | Bytes | 273 083 173 |
 | SHA-256 | `7cfb1a79209fa27a43f07a2151dfebaad3baedf93c94bc25a92a6bdbc4040213` |
 
-The graph is `nc = 1` (`{0: 'Building'}`) and answers `[batch, 5, 8400]`. `dynamic=True` is what lets the C# runner feed whole batches; a static export pins the batch to one. `nms=False` is deliberate - suppression stays on the C# side, where it can be matched to the thresholds ultralytics applies internally (IoU `0.7`, at most `300` detections) rather than baked into the graph.
+The graph is `nc = 1` (`{0: 'Building'}`) and answers `[batch, 5, 8400]`. `dynamic=True` is what lets the C# runner feed whole batches; a static export pins the batch to one. `nms` is left at its default (`None`, no NMS embedded in the graph) - suppression stays on the C# side, where it can be matched to the thresholds ultralytics applies internally (IoU `0.7`, at most `300` detections) rather than baked into the graph. Under ultralytics 8.4.165, explicitly passing `nms=False` would select the one-to-one NMS-free head (output shape `[batch, 300, 6]`), which is not the layout the in-process decoder expects.
 
 Like the weights, the export is not in git (260 MB) and lives in the git-ignored `user files/YOLO/models/`.
 
