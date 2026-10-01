@@ -42,6 +42,7 @@ namespace DiGi.YOLO
                 Constants.FileName.Validate,
                 Constants.FileName.Predict,
                 Constants.FileName.Check,
+                Constants.FileName.Checkpoint,
                 Constants.FileName.Export,
                 Constants.FileName.Utils,
                 Constants.FileName.Requirements,

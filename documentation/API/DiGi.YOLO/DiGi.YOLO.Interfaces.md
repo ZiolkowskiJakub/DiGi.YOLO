@@ -80,6 +80,7 @@ public interface IYOLOObject : DiGi.Core.Interfaces.IObject
 ```
 
 Derived  
+↳ [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation')  
 ↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 ↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')  
@@ -102,6 +103,7 @@ public interface IYOLOSerializableObject : DiGi.YOLO.Interfaces.IYOLOObject, DiG
 ```
 
 Derived  
+↳ [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation')  
 ↳ [YOLOEnvironmentResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOEnvironmentResult 'DiGi\.YOLO\.Classes\.YOLOEnvironmentResult')  
 ↳ [YOLOPredictionOptions](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionOptions 'DiGi\.YOLO\.Classes\.YOLOPredictionOptions')  
 ↳ [YOLOPredictionResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOPredictionResult 'DiGi\.YOLO\.Classes\.YOLOPredictionResult')  

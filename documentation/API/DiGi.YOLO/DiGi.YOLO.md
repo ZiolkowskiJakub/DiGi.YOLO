@@ -624,6 +624,8 @@ The scripts are rewritten in the working directory before every run, so a direct
 
 The run directory is created under [Project](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Project 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Project'), always passed as an absolute path. A run whose project folder lies inside a YOLO\models folder is refused, and ultralytics numbers a run name that is already taken rather than reusing its directory, so no run can replace the frozen model.pt. The ultralytics settings file is isolated in the .yolo-config folder of the working directory.
 
+When [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set the run continues that interrupted checkpoint instead: the script is given only --resume and --device, because ultralytics restores every other argument from the checkpoint and the ceiling is fixed. The checkpoint is read first - through [YOLOCheckpointInformation\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.YOLOCheckpointInformation\(string, string, string, System\.Threading\.CancellationToken\)') - so a finished checkpoint, a dataset that no longer exists or a run folder inside a YOLO\models folder is refused before a process starts. The result records [Resumed](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Resumed 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Resumed') and the epoch it entered.
+
 The weights identity is read from the success block train.py prints last and confirmed against the file on disk; a digest that does not match is dropped and the result does not succeed. ultralytics may download yolo26n.pt into the "weights" folder of the working directory for its AMP check and falls back to full precision without it - [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Amp') reports the precision actually used.
 
 The run is synchronous and can take hours. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing; torch worker processes can outlive the cancellation.
@@ -788,6 +790,41 @@ public static string? CheckJsonLine(System.Collections.Generic.List<string> stan
 `standardOutput` [System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
 
 The captured stdout lines of the run\.
+
+#### Returns
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
+The JSON payload line, or `null` when the markers or the payload between them are absent\.
+
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_,string,string)'></a>
+
+## Query\.CheckJsonLine\(List\<string\>, string, string\) Method
+
+Finds the JSON payload line a YOLO script writes between a pair of marker lines in its captured stdout\.
+
+The payload is the first non-empty line between the begin and end markers, so the result does not depend on what the interpreter, ultralytics or the script print before or after it - a settings notice included. check.py and checkpoint.py share this contract with different marker pairs.
+
+```csharp
+public static string? CheckJsonLine(System.Collections.Generic.List<string> standardOutput, string beginMarker, string endMarker);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_,string,string).standardOutput'></a>
+
+`standardOutput` [System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')
+
+The captured stdout lines of the run\.
+
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_,string,string).beginMarker'></a>
+
+`beginMarker` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The marker line the script prints immediately before its JSON payload\.
+
+<a name='DiGi.YOLO.Query.CheckJsonLine(System.Collections.Generic.List_string_,string,string).endMarker'></a>
+
+`endMarker` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The marker line the script prints immediately after its JSON payload\.
 
 #### Returns
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
@@ -1115,6 +1152,49 @@ The full path of an interpreter, the command name of one on PATH, or `null` to s
 [System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')  
 A list of distinct resolved interpreter paths in search order\.
 
+<a name='DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken)'></a>
+
+## Query\.YOLOCheckpointInformation\(string, string, string, CancellationToken\) Method
+
+Reads what an ultralytics training checkpoint holds \- the epoch it completed, whether it can still be resumed, the dataset and run folder it records, and the raw arguments it was trained with \- by running checkpoint\.py with the configured interpreter\.
+
+The script ships inside this assembly and is written into the working directory before it runs, with the ultralytics settings isolated in that directory's .yolo-config folder exactly as a training run isolates them, so nothing depends on what the machine-wide settings hold. The JSON payload is read from between the script's marker lines.
+
+Returns `null` for a missing or unreadable file, an interpreter that does not exist or cannot read the checkpoint, and a payload that is absent or malformed. The caller that refuses a resume names the reason from the properties - a finished checkpoint, a dataset file that no longer exists - rather than from a diagnostic string.
+
+```csharp
+public static DiGi.YOLO.Classes.YOLOCheckpointInformation? YOLOCheckpointInformation(string? path, string? pythonPath=null, string? workingDirectory=null, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken).path'></a>
+
+`path` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the checkpoint \(\.pt\) file to read\.
+
+<a name='DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken).pythonPath'></a>
+
+`pythonPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The path of the CPython interpreter, a command name on PATH, or `null` to search PATH\.
+
+<a name='DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The directory the script is written to and run in, or `null` to use temporary storage\.
+
+<a name='DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels the read\.
+
+#### Returns
+[YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation')  
+The information the checkpoint holds, or `null` when it cannot be read\.
+
 <a name='DiGi.YOLO.Query.YOLOEnvironmentResult(string,string,string,System.Threading.CancellationToken)'></a>
 
 ## Query\.YOLOEnvironmentResult\(string, string, string, CancellationToken\) Method
@@ -1197,12 +1277,12 @@ The result of the environment preflight check\.
 
 ## Query\.YOLOTrainingOutput\(IEnumerable\<string\>\) Method
 
-Reads the success block train\.py prints at the end of a run \- the path, size and SHA\-256 digest of the best weights and the automatic mixed precision actually used \- from its standard output\.
+Reads the success block train\.py prints at the end of a run \- the path, size and SHA\-256 digest of the best weights, the automatic mixed precision actually used, and, for a resumed run, the epoch it entered and the ceiling it restored \- from its standard output\.
 
-The output is scanned from the end and the last line under each prefix wins. That is where the block is, and [ExecuteProcess\(string, string, string, Dictionary&lt;string,string&gt;, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Collections\.Generic\.Dictionary\<string,string\>, System\.Threading\.CancellationToken\)') keeps only the tail of a stream, which a long run fills with training progress. Numbers are read with the invariant culture, the only form the script writes.
+The output is scanned from the end and the last line under each prefix wins. That is where the block is, and [ExecuteProcess\(string, string, string, Dictionary&lt;string,string&gt;, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Collections\.Generic\.Dictionary\<string,string\>, System\.Threading\.CancellationToken\)') keeps only the tail of a stream, which a long run fills with training progress. A resumed run prints its resume values both before training and again in this block, because a value printed only at the start would not survive in the tail. Numbers are read with the invariant culture, the only form the script writes.
 
 ```csharp
-public static (string? WeightsPath,System.Nullable<long> Bytes,string? SHA256,System.Nullable<bool> Amp) YOLOTrainingOutput(System.Collections.Generic.IEnumerable<string>? standardOutput);
+public static (string? WeightsPath,System.Nullable<long> Bytes,string? SHA256,System.Nullable<bool> Amp,System.Nullable<int> ResumedFromEpoch,System.Nullable<int> ResumedEpochs) YOLOTrainingOutput(System.Collections.Generic.IEnumerable<string>? standardOutput);
 ```
 #### Parameters
 
@@ -1213,8 +1293,8 @@ public static (string? WeightsPath,System.Nullable<long> Bytes,string? SHA256,Sy
 The lines train\.py wrote to standard output\.
 
 #### Returns
-[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
-The weights path, the size in bytes, the lowercase hexadecimal digest and the precision; each is `null` when its line is missing or cannot be read\.
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+The weights path, the size in bytes, the lowercase hexadecimal digest, the precision, and the 1\-based resumed epoch and its ceiling; each is `null` when its line is missing or cannot be read\.
 
 <a name='DiGi.YOLO.Query.YOLOValidationOutput(System.Collections.Generic.IEnumerable_string_)'></a>
 

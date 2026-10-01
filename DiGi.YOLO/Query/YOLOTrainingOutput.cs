@@ -6,21 +6,23 @@ namespace DiGi.YOLO
     public static partial class Query
     {
         /// <summary>
-        /// Reads the success block train.py prints at the end of a run - the path, size and SHA-256 digest of the best weights and the automatic mixed precision actually used - from its standard output.
-        /// <para>The output is scanned from the end and the last line under each prefix wins. That is where the block is, and <see cref="ExecuteProcess(string, string, string, Dictionary{string, string}?, System.Threading.CancellationToken)"/> keeps only the tail of a stream, which a long run fills with training progress. Numbers are read with the invariant culture, the only form the script writes.</para>
+        /// Reads the success block train.py prints at the end of a run - the path, size and SHA-256 digest of the best weights, the automatic mixed precision actually used, and, for a resumed run, the epoch it entered and the ceiling it restored - from its standard output.
+        /// <para>The output is scanned from the end and the last line under each prefix wins. That is where the block is, and <see cref="ExecuteProcess(string, string, string, Dictionary{string, string}?, System.Threading.CancellationToken)"/> keeps only the tail of a stream, which a long run fills with training progress. A resumed run prints its resume values both before training and again in this block, because a value printed only at the start would not survive in the tail. Numbers are read with the invariant culture, the only form the script writes.</para>
         /// </summary>
         /// <param name="standardOutput">The lines train.py wrote to standard output.</param>
-        /// <returns>The weights path, the size in bytes, the lowercase hexadecimal digest and the precision; each is <c>null</c> when its line is missing or cannot be read.</returns>
-        public static (string? WeightsPath, long? Bytes, string? SHA256, bool? Amp) YOLOTrainingOutput(IEnumerable<string>? standardOutput)
+        /// <returns>The weights path, the size in bytes, the lowercase hexadecimal digest, the precision, and the 1-based resumed epoch and its ceiling; each is <c>null</c> when its line is missing or cannot be read.</returns>
+        public static (string? WeightsPath, long? Bytes, string? SHA256, bool? Amp, int? ResumedFromEpoch, int? ResumedEpochs) YOLOTrainingOutput(IEnumerable<string>? standardOutput)
         {
             string? weightsPath = null;
             long? bytes = null;
             string? sHA256 = null;
             bool? amp = null;
+            int? resumedFromEpoch = null;
+            int? resumedEpochs = null;
 
             if (standardOutput == null)
             {
-                return (weightsPath, bytes, sHA256, amp);
+                return (weightsPath, bytes, sHA256, amp, resumedFromEpoch, resumedEpochs);
             }
 
             List<string> lines = [.. standardOutput];
@@ -57,14 +59,28 @@ namespace DiGi.YOLO
                         amp = value;
                     }
                 }
+                else if (resumedFromEpoch == null && line!.StartsWith(Constants.OutputPrefix.ResumeEpoch))
+                {
+                    if (int.TryParse(line.Substring(Constants.OutputPrefix.ResumeEpoch.Length).Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out int value))
+                    {
+                        resumedFromEpoch = value;
+                    }
+                }
+                else if (resumedEpochs == null && line!.StartsWith(Constants.OutputPrefix.ResumeEpochs))
+                {
+                    if (int.TryParse(line.Substring(Constants.OutputPrefix.ResumeEpochs.Length).Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out int value))
+                    {
+                        resumedEpochs = value;
+                    }
+                }
 
-                if (weightsPath != null && bytes != null && sHA256 != null && amp != null)
+                if (weightsPath != null && bytes != null && sHA256 != null && amp != null && resumedFromEpoch != null && resumedEpochs != null)
                 {
                     break;
                 }
             }
 
-            return (weightsPath, bytes, sHA256, amp);
+            return (weightsPath, bytes, sHA256, amp, resumedFromEpoch, resumedEpochs);
         }
     }
 }

@@ -39,6 +39,7 @@ namespace DiGi.YOLO.Classes
                 Patience = yOLOTrainingOptions.Patience;
                 Project = yOLOTrainingOptions.Project;
                 PythonPath = yOLOTrainingOptions.PythonPath;
+                ResumePath = yOLOTrainingOptions.ResumePath;
                 Seed = yOLOTrainingOptions.Seed;
                 WorkingDirectory = yOLOTrainingOptions.WorkingDirectory;
             }
@@ -56,18 +57,21 @@ namespace DiGi.YOLO.Classes
         /// <summary>
         /// Gets or sets whether automatic mixed precision is requested, passed to train.py as --amp or --no-amp.
         /// <para>The default is on. ultralytics checks AMP before training by downloading yolo26n.pt into the "weights" folder of the working directory; when that fails - offline - it silently trains in full precision. <see cref="YOLOTrainingResult.Amp"/> reports what was actually used.</para>
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores it from the checkpoint.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Amp))]
         public bool Amp { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the training batch size, passed to train.py as --batch. The default is 16, the batch train8 used.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores it from the checkpoint (ultralytics accepts a different batch on resume, but this runner does not send one).</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Batch))]
         public int Batch { get; set; } = 16;
 
         /// <summary>
         /// Gets or sets the absolute path of the dataset configuration file (conf.yaml), passed to train.py as --data.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume takes the dataset from the checkpoint and is refused when that file no longer exists.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(ConfigurationFilePath))]
         public string? ConfigurationFilePath { get; set; } = null;
@@ -80,30 +84,35 @@ namespace DiGi.YOLO.Classes
 
         /// <summary>
         /// Gets or sets the upper bound of training epochs, passed to train.py as --epochs. With <see cref="Patience"/> the run stops earlier when validation stops improving. The default is 150.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores the ceiling from the checkpoint, and a different ceiling is a new run, not a resume.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Epochs))]
         public int Epochs { get; set; } = 150;
 
         /// <summary>
         /// Gets or sets the square training image size, passed to train.py as --imgsz. The default is 640, the size inference and the ONNX export use.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores it from the checkpoint (ultralytics accepts a different imgsz on resume, but this runner does not send one).</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(ImageSize))]
         public int ImageSize { get; set; } = 640;
 
         /// <summary>
         /// Gets or sets the absolute path of the start weights, passed to train.py as --model: a checkpoint (.pt) - model.pt to continue train8, or a base checkpoint such as yolo26x.pt - or an architecture definition (.yaml) for random initialisation.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume continues the checkpoint named there and passes no --model.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(ModelPath))]
         public string? ModelPath { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the name of the run directory, passed to train.py as --name, such as "train9_fresh". Null uses the ultralytics default ("train", numbered when taken).
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores the run directory from the checkpoint and writes into the same folder.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Name))]
         public string? Name { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the number of epochs without validation improvement after which training stops, passed to train.py as --patience. The default is 50.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores the patience counter from the checkpoint (ultralytics accepts a different patience on resume, but this runner does not send one).</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Patience))]
         public int Patience { get; set; } = 50;
@@ -111,6 +120,7 @@ namespace DiGi.YOLO.Classes
         /// <summary>
         /// Gets or sets the absolute path of the directory the run directory is created in, passed to train.py as --project.
         /// <para>Always passed explicitly: an interpreter from a virtual environment can resolve the ultralytics default runs directory against the repository its package sits in rather than against the working directory.</para>
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores the run directory from the checkpoint and writes into the same folder.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Project))]
         public string? Project { get; set; } = null;
@@ -122,7 +132,15 @@ namespace DiGi.YOLO.Classes
         public string? PythonPath { get; set; } = null;
 
         /// <summary>
+        /// Gets or sets the path of a checkpoint (a run's weights\last.pt) to resume instead of training from <see cref="ModelPath"/>, passed to train.py as --resume.
+        /// <para>When set, the run continues the interrupted training at the next epoch, and <see cref="ModelPath"/>, <see cref="ConfigurationFilePath"/>, <see cref="Epochs"/>, <see cref="Patience"/>, <see cref="ImageSize"/>, <see cref="Batch"/>, <see cref="Seed"/>, <see cref="Project"/>, <see cref="Name"/> and <see cref="Amp"/> are not sent - ultralytics restores every one of them from the checkpoint. Only <see cref="Device"/>, alongside <see cref="PythonPath"/> and <see cref="WorkingDirectory"/>, still applies. The epoch ceiling is fixed by the checkpoint.</para>
+        /// </summary>
+        [JsonInclude, JsonPropertyName(nameof(ResumePath))]
+        public string? ResumePath { get; set; } = null;
+
+        /// <summary>
         /// Gets or sets the random seed, passed to train.py as --seed. The default is 0, the seed train8 used; both candidates of a comparison use the same one.
+        /// <para>Ignored when <see cref="ResumePath"/> is set: a resume restores it from the checkpoint.</para>
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(Seed))]
         public int Seed { get; set; } = 0;

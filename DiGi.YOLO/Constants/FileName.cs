@@ -26,6 +26,11 @@ namespace DiGi.YOLO.Constants
         public const string Check = "check.py";
 
         /// <summary>
+        /// The file name of the checkpoint information script.
+        /// </summary>
+        public const string Checkpoint = "checkpoint.py";
+
+        /// <summary>
         /// The file name of the ONNX export script.
         /// </summary>
         public const string Export = "export.py";

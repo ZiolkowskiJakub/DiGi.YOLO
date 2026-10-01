@@ -143,6 +143,31 @@ YOLOValidationResult? yOLOValidationResult = yOLOValidationOptions.Validate(canc
 * **YOLO26 loss columns:** a YOLO26 run has no `dfl_loss` in its `results.csv`; nothing here reads it.
 * **Validation:** `val.py --split val|test` (default `test`) prints `mAP50:` and `mAP50-95:`; `YOLOValidationResult` carries both with the SHA-256 of the weights it measured, so a gate table names exactly which file each row is.
 
+#### Resuming an interrupted run
+A run stopped mid-epoch (a power cut, a killed interpreter, a closed console) leaves an unfinished `<project>\<name>\weights\last.pt` that still carries its optimizer and EMA state. `Modify.Train` continues it when `YOLOTrainingOptions.ResumePath` names that file ([#21](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/21)):
+
+```csharp
+YOLOTrainingOptions yOLOTrainingOptions = new()
+{
+    PythonPath = pathPython,
+    ResumePath = Path.Combine(pathProject, "train9", "weights", "last.pt"),
+    Device = "0",
+    WorkingDirectory = pathDatasetDirectory
+};
+
+YOLOTrainingResult? yOLOTrainingResult = yOLOTrainingOptions.Train(cancellationToken);
+```
+
+```powershell
+python train.py --resume "C:\YOLO\runs\detect\train9\weights\last.pt" --device 0
+```
+
+* **What is resumable:** a checkpoint ultralytics left unfinished. It stores `epoch >= 0` and an optimizer state right up to the last epoch; a finished run's `last.pt` is stripped to `epoch = -1` with no optimizer, and nothing can be resumed from it. `Query.YOLOCheckpointInformation(path)` reads either - the 1-based completed `Epoch`, the `Epochs` ceiling, `Finished`, `DataPath`, `Project`, `Name` and the raw `TrainArguments` - with `checkpoint.py` and no ultralytics.
+* **What a resume may change:** `train.py` passes **only** `--resume` and `--device`. Ultralytics restores every other argument from the checkpoint's `train_args`; its `check_resume` accepts a handful of overrides (`imgsz`, `batch`, `device`, `patience`, `close_mosaic`, ...), ignores the rest with a warning, and would **silently start a fresh run** if handed a finished checkpoint - so the guard that refuses one is in `train.py`, not delegated to ultralytics. The epoch ceiling is fixed by the checkpoint: a different ceiling is a new run, not a resume.
+* **Refusals before launch:** `Modify.Train` refuses, naming the reason and starting no process, a resume path that is missing or not a `.pt`, a finished checkpoint, a checkpoint whose `train_args.data` no longer exists, and a run folder inside a `YOLO\models` folder.
+* **Not bit-identical:** a resumed run restarts the data loader's random state, so it is not byte-for-byte the uninterrupted run. `YOLOTrainingResult.Resumed` is `true` and `ResumedFromEpoch` names the 1-based epoch it entered (a checkpoint with one completed epoch resumes into epoch 2), so a provenance table can say so.
+* **Launched by hand:** a console-launched run aborts if its console window is closed (`forrtl: error (200): program aborting due to window-CLOSE event` - the Intel Fortran runtime numpy/torch load). Start it with `pythonw`, or keep the console open. A hand-written wrapper must keep `train.py`'s `if __name__ == "__main__":` guard, because Windows data loader workers re-import the main module. Runs started by `Modify.Train` have no console to close.
+
 ---
 
 ## 📐 Core Architectural Pattern (DiGi.Core Pattern)

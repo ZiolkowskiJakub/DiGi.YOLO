@@ -165,6 +165,19 @@ public const string Check = "check.py";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.FileName.Checkpoint'></a>
+
+## FileName\.Checkpoint Field
+
+The file name of the checkpoint information script\.
+
+```csharp
+public const string Checkpoint = "checkpoint.py";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.FileName.Conf'></a>
 
 ## FileName\.Conf Field
@@ -299,6 +312,36 @@ public const string CheckJsonEnd = "YOLO_CHECK_JSON_END";
 #### Field Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Constants.Marker.CheckpointJsonBegin'></a>
+
+## Marker\.CheckpointJsonBegin Field
+
+The line checkpoint\.py prints immediately before its JSON payload\.
+
+The payload is the first non-empty line between this marker and [CheckpointJsonEnd](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckpointJsonEnd 'DiGi\.YOLO\.Constants\.Marker\.CheckpointJsonEnd'), the same contract [CheckJsonBegin](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckJsonBegin 'DiGi\.YOLO\.Constants\.Marker\.CheckJsonBegin') establishes for check.py, so a settings notice or any other line printed before it is never picked up. The markers and their use are stated in checkpoint.py in files/YOLO.
+
+```csharp
+public const string CheckpointJsonBegin = "YOLO_CHECKPOINT_JSON_BEGIN";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.Marker.CheckpointJsonEnd'></a>
+
+## Marker\.CheckpointJsonEnd Field
+
+The line checkpoint\.py prints immediately after its JSON payload\.
+
+Paired with [CheckpointJsonBegin](DiGi.YOLO.Constants.md#DiGi.YOLO.Constants.Marker.CheckpointJsonBegin 'DiGi\.YOLO\.Constants\.Marker\.CheckpointJsonBegin'); see checkpoint.py in files/YOLO.
+
+```csharp
+public const string CheckpointJsonEnd = "YOLO_CHECKPOINT_JSON_END";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Constants.OutputPrefix'></a>
 
 ## OutputPrefix Class
@@ -359,6 +402,36 @@ The prefix of the line val\.py prints the box mAP averaged over IoU 0\.5 to 0\.9
 
 ```csharp
 public const string MAP50_95 = "mAP50-95:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.ResumeEpoch'></a>
+
+## OutputPrefix\.ResumeEpoch Field
+
+The prefix of the line train\.py prints, before a resumed run and again in its success block, the 1\-based epoch training resumes into under\.
+
+Printed in both places because the start of a long run is evicted from the tail [ExecuteProcess\(string, string, string, Dictionary&lt;string,string&gt;, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Collections\.Generic\.Dictionary\<string,string\>, System\.Threading\.CancellationToken\)') keeps, so only the success block copy survives for the parser.
+
+```csharp
+public const string ResumeEpoch = "Resume epoch:";
+```
+
+#### Field Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Constants.OutputPrefix.ResumeEpochs'></a>
+
+## OutputPrefix\.ResumeEpochs Field
+
+The prefix of the line train\.py prints, before a resumed run and again in its success block, the epoch ceiling restored from the checkpoint under\.
+
+The ceiling is fixed by the checkpoint; a different one is a new run, not a resume.
+
+```csharp
+public const string ResumeEpochs = "Resume epochs:";
 ```
 
 #### Field Value

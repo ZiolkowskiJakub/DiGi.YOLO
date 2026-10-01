@@ -1082,6 +1082,231 @@ public override string ToString();
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 A string containing the labels and bounding boxes separated by new lines\.
 
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation'></a>
+
+## YOLOCheckpointInformation Class
+
+Describes an ultralytics training checkpoint read by [YOLOCheckpointInformation\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.YOLOCheckpointInformation(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.YOLOCheckpointInformation\(string, string, string, System\.Threading\.CancellationToken\)'): the epoch it completed, whether it can still be resumed, the dataset and run folder it records, and the raw arguments it was trained with\.
+
+[Epoch](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Epoch 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Epoch') is reported 1-based - the number of epochs completed - although ultralytics stores the 0-based index of the last one. A checkpoint whose run finished, or that ultralytics wrote without optimizer state, reports [Finished](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Finished 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Finished'); a resumed run enters the epoch after [Epoch](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Epoch 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Epoch') and cannot change [Epochs](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Epochs 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Epochs'), the ceiling restored from the checkpoint.
+
+```csharp
+public class YOLOCheckpointInformation : DiGi.Core.Classes.SerializableObject, DiGi.YOLO.Interfaces.IYOLOSerializableObject, DiGi.YOLO.Interfaces.IYOLOObject, DiGi.Core.Interfaces.IObject, DiGi.Core.Interfaces.ISerializableObject, DiGi.Core.Interfaces.ICloneableObject<DiGi.Core.Interfaces.ISerializableObject>, DiGi.Core.Interfaces.ICloneableObject
+```
+
+Inheritance [System\.Object](https://learn.microsoft.com/en-us/dotnet/api/system.object 'System\.Object') → [DiGi\.Core\.Classes\.Object](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.object 'DiGi\.Core\.Classes\.Object') → [DiGi\.Core\.Classes\.SerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.classes.serializableobject 'DiGi\.Core\.Classes\.SerializableObject') → YOLOCheckpointInformation
+
+Implements [IYOLOSerializableObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOSerializableObject 'DiGi\.YOLO\.Interfaces\.IYOLOSerializableObject'), [IYOLOObject](DiGi.YOLO.Interfaces.md#DiGi.YOLO.Interfaces.IYOLOObject 'DiGi\.YOLO\.Interfaces\.IYOLOObject'), [DiGi\.Core\.Interfaces\.IObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iobject 'DiGi\.Core\.Interfaces\.IObject'), [DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject'), [DiGi\.Core\.Interfaces\.ICloneableObject&lt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1')[DiGi\.Core\.Interfaces\.ISerializableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.iserializableobject 'DiGi\.Core\.Interfaces\.ISerializableObject')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject-1 'DiGi\.Core\.Interfaces\.ICloneableObject\`1'), [DiGi\.Core\.Interfaces\.ICloneableObject](https://learn.microsoft.com/en-us/dotnet/api/digi.core.interfaces.icloneableobject 'DiGi\.Core\.Interfaces\.ICloneableObject')
+### Constructors
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(DiGi.YOLO.Classes.YOLOCheckpointInformation)'></a>
+
+## YOLOCheckpointInformation\(YOLOCheckpointInformation\) Constructor
+
+Initializes a new instance of the [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation') class by copying an existing information instance\.
+
+```csharp
+public YOLOCheckpointInformation(DiGi.YOLO.Classes.YOLOCheckpointInformation? yOLOCheckpointInformation);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(DiGi.YOLO.Classes.YOLOCheckpointInformation).yOLOCheckpointInformation'></a>
+
+`yOLOCheckpointInformation` [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation')
+
+The source information instance to copy from\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string)'></a>
+
+## YOLOCheckpointInformation\(Nullable\<double\>, string, Nullable\<int\>, Nullable\<int\>, bool, string, string, string\) Constructor
+
+Initializes a new instance of the [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation') class with the specified values\.
+
+```csharp
+public YOLOCheckpointInformation(System.Nullable<double> bestFitness, string? dataPath, System.Nullable<int> epoch, System.Nullable<int> epochs, bool finished, string? name, string? project, string? trainArguments);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).bestFitness'></a>
+
+`bestFitness` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The best validation fitness the checkpoint records, or `null` when unreadable\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).dataPath'></a>
+
+`dataPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The dataset configuration file path the checkpoint records, or `null` when it records none\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).epoch'></a>
+
+`epoch` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The number of completed epochs \(1\-based\), or `null` when the checkpoint records no epoch\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).epochs'></a>
+
+`epochs` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The epoch ceiling the checkpoint records, or `null` when it records none\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).finished'></a>
+
+`finished` [System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+A value indicating whether the checkpoint cannot be resumed: ultralytics stamped it finished or dropped its optimizer state\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).name'></a>
+
+`name` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The run directory name the checkpoint records, or `null` when it records none\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).project'></a>
+
+`project` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The run directory parent path the checkpoint records, or `null` when it records none\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Nullable_double_,string,System.Nullable_int_,System.Nullable_int_,bool,string,string,string).trainArguments'></a>
+
+`trainArguments` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The raw training arguments the checkpoint carries as a JSON object, serialized as text, or `null` when it carries none\.
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Text.Json.Nodes.JsonObject)'></a>
+
+## YOLOCheckpointInformation\(JsonObject\) Constructor
+
+Initializes a new instance of the [YOLOCheckpointInformation](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation') class using a JSON object\.
+
+```csharp
+public YOLOCheckpointInformation(System.Text.Json.Nodes.JsonObject? jsonObject);
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.YOLOCheckpointInformation(System.Text.Json.Nodes.JsonObject).jsonObject'></a>
+
+`jsonObject` [System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
+The JSON object containing the checkpoint information\.
+### Properties
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.BestFitness'></a>
+
+## YOLOCheckpointInformation\.BestFitness Property
+
+Gets the best validation fitness the checkpoint records, or `null` when unreadable\.
+
+```csharp
+public System.Nullable<double> BestFitness { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Double](https://learn.microsoft.com/en-us/dotnet/api/system.double 'System\.Double')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.DataPath'></a>
+
+## YOLOCheckpointInformation\.DataPath Property
+
+Gets the dataset configuration file path the checkpoint records, or `null` when it records none\.
+
+A resume is refused when this file no longer exists.
+
+```csharp
+public string? DataPath { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.Epoch'></a>
+
+## YOLOCheckpointInformation\.Epoch Property
+
+Gets the number of epochs completed \(1\-based\), or `null` when the checkpoint records no epoch\.
+
+A resumed run enters the next epoch and the consumers name it "epoch [Epoch](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Epoch 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Epoch') + 1 of [Epochs](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOCheckpointInformation.Epochs 'DiGi\.YOLO\.Classes\.YOLOCheckpointInformation\.Epochs')".
+
+```csharp
+public System.Nullable<int> Epoch { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.Epochs'></a>
+
+## YOLOCheckpointInformation\.Epochs Property
+
+Gets the epoch ceiling the checkpoint records, or `null` when it records none\.
+
+The ceiling is fixed by the checkpoint; a different one is a new run, not a resume.
+
+```csharp
+public System.Nullable<int> Epochs { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.Finished'></a>
+
+## YOLOCheckpointInformation\.Finished Property
+
+Gets a value indicating whether the checkpoint cannot be resumed: ultralytics stamped its epoch finished or dropped its optimizer state\.
+
+```csharp
+public bool Finished { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.Name'></a>
+
+## YOLOCheckpointInformation\.Name Property
+
+Gets the run directory name the checkpoint records, or `null` when it records none\.
+
+```csharp
+public string? Name { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.Project'></a>
+
+## YOLOCheckpointInformation\.Project Property
+
+Gets the run directory parent path the checkpoint records, or `null` when it records none\.
+
+A resume whose project lies inside a YOLO\models folder is refused, as a fresh run is.
+
+```csharp
+public string? Project { get; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+<a name='DiGi.YOLO.Classes.YOLOCheckpointInformation.TrainArguments'></a>
+
+## YOLOCheckpointInformation\.TrainArguments Property
+
+Gets the raw training arguments the checkpoint carries as a JSON object, or `null` when it carries none or they cannot be read\.
+
+Stored as JSON text so the object survives the serialization of this class; ultralytics restores every one of them on resume, so the runner passes none of them back.
+
+```csharp
+public System.Text.Json.Nodes.JsonObject? TrainArguments { get; }
+```
+
+#### Property Value
+[System\.Text\.Json\.Nodes\.JsonObject](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonobject 'System\.Text\.Json\.Nodes\.JsonObject')
+
 <a name='DiGi.YOLO.Classes.YOLOEnvironmentResult'></a>
 
 ## YOLOEnvironmentResult Class
@@ -2388,6 +2613,8 @@ Gets or sets whether automatic mixed precision is requested, passed to train\.py
 
 The default is on. ultralytics checks AMP before training by downloading yolo26n.pt into the "weights" folder of the working directory; when that fails - offline - it silently trains in full precision. [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Amp') reports what was actually used.
 
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores it from the checkpoint.
+
 ```csharp
 public bool Amp { get; set; }
 ```
@@ -2401,6 +2628,8 @@ public bool Amp { get; set; }
 
 Gets or sets the training batch size, passed to train\.py as \-\-batch\. The default is 16, the batch train8 used\.
 
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores it from the checkpoint (ultralytics accepts a different batch on resume, but this runner does not send one).
+
 ```csharp
 public int Batch { get; set; }
 ```
@@ -2413,6 +2642,8 @@ public int Batch { get; set; }
 ## YOLOTrainingOptions\.ConfigurationFilePath Property
 
 Gets or sets the absolute path of the dataset configuration file \(conf\.yaml\), passed to train\.py as \-\-data\.
+
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume takes the dataset from the checkpoint and is refused when that file no longer exists.
 
 ```csharp
 public string? ConfigurationFilePath { get; set; }
@@ -2440,6 +2671,8 @@ public string? Device { get; set; }
 
 Gets or sets the upper bound of training epochs, passed to train\.py as \-\-epochs\. With [Patience](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Patience 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Patience') the run stops earlier when validation stops improving\. The default is 150\.
 
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores the ceiling from the checkpoint, and a different ceiling is a new run, not a resume.
+
 ```csharp
 public int Epochs { get; set; }
 ```
@@ -2452,6 +2685,8 @@ public int Epochs { get; set; }
 ## YOLOTrainingOptions\.ImageSize Property
 
 Gets or sets the square training image size, passed to train\.py as \-\-imgsz\. The default is 640, the size inference and the ONNX export use\.
+
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores it from the checkpoint (ultralytics accepts a different imgsz on resume, but this runner does not send one).
 
 ```csharp
 public int ImageSize { get; set; }
@@ -2466,6 +2701,8 @@ public int ImageSize { get; set; }
 
 Gets or sets the absolute path of the start weights, passed to train\.py as \-\-model: a checkpoint \(\.pt\) \- model\.pt to continue train8, or a base checkpoint such as yolo26x\.pt \- or an architecture definition \(\.yaml\) for random initialisation\.
 
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume continues the checkpoint named there and passes no --model.
+
 ```csharp
 public string? ModelPath { get; set; }
 ```
@@ -2479,6 +2716,8 @@ public string? ModelPath { get; set; }
 
 Gets or sets the name of the run directory, passed to train\.py as \-\-name, such as "train9\_fresh"\. Null uses the ultralytics default \("train", numbered when taken\)\.
 
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores the run directory from the checkpoint and writes into the same folder.
+
 ```csharp
 public string? Name { get; set; }
 ```
@@ -2491,6 +2730,8 @@ public string? Name { get; set; }
 ## YOLOTrainingOptions\.Patience Property
 
 Gets or sets the number of epochs without validation improvement after which training stops, passed to train\.py as \-\-patience\. The default is 50\.
+
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores the patience counter from the checkpoint (ultralytics accepts a different patience on resume, but this runner does not send one).
 
 ```csharp
 public int Patience { get; set; }
@@ -2506,6 +2747,8 @@ public int Patience { get; set; }
 Gets or sets the absolute path of the directory the run directory is created in, passed to train\.py as \-\-project\.
 
 Always passed explicitly: an interpreter from a virtual environment can resolve the ultralytics default runs directory against the repository its package sits in rather than against the working directory.
+
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores the run directory from the checkpoint and writes into the same folder.
 
 ```csharp
 public string? Project { get; set; }
@@ -2527,11 +2770,28 @@ public string? PythonPath { get; set; }
 #### Property Value
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
+<a name='DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath'></a>
+
+## YOLOTrainingOptions\.ResumePath Property
+
+Gets or sets the path of a checkpoint \(a run's weights\\last\.pt\) to resume instead of training from [ModelPath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ModelPath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ModelPath'), passed to train\.py as \-\-resume\.
+
+When set, the run continues the interrupted training at the next epoch, and [ModelPath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ModelPath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ModelPath'), [ConfigurationFilePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ConfigurationFilePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ConfigurationFilePath'), [Epochs](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Epochs 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Epochs'), [Patience](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Patience 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Patience'), [ImageSize](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ImageSize 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ImageSize'), [Batch](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Batch 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Batch'), [Seed](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Seed 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Seed'), [Project](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Project 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Project'), [Name](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Name 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Name') and [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Amp') are not sent - ultralytics restores every one of them from the checkpoint. Only [Device](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Device 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.Device'), alongside [PythonPath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.PythonPath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.PythonPath') and [WorkingDirectory](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.WorkingDirectory 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.WorkingDirectory'), still applies. The epoch ceiling is fixed by the checkpoint.
+
+```csharp
+public string? ResumePath { get; set; }
+```
+
+#### Property Value
+[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
 <a name='DiGi.YOLO.Classes.YOLOTrainingOptions.Seed'></a>
 
 ## YOLOTrainingOptions\.Seed Property
 
 Gets or sets the random seed, passed to train\.py as \-\-seed\. The default is 0, the seed train8 used; both candidates of a comparison use the same one\.
+
+Ignored when [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.ResumePath 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.ResumePath') is set: a resume restores it from the checkpoint.
 
 ```csharp
 public int Seed { get; set; }
@@ -2589,88 +2849,100 @@ public YOLOTrainingResult(DiGi.YOLO.Classes.YOLOTrainingResult? yOLOTrainingResu
 
 The source result to copy from\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_)'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_)'></a>
 
-## YOLOTrainingResult\(int, string, string, ModelKind, string, Nullable\<long\>, string, Nullable\<bool\>, IEnumerable\<string\>, IEnumerable\<string\>, Nullable\<DateTimeOffset\>, Nullable\<DateTimeOffset\>\) Constructor
+## YOLOTrainingResult\(int, string, string, ModelKind, string, Nullable\<long\>, string, Nullable\<bool\>, IEnumerable\<string\>, IEnumerable\<string\>, Nullable\<DateTimeOffset\>, Nullable\<DateTimeOffset\>, bool, Nullable\<int\>\) Constructor
 
 Initializes a new instance of the [YOLOTrainingResult](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult 'DiGi\.YOLO\.Classes\.YOLOTrainingResult') class with the specified values\.
 
 ```csharp
-public YOLOTrainingResult(int exitCode, string? startModelPath, string? startModelSHA256, DiGi.YOLO.Enums.ModelKind startModelKind, string? weightsPath, System.Nullable<long> bytes, string? sHA256, System.Nullable<bool> amp, System.Collections.Generic.IEnumerable<string>? standardOutput, System.Collections.Generic.IEnumerable<string>? standardError, System.Nullable<System.DateTimeOffset> start, System.Nullable<System.DateTimeOffset> end);
+public YOLOTrainingResult(int exitCode, string? startModelPath, string? startModelSHA256, DiGi.YOLO.Enums.ModelKind startModelKind, string? weightsPath, System.Nullable<long> bytes, string? sHA256, System.Nullable<bool> amp, System.Collections.Generic.IEnumerable<string>? standardOutput, System.Collections.Generic.IEnumerable<string>? standardError, System.Nullable<System.DateTimeOffset> start, System.Nullable<System.DateTimeOffset> end, bool resumed=false, System.Nullable<int> resumedFromEpoch=null);
 ```
 #### Parameters
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).exitCode'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).exitCode'></a>
 
 `exitCode` [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
 
 The exit code of the interpreter; \-1 when it could not be started, was cancelled, or the runner refused the run\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelPath'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).startModelPath'></a>
 
 `startModelPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
 The absolute path of the start weights\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelSHA256'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).startModelSHA256'></a>
 
 `startModelSHA256` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
 The lowercase hexadecimal SHA\-256 digest of the start weights\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).startModelKind'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).startModelKind'></a>
 
 `startModelKind` [ModelKind](DiGi.YOLO.Enums.md#DiGi.YOLO.Enums.ModelKind 'DiGi\.YOLO\.Enums\.ModelKind')
 
 Whether the start weights are a checkpoint or an architecture definition\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).weightsPath'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).weightsPath'></a>
 
 `weightsPath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
 The absolute path of the best weights the run wrote\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).bytes'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).bytes'></a>
 
 `bytes` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64 'System\.Int64')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
 
 The size of the best weights in bytes\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).sHA256'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).sHA256'></a>
 
 `sHA256` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
 
 The lowercase hexadecimal SHA\-256 digest of the best weights\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).amp'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).amp'></a>
 
 `amp` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
 
 The automatic mixed precision the run actually used\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardOutput'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).standardOutput'></a>
 
 `standardOutput` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
 
 The tail of the lines the script wrote to standard output\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).standardError'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).standardError'></a>
 
 `standardError` [System\.Collections\.Generic\.IEnumerable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1 'System\.Collections\.Generic\.IEnumerable\`1')
 
 The tail of the lines the script wrote to standard error, followed by any message of the runner\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).start'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).start'></a>
 
 `start` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
 
 When the run started\.
 
-<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_).end'></a>
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).end'></a>
 
 `end` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset 'System\.DateTimeOffset')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
 
 When the run ended\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).resumed'></a>
+
+`resumed` [System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+A value indicating whether the run continued an interrupted training instead of starting from the beginning\.
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(int,string,string,DiGi.YOLO.Enums.ModelKind,string,System.Nullable_long_,string,System.Nullable_bool_,System.Collections.Generic.IEnumerable_string_,System.Collections.Generic.IEnumerable_string_,System.Nullable_System.DateTimeOffset_,System.Nullable_System.DateTimeOffset_,bool,System.Nullable_int_).resumedFromEpoch'></a>
+
+`resumedFromEpoch` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The 1\-based epoch the resumed run entered, restored from the checkpoint; `null` for a run that was not resumed or whose resume line was not read\.
 
 <a name='DiGi.YOLO.Classes.YOLOTrainingResult.YOLOTrainingResult(System.Text.Json.Nodes.JsonObject)'></a>
 
@@ -2754,6 +3026,36 @@ public int ExitCode { get; }
 
 #### Property Value
 [System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.Resumed'></a>
+
+## YOLOTrainingResult\.Resumed Property
+
+Gets a value indicating whether the run continued an interrupted training instead of starting from the beginning\.
+
+True whenever the runner was given a resume checkpoint, including a run that then failed; a resume is not bit-identical to an uninterrupted run, because the data loader's random state restarts.
+
+```csharp
+public bool Resumed { get; }
+```
+
+#### Property Value
+[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')
+
+<a name='DiGi.YOLO.Classes.YOLOTrainingResult.ResumedFromEpoch'></a>
+
+## YOLOTrainingResult\.ResumedFromEpoch Property
+
+Gets the 1\-based epoch the resumed run entered, or `null` for a run that was not resumed or whose resume line could not be read\.
+
+The epoch after the last completed one the checkpoint records: a checkpoint with one completed epoch resumed into epoch 2.
+
+```csharp
+public System.Nullable<int> ResumedFromEpoch { get; }
+```
+
+#### Property Value
+[System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
 
 <a name='DiGi.YOLO.Classes.YOLOTrainingResult.SHA256'></a>
 

@@ -26,6 +26,12 @@ namespace DiGi.YOLO.Classes
         [JsonInclude, JsonPropertyName(nameof(ExitCode))]
         private readonly int exitCode;
 
+        [JsonInclude, JsonPropertyName(nameof(Resumed))]
+        private readonly bool resumed;
+
+        [JsonInclude, JsonPropertyName(nameof(ResumedFromEpoch))]
+        private readonly int? resumedFromEpoch;
+
         [JsonInclude, JsonPropertyName(nameof(SHA256))]
         private readonly string? sHA256;
 
@@ -65,6 +71,8 @@ namespace DiGi.YOLO.Classes
         /// <param name="standardError">The tail of the lines the script wrote to standard error, followed by any message of the runner.</param>
         /// <param name="start">When the run started.</param>
         /// <param name="end">When the run ended.</param>
+        /// <param name="resumed">A value indicating whether the run continued an interrupted training instead of starting from the beginning.</param>
+        /// <param name="resumedFromEpoch">The 1-based epoch the resumed run entered, restored from the checkpoint; <c>null</c> for a run that was not resumed or whose resume line was not read.</param>
         public YOLOTrainingResult(
             int exitCode,
             string? startModelPath,
@@ -77,7 +85,9 @@ namespace DiGi.YOLO.Classes
             IEnumerable<string>? standardOutput,
             IEnumerable<string>? standardError,
             DateTimeOffset? start,
-            DateTimeOffset? end)
+            DateTimeOffset? end,
+            bool resumed = false,
+            int? resumedFromEpoch = null)
         {
             this.exitCode = exitCode;
             this.startModelPath = startModelPath;
@@ -91,6 +101,8 @@ namespace DiGi.YOLO.Classes
             this.standardError = standardError == null ? null : [.. standardError];
             this.start = start;
             this.end = end;
+            this.resumed = resumed;
+            this.resumedFromEpoch = resumedFromEpoch;
         }
 
         /// <summary>
@@ -106,6 +118,8 @@ namespace DiGi.YOLO.Classes
                 bytes = yOLOTrainingResult.bytes;
                 end = yOLOTrainingResult.end;
                 exitCode = yOLOTrainingResult.exitCode;
+                resumed = yOLOTrainingResult.resumed;
+                resumedFromEpoch = yOLOTrainingResult.resumedFromEpoch;
                 sHA256 = yOLOTrainingResult.sHA256;
                 standardError = yOLOTrainingResult.standardError == null ? null : [.. yOLOTrainingResult.standardError];
                 standardOutput = yOLOTrainingResult.standardOutput == null ? null : [.. yOLOTrainingResult.standardOutput];
@@ -188,6 +202,32 @@ namespace DiGi.YOLO.Classes
             get
             {
                 return exitCode;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the run continued an interrupted training instead of starting from the beginning.
+        /// <para>True whenever the runner was given a resume checkpoint, including a run that then failed; a resume is not bit-identical to an uninterrupted run, because the data loader's random state restarts.</para>
+        /// </summary>
+        [JsonIgnore]
+        public bool Resumed
+        {
+            get
+            {
+                return resumed;
+            }
+        }
+
+        /// <summary>
+        /// Gets the 1-based epoch the resumed run entered, or <c>null</c> for a run that was not resumed or whose resume line could not be read.
+        /// <para>The epoch after the last completed one the checkpoint records: a checkpoint with one completed epoch resumed into epoch 2.</para>
+        /// </summary>
+        [JsonIgnore]
+        public int? ResumedFromEpoch
+        {
+            get
+            {
+                return resumedFromEpoch;
             }
         }
 
