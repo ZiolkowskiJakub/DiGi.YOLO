@@ -628,7 +628,7 @@ When [ResumePath](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.Res
 
 The weights identity is read from the success block train.py prints last and confirmed against the file on disk; a digest that does not match is dropped and the result does not succeed. ultralytics may download yolo26n.pt into the "weights" folder of the working directory for its AMP check and falls back to full precision without it - [Amp](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Amp 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Amp') reports the precision actually used.
 
-The run is synchronous and can take hours. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing; torch worker processes can outlive the cancellation.
+The run is synchronous and can take hours. Cancelling it, or reaching [InactivityTimeout](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingOptions.InactivityTimeout 'DiGi\.YOLO\.Classes\.YOLOTrainingOptions\.InactivityTimeout') when neither output stream has produced a line for that long, ends the interpreter together with the worker processes it started and returns a result carrying a non-zero exit code rather than throwing; a run ended that way for silence is reported through [Stalled](DiGi.YOLO.Classes.md#DiGi.YOLO.Classes.YOLOTrainingResult.Stalled 'DiGi\.YOLO\.Classes\.YOLOTrainingResult\.Stalled').
 
 ```csharp
 public static DiGi.YOLO.Classes.YOLOTrainingResult? Train(this DiGi.YOLO.Classes.YOLOTrainingOptions? yOLOTrainingOptions, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
@@ -918,13 +918,66 @@ The path string to be encoded\. This value can be null\.
 [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')  
 An encoded version of the path, or an empty string if the provided path is null or whitespace\.
 
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken)'></a>
+
+## Query\.ExecuteProcess\(string, string, string, Dictionary\<string,string\>, Nullable\<TimeSpan\>, CancellationToken\) Method
+
+Executes a process with captured standard output and standard error streams, additional environment variables, cancellation support, and an inactivity limit that ends a process which stops producing output\.
+
+Launches the process without creating a window, using UTF-8 encodings for both streams. Reading both streams asynchronously prevents deadlocks when process output buffers fill up. Cancelling or reaching the limit ends the process together with every process it started.
+
+```csharp
+public static (int ExitCode,System.Collections.Generic.List<string> StandardOutput,System.Collections.Generic.List<string> StandardError,bool Stalled) ExecuteProcess(string executablePath, string arguments, string workingDirectory, System.Collections.Generic.Dictionary<string,string>? environmentVariables, System.Nullable<System.TimeSpan> inactivityTimeout, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));
+```
+#### Parameters
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).executablePath'></a>
+
+`executablePath` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The full path of the executable process to run\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).arguments'></a>
+
+`arguments` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The command line arguments passed to the process\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).workingDirectory'></a>
+
+`workingDirectory` [System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')
+
+The working directory context for the process execution\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).environmentVariables'></a>
+
+`environmentVariables` [System\.Collections\.Generic\.Dictionary&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[,](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2 'System\.Collections\.Generic\.Dictionary\`2')
+
+The environment variables set on the process on top of the inherited environment, or `null`\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).inactivityTimeout'></a>
+
+`inactivityTimeout` [System\.Nullable&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')[System\.TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan 'System\.TimeSpan')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1 'System\.Nullable\`1')
+
+The span without a line on either output stream after which the process is ended, or `null` for no limit\. A value that is not positive disables the limit as well\.
+
+<a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken).cancellationToken'></a>
+
+`cancellationToken` [System\.Threading\.CancellationToken](https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken 'System\.Threading\.CancellationToken')
+
+The token that cancels process execution\.
+
+#### Returns
+[&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32 'System\.Int32')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Collections\.Generic\.List&lt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[System\.String](https://learn.microsoft.com/en-us/dotnet/api/system.string 'System\.String')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1 'System\.Collections\.Generic\.List\`1')[,](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')[System\.Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean 'System\.Boolean')[&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple 'System\.ValueTuple')  
+A tuple containing the process exit code \(\-1 when the process was cancelled or ended for inactivity\), standard output lines, standard error lines, and whether the process was ended for inactivity\.
+
 <a name='DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Threading.CancellationToken)'></a>
 
 ## Query\.ExecuteProcess\(string, string, string, Dictionary\<string,string\>, CancellationToken\) Method
 
 Executes a process with captured standard output and standard error streams, additional environment variables and cancellation support\.
 
-Same contract as [ExecuteProcess\(string, string, string, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Threading\.CancellationToken\)'), with the environment variables set on the process on top of the inherited environment.
+Same contract as [ExecuteProcess\(string, string, string, Dictionary&lt;string,string&gt;, Nullable&lt;TimeSpan&gt;, CancellationToken\)](DiGi.YOLO.md#DiGi.YOLO.Query.ExecuteProcess(string,string,string,System.Collections.Generic.Dictionary_string,string_,System.Nullable_System.TimeSpan_,System.Threading.CancellationToken) 'DiGi\.YOLO\.Query\.ExecuteProcess\(string, string, string, System\.Collections\.Generic\.Dictionary\<string,string\>, System\.Nullable\<System\.TimeSpan\>, System\.Threading\.CancellationToken\)'), without an inactivity limit.
 
 ```csharp
 public static (int ExitCode,System.Collections.Generic.List<string> StandardOutput,System.Collections.Generic.List<string> StandardError) ExecuteProcess(string executablePath, string arguments, string workingDirectory, System.Collections.Generic.Dictionary<string,string>? environmentVariables, System.Threading.CancellationToken cancellationToken=default(System.Threading.CancellationToken));

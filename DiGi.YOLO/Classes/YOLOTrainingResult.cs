@@ -35,6 +35,9 @@ namespace DiGi.YOLO.Classes
         [JsonInclude, JsonPropertyName(nameof(SHA256))]
         private readonly string? sHA256;
 
+        [JsonInclude, JsonPropertyName(nameof(Stalled))]
+        private readonly bool stalled;
+
         [JsonInclude, JsonPropertyName(nameof(StandardError))]
         private readonly List<string>? standardError;
 
@@ -73,6 +76,7 @@ namespace DiGi.YOLO.Classes
         /// <param name="end">When the run ended.</param>
         /// <param name="resumed">A value indicating whether the run continued an interrupted training instead of starting from the beginning.</param>
         /// <param name="resumedFromEpoch">The 1-based epoch the resumed run entered, restored from the checkpoint; <c>null</c> for a run that was not resumed or whose resume line was not read.</param>
+        /// <param name="stalled">A value indicating whether the runner ended the process because neither output stream produced a line within the inactivity limit.</param>
         public YOLOTrainingResult(
             int exitCode,
             string? startModelPath,
@@ -87,7 +91,8 @@ namespace DiGi.YOLO.Classes
             DateTimeOffset? start,
             DateTimeOffset? end,
             bool resumed = false,
-            int? resumedFromEpoch = null)
+            int? resumedFromEpoch = null,
+            bool stalled = false)
         {
             this.exitCode = exitCode;
             this.startModelPath = startModelPath;
@@ -103,6 +108,7 @@ namespace DiGi.YOLO.Classes
             this.end = end;
             this.resumed = resumed;
             this.resumedFromEpoch = resumedFromEpoch;
+            this.stalled = stalled;
         }
 
         /// <summary>
@@ -121,6 +127,7 @@ namespace DiGi.YOLO.Classes
                 resumed = yOLOTrainingResult.resumed;
                 resumedFromEpoch = yOLOTrainingResult.resumedFromEpoch;
                 sHA256 = yOLOTrainingResult.sHA256;
+                stalled = yOLOTrainingResult.stalled;
                 standardError = yOLOTrainingResult.standardError == null ? null : [.. yOLOTrainingResult.standardError];
                 standardOutput = yOLOTrainingResult.standardOutput == null ? null : [.. yOLOTrainingResult.standardOutput];
                 start = yOLOTrainingResult.start;
@@ -240,6 +247,19 @@ namespace DiGi.YOLO.Classes
             get
             {
                 return sHA256;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the runner ended the process because neither output stream produced a line within <see cref="YOLOTrainingOptions.InactivityTimeout"/>, instead of the run finishing by itself.
+        /// <para>A stalled run is a failure like any other: a non-zero exit code and no confirmed weights. The interpreter and its worker processes are ended together, and the standard-error tail names the limit and the last output time. Resuming such a run automatically is the task of the runner above this library, not of the training itself.</para>
+        /// </summary>
+        [JsonIgnore]
+        public bool Stalled
+        {
+            get
+            {
+                return stalled;
             }
         }
 

@@ -1,5 +1,6 @@
 using DiGi.Core.Classes;
 using DiGi.YOLO.Interfaces;
+using System;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
@@ -34,6 +35,7 @@ namespace DiGi.YOLO.Classes
                 Device = yOLOTrainingOptions.Device;
                 Epochs = yOLOTrainingOptions.Epochs;
                 ImageSize = yOLOTrainingOptions.ImageSize;
+                InactivityTimeout = yOLOTrainingOptions.InactivityTimeout;
                 ModelPath = yOLOTrainingOptions.ModelPath;
                 Name = yOLOTrainingOptions.Name;
                 Patience = yOLOTrainingOptions.Patience;
@@ -95,6 +97,14 @@ namespace DiGi.YOLO.Classes
         /// </summary>
         [JsonInclude, JsonPropertyName(nameof(ImageSize))]
         public int ImageSize { get; set; } = 640;
+
+        /// <summary>
+        /// Gets or sets the span without a line on either output stream after which the training process is ended, or <c>null</c> for no limit. The default is 15 minutes.
+        /// <para>A training that deadlocks - its torch data loader workers and its main process each waiting on a message the other never sent - produces no output for hours while holding the GPU. A piped run, measured on train9_continue (ultralytics 8.4.165, 165 041 images, ~30 min epochs): the progress bar writes one carriage-return-terminated update per batch (~6 per second), each of which arrives as a line, during epochs, during validation, at the epoch-end save and while the dataset label cache is built; the longest silent stretch of a healthy run is the interpreter and torch import before the first banner line, well under a minute. When the limit is reached the interpreter and its worker processes are ended together and the run is reported through <see cref="YOLOTrainingResult.Stalled"/>. A value that is not positive disables the limit.</para>
+        /// <para>Unlike the hyperparameters this is a property of the runner rather than of the training, so it also applies to a resumed run.</para>
+        /// </summary>
+        [JsonInclude, JsonPropertyName(nameof(InactivityTimeout))]
+        public TimeSpan? InactivityTimeout { get; set; } = TimeSpan.FromMinutes(15);
 
         /// <summary>
         /// Gets or sets the absolute path of the start weights, passed to train.py as --model: a checkpoint (.pt) - model.pt to continue train8, or a base checkpoint such as yolo26x.pt - or an architecture definition (.yaml) for random initialisation.

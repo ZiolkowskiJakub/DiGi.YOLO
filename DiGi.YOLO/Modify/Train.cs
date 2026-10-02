@@ -17,7 +17,7 @@ namespace DiGi.YOLO
         /// <para>The run directory is created under <see cref="YOLOTrainingOptions.Project"/>, always passed as an absolute path. A run whose project folder lies inside a YOLO\models folder is refused, and ultralytics numbers a run name that is already taken rather than reusing its directory, so no run can replace the frozen model.pt. The ultralytics settings file is isolated in the .yolo-config folder of the working directory.</para>
         /// <para>When <see cref="YOLOTrainingOptions.ResumePath"/> is set the run continues that interrupted checkpoint instead: the script is given only --resume and --device, because ultralytics restores every other argument from the checkpoint and the ceiling is fixed. The checkpoint is read first - through <see cref="Query.YOLOCheckpointInformation(string?, string?, string?, CancellationToken)"/> - so a finished checkpoint, a dataset that no longer exists or a run folder inside a YOLO\models folder is refused before a process starts. The result records <see cref="YOLOTrainingResult.Resumed"/> and the epoch it entered.</para>
         /// <para>The weights identity is read from the success block train.py prints last and confirmed against the file on disk; a digest that does not match is dropped and the result does not succeed. ultralytics may download yolo26n.pt into the "weights" folder of the working directory for its AMP check and falls back to full precision without it - <see cref="YOLOTrainingResult.Amp"/> reports the precision actually used.</para>
-        /// <para>The run is synchronous and can take hours. Cancelling it kills the interpreter and returns a result carrying a non-zero exit code rather than throwing; torch worker processes can outlive the cancellation.</para>
+        /// <para>The run is synchronous and can take hours. Cancelling it, or reaching <see cref="YOLOTrainingOptions.InactivityTimeout"/> when neither output stream has produced a line for that long, ends the interpreter together with the worker processes it started and returns a result carrying a non-zero exit code rather than throwing; a run ended that way for silence is reported through <see cref="YOLOTrainingResult.Stalled"/>.</para>
         /// </summary>
         /// <param name="yOLOTrainingOptions">The settings for the run.</param>
         /// <param name="cancellationToken">The token that cancels the run.</param>
@@ -243,7 +243,7 @@ namespace DiGi.YOLO
             //Isolates the ultralytics settings file in the working directory, so the run never reads or rewrites the shared machine-wide settings file another ultralytics version uses
             Dictionary<string, string> environmentVariables = Query.ConfigEnvironmentVariables(workingDirectory!);
 
-            (int exitCode, List<string> standardOutput, List<string> standardError) = Query.ExecuteProcess(pythonPath!, stringBuilder_Arguments.ToString(), workingDirectory!, environmentVariables, cancellationToken);
+            (int exitCode, List<string> standardOutput, List<string> standardError, bool stalled) = Query.ExecuteProcess(pythonPath!, stringBuilder_Arguments.ToString(), workingDirectory!, environmentVariables, yOLOTrainingOptions.InactivityTimeout, cancellationToken);
 
             (string? weightsPath, long? bytes, string? sHA256, bool? amp, int? resumedFromEpoch, int? _) = Query.YOLOTrainingOutput(standardOutput);
 
@@ -269,7 +269,7 @@ namespace DiGi.YOLO
                 }
             }
 
-            return new YOLOTrainingResult(exitCode, startPath, startModelSHA256, modelKind, weightsPath, bytes, sHA256, amp, standardOutput, standardError, start, DateTimeOffset.Now, resume, resumedFromEpoch);
+            return new YOLOTrainingResult(exitCode, startPath, startModelSHA256, modelKind, weightsPath, bytes, sHA256, amp, standardOutput, standardError, start, DateTimeOffset.Now, resume, resumedFromEpoch, stalled);
         }
     }
 }
