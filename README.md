@@ -23,23 +23,32 @@ Comprehensive guides and operational documentation are available in the [DiGi.YO
 ## 🤖 YOLO Model & Execution Pipeline
 
 ### Frozen Weights Provenance
-The pipeline depends on one frozen checkpoint, `YOLO/models/model.pt`. The values below are read out of the checkpoint itself rather than recorded by hand, so they cannot drift from the artefact:
+The pipeline depends on one frozen checkpoint, `YOLO/models/model.pt`. Since 2026-10-08 that is **`train9_fresh`**, selected by the detector gate of [DiGi.GIS.YOLO.UI#12](https://github.com/ZiolkowskiJakub/DiGi.GIS.YOLO.UI/issues/12) and shipped together with the year-built regressor fitted to its features ([DiGi.GIS.ML#13](https://github.com/ZiolkowskiJakub/DiGi.GIS.ML/issues/13)). The values below are read out of the checkpoint itself (`version`, `date`, `train_args`) and its run's `results.csv`, not recorded by hand:
 
-| | |
-|---|---|
-| Run name | `train8` |
-| Saved | 2025-05-23 |
-| ultralytics | 8.3.130 |
-| Epochs | 150 |
-| Image size (`imgsz`) | 640 |
-| Batch | 16 |
-| Seed | 0 |
-| Optimizer | `auto` |
-| Started from | `runs/detect/train7/weights/best.pt` |
+| | `train9_fresh` (shipped) | `train8` (previous; the rollback) |
+|---|---|---|
+| Architecture | YOLO26x (`yolo26x.yaml`), 58 810 878 parameters, `nc = 1` `{0: 'Building'}` | YOLOv8x (`yolov8x.yaml`), 68 153 571 parameters, `nc = 1` |
+| Saved | 2026-10-07 (best epoch) | 2025-05-23 |
+| ultralytics | 8.4.165 | 8.3.130 |
+| Epochs run / best | 150 / 145 (val mAP50-95 0.9327) | 150 |
+| Patience | 50 | 100 |
+| Image size / batch / seed | 640 / 16 / 0 | 640 / 16 / 0 |
+| Optimizer / AMP | `auto` / on | `auto` / on |
+| **Started from** | **`base/yolo26x.pt`**, SHA-256 `9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92`. `train_args.model` reads `…\train9_fresh\weights\last.pt` because the run was resumed twice, once from the tray and once automatically; the true start is the base checkpoint | `runs/detect/train7/weights/best.pt`, a continuation of `train7` |
+| Dataset | rebuilt from the database by `--dataset` of DiGi.GIS.YOLO.UI#13: 25 008 labelled buildings over 217 counties, Train / Validate / Test 18 057 / 1 995 / 4 956, 228 569 images | lost; only the weights survive |
+| Bytes | 118 333 605 | 136 730 810 |
+| SHA-256 | `2dd833e438ffcb1352ae7675063c9f0c97ca1c39ce6410a0bfab96e8b3cbdc9a` | `c79d2edfb776c913494d698cd1899ed1a6c92d7caad594b674d39ce5ada7ea38` |
 
-`train8` is a continuation of `train7` rather than a run from a pretrained checkpoint, so the 150 epochs are on top of that earlier run.
+**Gate** (2026-10-07, same Test split; first-detection-year error in years against the label; *clean* = Test buildings `train8` cannot have seen, n = 179):
 
-The weights are not in git (130 MB). They live in the git-ignored `user files/YOLO/models/`.
+| Weights | Test mAP50 / mAP50-95 | All MAE / RMSE / exact | Clean MAE / RMSE / exact |
+|---|---|---|---|
+| `train8` | 0.979 / 0.813 | 0.503 / 1.907 / 0.883 | 2.235 / 4.342 / 0.598 |
+| **`train9_fresh`** (selected) | 0.993 / 0.934 | 0.353 / 1.789 / 0.935 | 1.855 / 4.223 / 0.704 |
+
+**Rejected candidate:** `train9_continue` (YOLOv8x continued from `train8`, 100 epochs, SHA-256 `382a9041af92e1e086704f214ee74ffaa46e14037d082724710b583eaee29bf8`): Test mAP 0.993 / 0.930; all 0.338 / 1.716 / 0.937; clean 1.883 / 4.196 / 0.704. It was practically tied with `train9_fresh`, and the gate's tie-break names the fresh candidate for its fully known history.
+
+The shipped weights live in the git-ignored `user files/YOLO/models/model.pt`, the only file of `YOLO` the runner deployment carries. `train8`, the rejected candidate and the ONNX exports are kept in the training directory outside the workspace, as rollback and evaluation baselines.
 
 To read these back from any `.pt` without installing torch: the file is a zip, and `data.pkl` inside it unpickles to a dictionary carrying `version`, `date` and `train_args`.
 
@@ -63,17 +72,18 @@ Both start points train under 8.4.165: a 3-epoch smoke run (2026-09-29, RTX 5090
 The same detector is also scored in process, without an interpreter, by
 [DiGi.YOLO.ONNX](https://github.com/ZiolkowskiJakub/DiGi.YOLO.ONNX). That path consumes an ONNX export of the checkpoint above, produced once by `export.py`. The export is as frozen as the checkpoint it came from, so it is recorded the same way - by a digest read off the artefact:
 
-| | |
-|---|---|
-| Exported | 2026-09-03 |
-| Exported by | ultralytics 8.3.130, torch 2.7.0+cu128, onnx 1.22.0, onnxslim 0.1.96 |
-| Flags | `format=onnx`, `imgsz=640`, `opset=12`, `dynamic=True`, `simplify=True`, `half=False`, `nms=False` |
-| Bytes | 273 083 173 |
-| SHA-256 | `7cfb1a79209fa27a43f07a2151dfebaad3baedf93c94bc25a92a6bdbc4040213` |
+| | `train9_fresh` (current) | `train8` (previous) |
+|---|---|---|
+| Exported | 2026-10-07 ([DiGi.YOLO.ONNX#2](https://github.com/ZiolkowskiJakub/DiGi.YOLO.ONNX/issues/2)) | 2026-09-03 |
+| Exported by | ultralytics 8.4.165, Python 3.13, torch 2.7.0+cu128, onnx 1.22.0, onnxslim 0.1.96 | ultralytics 8.3.130, torch 2.7.0+cu128, onnx 1.22.0, onnxslim 0.1.96 |
+| Flags | `format=onnx`, `imgsz=640`, `opset=12`, `dynamic=True`, `simplify=True`, `half=False`, `nms` unset ([#20](https://github.com/ZiolkowskiJakub/DiGi.YOLO/issues/20)) | the same, with `nms=False` (under 8.3.130 only "do not embed NMS") |
+| Metadata | `end2end: False` | — |
+| Bytes | 224 047 962 | 273 083 173 |
+| SHA-256 | `27ec80105e0215cde9cf091989310446c8703a49a30b5826ee0efea3382471a8` | `7cfb1a79209fa27a43f07a2151dfebaad3baedf93c94bc25a92a6bdbc4040213` |
 
-The graph is `nc = 1` (`{0: 'Building'}`) and answers `[batch, 5, 8400]`. `dynamic=True` is what lets the C# runner feed whole batches; a static export pins the batch to one. `nms` is left at its default (`None`, no NMS embedded in the graph) - suppression stays on the C# side, where it can be matched to the thresholds ultralytics applies internally (IoU `0.7`, at most `300` detections) rather than baked into the graph. Under ultralytics 8.4.165, explicitly passing `nms=False` would select the one-to-one NMS-free head (output shape `[batch, 300, 6]`), which is not the layout the in-process decoder expects.
+Both graphs are `nc = 1` (`{0: 'Building'}`) and answer `[batch, 5, anchors]` (8 400 at 640). `dynamic=True` is what lets the C# runner feed whole batches; a static export pins the batch to one. `nms` is left at its default (`None`, no NMS embedded in the graph) - suppression stays on the C# side, where it can be matched to the thresholds ultralytics applies internally (IoU `0.7`, at most `300` detections) rather than baked into the graph. Under ultralytics 8.4.165, explicitly passing `nms=False` would select the one-to-one NMS-free head (output shape `[batch, 300, 6]`), which is not the layout the in-process decoder expects.
 
-Like the weights, the export is not in git (260 MB) and lives in the git-ignored `user files/YOLO/models/`.
+The export is not in git. The runner does not read it, so it is not deployed either. It is kept in the training directory and beside DiGi.YOLO.ONNX's parity fact.
 
 ### Python Helper Scripts & Requirements
 `DiGi.YOLO` embeds Python helper scripts (`train.py`, `val.py`, `predict.py`, `export.py`, `check.py`, `utils.py`, `requirements.txt`, `conf.yaml`) as binary resources.
@@ -85,7 +95,7 @@ Like the weights, the export is not in git (260 MB) and lives in the git-ignored
   - `--conf`: Confidence threshold float (default: `0.1`).
   - `--output`: Output filepath for bounding box results (`.bbrf`) in write mode (`"w"`) (default: `YOLO/output/results.bbrf`).
 * **Export (`export.py`):** Turns the frozen checkpoint into the ONNX graph the in-process detector scores with. Options: `--model`, `--output`, `--imgsz` (default `640`), `--opset` (default `12`), `--static` (fixed axes instead of a dynamic batch). It prints the size and SHA-256 of what it wrote, which is what the provenance table above records. This is a one-off preparation step - it is why removing the Python dependency removes it from every *run* rather than from the repository.
-* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.4.165`; the frozen checkpoint was written by 8.3.130, and 8.4.165 was adopted in #17 only after reproducing its detections on 1 000 held images - identical counts, box edges within 0.017 px) because a different ultralytics can be a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning. `onnx` and `onnxslim` sit under an export-only heading there: `export.py` needs them and nothing that runs a prediction does.
+* **Python Environment:** `pip install -r requirements.txt`. `ultralytics` is pinned exactly (`==8.4.165`; the shipped `train9_fresh` was trained and written by 8.4.165; the previous `train8` was written by 8.3.130, and 8.4.165 was adopted in #17 only after reproducing its detections on 1 000 held images - identical counts, box edges within 0.017 px) because a different ultralytics can be a different detector; `torch` is a floor (`>=2.6`) because its wheels are specific to a platform and CUDA build. The file itself carries the reasoning. `onnx` and `onnxslim` sit under an export-only heading there: `export.py` needs them and nothing that runs a prediction does.
 * **Two ultralytics environments:** the main Python above carries the pinned 8.4.165; 8.3.130 is kept in the git-ignored `user files/YOLO/venv-ultralytics-8.3.130/` venv for the frozen `train8` checkpoint's parity and export path. The two must not share a settings file: ultralytics reads and writes one `settings.json` per machine, and the schemas differ (8.3.130 is v0.0.6, 8.4.165 is v0.0.8 with the `comet`/`openvino_msg` keys). Whichever version runs after the other finds a schema it does not expect, rewrites the file, prints a settings notice to stdout - into the stream `check.py` carries its JSON payload in - and, in the 8.3.130 direction, resets the settings to its own defaults, losing custom values such as `runs_dir` or `datasets_dir` without notice.
 * **Settings isolation (`YOLO_CONFIG_DIR`):** every run the C# runners start (the preflight `Query.YOLOEnvironmentResult`, `Modify.Predict`, and the training of #16) sets `YOLO_CONFIG_DIR` to a `.yolo-config` folder inside its working directory, so the settings file the run reads and writes lives in that working directory and is never the shared machine-wide one. The venv is isolated the same way for interactive use by its own activation scripts - `Scripts/activate`, `Scripts/Activate.ps1` and `Scripts/activate.bat` set `YOLO_CONFIG_DIR` to a `.yolo-config` folder inside the venv and restore the previous value on deactivate. The venv is git-ignored, so that part is a machine-local setup; the three lines to add are:
   ```bash
@@ -127,7 +137,7 @@ YOLOValidationResult? yOLOValidationResult = yOLOValidationOptions.Validate(canc
 
 | `train.py` argument | Default | `YOLOTrainingOptions` |
 |---|---|---|
-| `--model` | `YOLO/models/model.pt` | `ModelPath` - start weights, a local file: a `.pt` checkpoint (`model.pt` to continue `train8`, or `base/yolo26x.pt` for a fresh start) or a `.yaml` architecture definition. Nothing is downloaded by name |
+| `--model` | `YOLO/models/model.pt` | `ModelPath` - start weights, a local file: a `.pt` checkpoint (`model.pt` to continue the shipped detector, or `base/yolo26x.pt` for a fresh start) or a `.yaml` architecture definition. Nothing is downloaded by name |
 | `--data` | `conf.yaml` | `ConfigurationFilePath` - always passed absolute |
 | `--epochs` / `--patience` | `150` / `50` | `Epochs` / `Patience` - upper bound and early stopping |
 | `--imgsz` / `--batch` / `--seed` | `640` / `16` / `0` | `ImageSize` / `Batch` / `Seed` - `train8`'s values |
@@ -135,7 +145,7 @@ YOLOValidationResult? yOLOValidationResult = yOLOValidationOptions.Validate(canc
 | `--device` | ultralytics default | `Device` |
 | `--amp` / `--no-amp` | on | `Amp` |
 
-* **Start weights** are identified by the runner before the process starts - path, SHA-256 and kind (`checkpoint` / `definition`) on `YOLOTrainingResult` - because the output streams keep only their tail. `train.py` also prints them, and a checkpoint's `train_args` (for `model.pt` the only surviving record of `train8`'s settings).
+* **Start weights** are identified by the runner before the process starts - path, SHA-256 and kind (`checkpoint` / `definition`) on `YOLOTrainingResult` - because the output streams keep only their tail. `train.py` also prints them, and a checkpoint's `train_args` (for `train8` the only surviving record of its settings).
 * **Output weights** are read from the block `train.py` prints last (`Weights:`, `Bytes:`, `SHA256:`, `AMP:`) and confirmed against the file on disk; `Succeeded` requires the match.
 * **Never into `YOLO/models`:** a run whose project folder lies inside a `YOLO\models` folder is refused, and ultralytics numbers a taken run name rather than reusing its directory, so no run replaces the frozen `model.pt`.
 * **Preflight and isolation:** a checkpoint is preflighted with `Query.YOLOEnvironmentResult` (an ultralytics too old for the checkpoint is refused), and the run gets its own `YOLO_CONFIG_DIR`. The scripts are rewritten before every run, so a directory never trains with a `train.py` of an older build.
